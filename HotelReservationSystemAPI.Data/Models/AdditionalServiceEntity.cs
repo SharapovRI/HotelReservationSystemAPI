@@ -9,6 +9,6 @@ namespace HotelReservationSystemAPI.Data.Models
     {
         public string Name { get; set; }
 
-        public List<CostsOfServicesEntity> CostsOfService { get; set; }
+        public List<ServiceCostEntity> ServiceCosts { get; set; }
     }
 }

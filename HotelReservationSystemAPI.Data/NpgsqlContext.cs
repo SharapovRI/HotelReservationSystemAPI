@@ -9,15 +9,15 @@ namespace HotelReservationSystemAPI.Data
     public class NpgsqlContext : DbContext //-Project HotelReservationSystemAPI.Data
     {
         public DbSet<AdditionalServiceEntity> AdditionalServices { get; set; }
-        public DbSet<AdditionalServicesInOrderEntity> AdditionalServicesInOrders { get; set; }
-        public DbSet<CostOfRoomsEntity> CostOfRoomsfRooms { get; set; }
-        public DbSet<CostsOfServicesEntity> CostsOfServices { get; set; }
+        public DbSet<AdditionalServicesOrderEntity> AdditionalServicesInOrders { get; set; }
+        public DbSet<RoomsCostEntity> CostOfRoomsfRooms { get; set; }
+        public DbSet<ServiceCostEntity> CostsOfServices { get; set; }
         public DbSet<HotelEntity> Hotel { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<PersonEntity> Persons { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<RoomEntity> Rooms { get; set; }
-        public DbSet<TypesOfRoomsEntity> TypesOfRooms { get; set; }
+        public DbSet<RoomTypeEntity> TypesOfRooms { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

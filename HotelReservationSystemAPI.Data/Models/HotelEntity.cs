@@ -15,10 +15,10 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public string Name { get; set; }
 
-        public List<CostsOfServicesEntity> CostsOfServices { get; set; }
+        public List<ServiceCostEntity> ServiceCosts { get; set; }
 
         public List<RoomEntity> Rooms { get; set; }
 
-        public List<CostOfRoomsEntity> CostsOfRooms { get; set; }
+        public List<RoomsCostEntity> RoomsCosts { get; set; }
     }
 }

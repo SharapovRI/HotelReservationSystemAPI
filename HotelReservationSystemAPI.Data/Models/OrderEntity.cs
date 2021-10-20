@@ -7,7 +7,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class OrderEntity:Entity
+    public class OrderEntity : Entity
     {
         public int RoomId { get; set; }
 
@@ -24,6 +24,6 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public decimal Cost { get; set; }
 
-        public List<AdditionalServicesInOrderEntity> AdditionalServices { get; set; }
+        public List<AdditionalServicesOrderEntity> AdditionalServices { get; set; }
     }
 }

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class CostOfRoomsEntity:Entity
+    public class RoomsCostEntity:Entity
     {
         public int HotelId { get; set; }
 
@@ -16,7 +16,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public int TypeId { get; set; }
 
         [ForeignKey("TypeId")]
-        public TypesOfRoomsEntity TypeOfRooms { get; set; }
+        public RoomTypeEntity RoomTypes { get; set; }
 
         public decimal Cost { get; set; }
     }
