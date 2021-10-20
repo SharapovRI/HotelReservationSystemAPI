@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 using System.Text;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
     public class AdditionalServiceModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public ICollection<CostsOfServicesModel> CostsOfService { get; set; }
     }

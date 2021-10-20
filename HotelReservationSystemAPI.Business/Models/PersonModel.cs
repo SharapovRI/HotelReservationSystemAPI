@@ -6,13 +6,13 @@ namespace HotelReservationSystemAPI.Business.Models
 {
     public class PersonModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string login { get; set; }
+        public string Login { get; set; }
 
-        public string password { get; set; }
+        public string Password { get; set; }
 
-        public int role_id { get; set; }
+        public int RoleId { get; set; }
 
         public RoleModel Role { get; set; }
     }

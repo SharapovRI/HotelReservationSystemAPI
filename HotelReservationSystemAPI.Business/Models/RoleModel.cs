@@ -6,8 +6,8 @@ namespace HotelReservationSystemAPI.Business.Models
 {
     public class RoleModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
     }
 }

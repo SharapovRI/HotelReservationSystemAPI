@@ -6,12 +6,12 @@ namespace HotelReservationSystemAPI.Business.Models
 {
     public class AdditionalServicesInOrderModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int order_id { get; set; }
+        public int OrderId { get; set; }
         public OrderModel Order { get; set; }
 
-        public int addition_service_id { get; set; }
+        public int AdditionServiceId { get; set; }
 
         public AdditionalServiceModel AdditionalService { get; set; }
     }

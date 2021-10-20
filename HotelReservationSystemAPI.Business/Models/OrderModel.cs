@@ -6,20 +6,20 @@ namespace HotelReservationSystemAPI.Business.Models
 {
     public class OrderModel
     {
-        public int id { get; set; }
+        public int Id { get; set; }
 
-        public int room_id { get; set; }
+        public int RoomId { get; set; }
 
         public RoomModel Room { get; set; }
 
-        public int person_id { get; set; }
+        public int PersonId { get; set; }
 
         public PersonModel Person { get; set; }
 
-        public DateTimeOffset check_in_time { get; set; }
-        public DateTimeOffset check_out_time { get; set; }
+        public DateTimeOffset CheckInTime { get; set; }
+        public DateTimeOffset CheckOutTime { get; set; }
 
-        public decimal cost { get; set; }
+        public decimal Cost { get; set; }
 
         public ICollection<AdditionalServicesInOrderModel> AdditionalServices { get; set; }
     }
