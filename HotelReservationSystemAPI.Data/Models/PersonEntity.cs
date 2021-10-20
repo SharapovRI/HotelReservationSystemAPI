@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class Person
+    public class PersonEntity
     {
         [Key]
         public int id { get; set; }
@@ -18,6 +18,6 @@ namespace HotelReservationSystemAPI.Data.Models
         public int role_id { get; set; }
 
         [ForeignKey("role_id")]
-        public Role Role { get; set; }
+        public RoleEntity Role { get; set; }
     }
 }

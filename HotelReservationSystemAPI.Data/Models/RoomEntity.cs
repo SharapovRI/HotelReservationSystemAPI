@@ -6,7 +6,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class Room
+    public class RoomEntity
     {
         [Key]
         public int id { get; set; }
@@ -14,11 +14,13 @@ namespace HotelReservationSystemAPI.Data.Models
         public int hotel_id { get; set; }
 
         [ForeignKey("hotel_id")]
-        public Hotel Hotel { get; set; }
+        public HotelEntity Hotel { get; set; }
 
         public int type_id { get; set; }
 
         [ForeignKey("type_id")]
-        public TypesOfRooms TypeOfRooms { get; set; }
+        public TypesOfRoomsEntity TypeOfRooms { get; set; }
+
+        private List<OrderEntity> Orders { get; set; }
     }
 }

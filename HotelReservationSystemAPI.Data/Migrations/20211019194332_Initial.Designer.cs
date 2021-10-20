@@ -196,7 +196,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.ToTable("roles");
                 });
 
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.Room", b =>
+            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomEntity", b =>
                 {
                     b.Property<int>("id")
                         .ValueGeneratedOnAdd()
@@ -295,13 +295,13 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.Order", b =>
                 {
-                    b.HasOne("HotelReservationSystemAPI.Data.Models.Room", "Room")
+                    b.HasOne("HotelReservationSystemAPI.Data.Models.RoomEntity", "RoomEntity")
                         .WithMany()
                         .HasForeignKey("room_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Room");
+                    b.Navigation("RoomEntity");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.Person", b =>
@@ -315,7 +315,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.Room", b =>
+            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomEntity", b =>
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.Hotel", "Hotel")
                         .WithMany("Rooms")

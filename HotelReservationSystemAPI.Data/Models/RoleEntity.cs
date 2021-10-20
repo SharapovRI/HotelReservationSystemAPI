@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class Role
+    public class RoleEntity
     {
         [Key]
         public int id { get; set; }

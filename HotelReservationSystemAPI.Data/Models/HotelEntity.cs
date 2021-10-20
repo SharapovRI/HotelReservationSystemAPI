@@ -5,7 +5,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class Hotel
+    public class HotelEntity
     {
         [Key]
         public int id { get; set; }
@@ -18,10 +18,10 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public string name { get; set; }
 
-        public List<CostsOfServices> CostsOfServices { get; set; }
+        public List<CostsOfServicesEntity> CostsOfServices { get; set; }
 
-        public List<Room> Rooms { get; set; }
+        public List<RoomEntity> Rooms { get; set; }
 
-        public List<CostOfRooms> CostsOfRooms { get; set; }
+        public List<CostOfRoomsEntity> CostsOfRooms { get; set; }
     }
 }
