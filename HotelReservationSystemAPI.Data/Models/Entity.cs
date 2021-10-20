@@ -5,10 +5,9 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class AdditionalServiceEntity: Entity
+    public class Entity : IEntity
     {
-        public string Name { get; set; }
-
-        public List<CostsOfServicesEntity> CostsOfService { get; set; }
+        [Key]
+        public int Id { get; set; }
     }
 }

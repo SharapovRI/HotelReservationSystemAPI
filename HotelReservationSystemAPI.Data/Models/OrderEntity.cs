@@ -7,25 +7,22 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class OrderEntity
+    public class OrderEntity:Entity
     {
-        [Key]
-        public int id { get; set; }
+        public int RoomId { get; set; }
 
-        public int room_id { get; set; }
-
-        [ForeignKey("room_id")]
+        [ForeignKey("RoomId")]
         public RoomEntity Room { get; set; }
 
-        public int person_id { get; set; }
+        public int PersonId { get; set; }
 
-        [ForeignKey("person_id")]
-        public RoomEntity Person { get; set; }
+        [ForeignKey("PersonId")]
+        public PersonEntity Person { get; set; }
 
-        public DateTimeOffset check_in_time { get; set; }
-        public DateTimeOffset check_out_time { get; set; }
+        public DateTimeOffset CheckInTime { get; set; }
+        public DateTimeOffset CheckOutTime { get; set; }
 
-        public decimal cost { get; set; }
+        public decimal Cost { get; set; }
 
         public List<AdditionalServicesInOrderEntity> AdditionalServices { get; set; }
     }

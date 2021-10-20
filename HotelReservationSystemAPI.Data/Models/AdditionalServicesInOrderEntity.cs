@@ -6,19 +6,16 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class AdditionalServicesInOrderEntity
+    public class AdditionalServicesInOrderEntity :Entity
     {
-        [Key]
-        public int id { get; set; }
+        public int OrderId { get; set; }
 
-        public int order_id { get; set; }
-
-        [ForeignKey("order_id")] 
+        [ForeignKey("OrderId")] 
         public OrderEntity Order { get; set; }
 
-        public int addition_service_id { get; set; }
+        public int AdditionServiceId { get; set; }
 
-        [ForeignKey("addition_service_id")]
+        [ForeignKey("AdditionServiceId")]
         public AdditionalServiceEntity AdditionalService { get; set; }
     }
 }

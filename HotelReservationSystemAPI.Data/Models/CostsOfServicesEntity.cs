@@ -6,21 +6,18 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class CostsOfServicesEntity
+    public class CostsOfServicesEntity:Entity
     {
-        [Key]
-        public int id { get; set; }
+        public int HotelId { get; set; }
 
-        public int hotel_id { get; set; }
-
-        [ForeignKey("hotel_id")]
+        [ForeignKey("HotelId")]
         public HotelEntity Hotel { get; set; }
 
-        public int additional_services_id { get; set; }
+        public int AdditionalServicesId { get; set; }
 
-        [ForeignKey("additional_services_id")]
+        [ForeignKey("AdditionalServicesId")]
         public AdditionalServiceEntity AdditionalService { get; set; }
 
-        public decimal cost { get; set; }
+        public decimal Cost { get; set; }
     }
 }

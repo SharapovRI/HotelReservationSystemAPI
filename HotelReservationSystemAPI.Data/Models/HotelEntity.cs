@@ -5,18 +5,15 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class HotelEntity
+    public class HotelEntity:Entity
     {
-        [Key]
-        public int id { get; set; }
+        public string Country { get; set; }
 
-        public string country { get; set; }
+        public string City { get; set; }
 
-        public string city { get; set; }
+        public string Address { get; set; }
 
-        public string address { get; set; }
-
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public List<CostsOfServicesEntity> CostsOfServices { get; set; }
 

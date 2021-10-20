@@ -6,18 +6,15 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class PersonEntity
+    public class PersonEntity:Entity
     {
-        [Key]
-        public int id { get; set; }
+        public string Login { get; set; }
 
-        public string login { get; set; }
+        public string Password { get; set; }
 
-        public string password { get; set; }
+        public int RoleId { get; set; }
 
-        public int role_id { get; set; }
-
-        [ForeignKey("role_id")]
+        [ForeignKey("RoleId")]
         public RoleEntity Role { get; set; }
     }
 }
