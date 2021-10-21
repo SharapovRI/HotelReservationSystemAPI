@@ -3,9 +3,9 @@ using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Data.Repositories
 {
-    public class AdditionalServiceRepository : Repository<AdditionalServiceEntity>, IAdditionalServiceRepository
+    public class ServiceCostRepository : Repository<ServiceCostEntity>, IServiceCostRepository
     {
-        public AdditionalServiceRepository(NpgsqlContext npgsqlContext)
+        public ServiceCostRepository(NpgsqlContext npgsqlContext)
             : base(npgsqlContext)
         {
 
