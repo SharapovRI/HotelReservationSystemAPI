@@ -1,4 +1,4 @@
-﻿using HotelReservationSystemAPI.Data.IRepositories;
+﻿using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Data.Repositories

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using HotelReservationSystemAPI.Data.IRepositories;
+using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -55,7 +55,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
             return await entity;
         }
 
-        public async Task<IList<TEntity>> GetListAsync()
+        public async Task<IEnumerable<TEntity>> GetListAsync()
         {
             return await _set.ToListAsync();
         }

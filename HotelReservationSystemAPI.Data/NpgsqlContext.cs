@@ -5,8 +5,8 @@ namespace HotelReservationSystemAPI.Data
 {
     public class NpgsqlContext : DbContext //-Project HotelReservationSystemAPI.Data
     {
-        public DbSet<AdditionalServiceEntity> AdditionalServices { get; set; }
-        public DbSet<AdditionalServicesOrderEntity> AdditionalServicesInOrders { get; set; }
+        public DbSet<AdditionalFacilityEntity> AdditionalServices { get; set; }
+        public DbSet<AdditionalFacilityOrderEntity> AdditionalServicesInOrders { get; set; }
         public DbSet<RoomsCostEntity> CostOfRoomsfRooms { get; set; }
         public DbSet<ServiceCostEntity> CostsOfServices { get; set; }
         public DbSet<HotelEntity> Hotel { get; set; }

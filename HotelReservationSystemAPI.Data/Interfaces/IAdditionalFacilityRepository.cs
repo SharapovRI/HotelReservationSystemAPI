@@ -2,7 +2,7 @@
 
 namespace HotelReservationSystemAPI.Data.Interfaces
 {
-    public interface IOrderRepository : IRepository<OrderEntity>
+    public interface IAdditionalFacilityRepository : IRepository<AdditionalFacilityEntity>
     {
     }
 }
