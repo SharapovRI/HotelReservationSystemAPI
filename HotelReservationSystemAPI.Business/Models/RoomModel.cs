@@ -14,7 +14,7 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public int TypeId { get; set; }
 
-        public TypesOfRoomsModel TypeOfRooms { get; set; }
+        public RoomTypeModel RoomTypes { get; set; }
 
         private ICollection<OrderModel> Orders { get; set; }
     }

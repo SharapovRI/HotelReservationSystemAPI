@@ -4,7 +4,7 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
-    public class CostOfRoomsModel
+    public class RoomsCostModel
     {
         public int Id { get; set; }
 
@@ -14,7 +14,7 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public int TypeId { get; set; }
 
-        public TypesOfRoomsModel TypeOfRooms { get; set; }
+        public RoomTypeModel RoomTypes { get; set; }
 
         public decimal Cost { get; set; }
     }

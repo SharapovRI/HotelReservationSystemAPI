@@ -11,6 +11,6 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Name { get; set; }
 
-        public ICollection<CostsOfServicesModel> CostsOfService { get; set; }
+        public ICollection<ServiceCostModel> ServiceCosts { get; set; }
     }
 }
