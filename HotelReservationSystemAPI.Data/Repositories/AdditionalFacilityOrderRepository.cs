@@ -3,12 +3,12 @@ using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Data.Repositories
 {
-    public class PersonRepository: Repository<PersonEntity>, IPersonRepository
+    public class AdditionalFacilityOrderRepository : Repository<AdditionalFacilityOrderEntity>, IAdditionalFacilityOrderRepository
     {
-        public PersonRepository(NpgsqlContext npgsqlContext)
+        public AdditionalFacilityOrderRepository(NpgsqlContext npgsqlContext)
             : base(npgsqlContext)
         {
-
+            
         }
     }
 }

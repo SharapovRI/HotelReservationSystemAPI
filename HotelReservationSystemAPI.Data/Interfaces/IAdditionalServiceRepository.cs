@@ -1,8 +1,9 @@
-﻿using HotelReservationSystemAPI.Data.Models;
+﻿using HotelReservationSystemAPI.Data.Interfaces;
+using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Data.IRepositories
 {
-    public interface IAdditionalServiceRepository:IRepository<AdditionalServiceEntity>
+    public interface IAdditionalServiceRepository : IRepository<AdditionalServiceEntity>
     {
     }
 }

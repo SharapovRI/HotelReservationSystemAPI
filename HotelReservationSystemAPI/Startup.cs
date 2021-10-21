@@ -1,4 +1,5 @@
 using HotelReservationSystemAPI.Data;
+using HotelReservationSystemAPI.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,9 @@ namespace HotelReservationSystemAPI
             services.AddSingleton<NpgsqlContext>();
             
             services.AddControllers();
+            
+            services.AddRepositories();
+            services.AddServices();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

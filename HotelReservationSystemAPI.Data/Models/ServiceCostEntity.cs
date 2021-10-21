@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public int AdditionalServicesId { get; set; }
 
         [ForeignKey("AdditionalServicesId")]
-        public AdditionalServiceEntity AdditionalService { get; set; }
+        public AdditionalFacilityEntity AdditionalFacility { get; set; }
 
         public decimal Cost { get; set; }
     }

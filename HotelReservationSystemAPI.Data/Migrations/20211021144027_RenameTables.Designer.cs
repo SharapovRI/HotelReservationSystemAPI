@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace HotelReservationSystemAPI.Data.Migrations
 {
     [DbContext(typeof(NpgsqlContext))]
-    [Migration("20211020142150_AdjustmentToModelNames_2")]
-    partial class AdjustmentToModelNames_2
+    [Migration("20211021144027_RenameTables")]
+    partial class RenameTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdditionalServices");
+                    b.ToTable("AdditionalFacilities");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityOrderEntity", b =>
@@ -55,7 +55,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("AdditionalServicesInOrders");
+                    b.ToTable("AdditionalFacilitiesInOrders");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.HotelEntity", b =>
@@ -188,7 +188,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TypesOfRooms");
+                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomsCostEntity", b =>
@@ -213,7 +213,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasIndex("TypeId");
 
-                    b.ToTable("CostOfRoomsfRooms");
+                    b.ToTable("RoomsCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.ServiceCostEntity", b =>
@@ -238,7 +238,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("CostsOfServices");
+                    b.ToTable("ServiceCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityOrderEntity", b =>

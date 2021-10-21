@@ -4,18 +4,15 @@ using System.Text;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
-    public class ServiceCostModel
+    public class AdditionalFacilityOrderModel 
     {
         public int Id { get; set; }
 
-        public int HotelId { get; set; }
+        public int OrderId { get; set; }
+        public OrderModel Order { get; set; }
 
-        public HotelModel Hotel { get; set; }
-
-        public int AdditionalServicesId { get; set; }
+        public int AdditionServiceId { get; set; }
 
         public AdditionalFacilityModel AdditionalFacility { get; set; }
-
-        public decimal Cost { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using AutoMapper;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
 {
-    public class AdditionalServiceProfile :Profile
+    public class AdditionalFacilityProfile :Profile
     {
     }
 }
