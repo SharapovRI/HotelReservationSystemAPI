@@ -31,28 +31,28 @@ namespace HotelReservationSystemAPI.Data.Repositories
         {
             var entity = _set.FindAsync(id);
 
-            if (entity.Result is null)
+            if (await entity is null)
             {
                 throw new Exception(); // TODO: Write the exception
             }
 
-            _set.Remove(entity.Result);
+            _set.Remove(await entity);
 
             await _context.SaveChangesAsync();
 
-            return entity.Result;          // TODO: Check when everything is done, maybe a return is not needed
+            return await entity;          // TODO: Check when everything is done, maybe a return is not needed
         }
 
-        public TEntity GetAsync(int id)
+        public async Task<TEntity> GetAsync(int id)
         {
             var entity = _set.FindAsync(id);
 
-            if (entity.Result is null)
+            if (await entity is null)
             {
                 throw new Exception(); // TODO: Write the exception
             }
 
-            return entity.Result;
+            return await entity;
         }
 
         public async Task<IList<TEntity>> GetListAsync()
