@@ -13,7 +13,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public int TypeId { get; set; }
 
         [ForeignKey("TypeId")]
-        public RoomTypeEntity RoomTypes { get; set; }
+        public RoomTypeEntity RoomType { get; set; }
 
         private List<OrderEntity> Orders { get; set; }
     }

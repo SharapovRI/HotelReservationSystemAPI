@@ -248,7 +248,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("HotelReservationSystemAPI.Data.Models.OrderEntity", "Order")
-                        .WithMany("AdditionalServices")
+                        .WithMany("AdditionalFacilities")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -361,7 +361,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>
                 {
-                    b.Navigation("AdditionalServices");
+                    b.Navigation("AdditionalFacilities");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomTypeEntity", b =>

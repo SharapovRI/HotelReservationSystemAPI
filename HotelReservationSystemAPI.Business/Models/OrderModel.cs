@@ -21,6 +21,6 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public decimal Cost { get; set; }
 
-        public ICollection<AdditionalFacilityOrderModel> AdditionalServices { get; set; }
+        public ICollection<AdditionalFacilityOrderModel> AdditionalFacilitices { get; set; }
     }
 }

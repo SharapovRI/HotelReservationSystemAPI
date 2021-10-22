@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HotelReservationSystemAPI.Business\HotelReservationSystemAPI.Business.csproj" />
     <ProjectReference Include="..\HotelReservationSystemAPI.Data\HotelReservationSystemAPI.Data.csproj" />
   </ItemGroup>
 

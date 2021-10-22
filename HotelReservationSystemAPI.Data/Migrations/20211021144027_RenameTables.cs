@@ -52,7 +52,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_AdditionalServices",
-                table: "AdditionalServices");
+                table: "AdditionalFacilities");
 
             migrationBuilder.RenameTable(
                 name: "TypesOfRooms",
@@ -71,7 +71,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 newName: "AdditionalFacilitiesInOrders");
 
             migrationBuilder.RenameTable(
-                name: "AdditionalServices",
+                name: "AdditionalFacilities",
                 newName: "AdditionalFacilities");
 
             migrationBuilder.RenameIndex(
@@ -254,7 +254,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "AdditionalFacilities",
-                newName: "AdditionalServices");
+                newName: "AdditionalFacilities");
 
             migrationBuilder.RenameIndex(
                 name: "IX_ServiceCosts_HotelId",
@@ -308,14 +308,14 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AdditionalServices",
-                table: "AdditionalServices",
+                table: "AdditionalFacilities",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AdditionalServicesInOrders_AdditionalServices_AdditionServi~",
                 table: "AdditionalServicesInOrders",
                 column: "AdditionServiceId",
-                principalTable: "AdditionalServices",
+                principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -347,7 +347,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 name: "FK_CostsOfServices_AdditionalServices_AdditionalServicesId",
                 table: "CostsOfServices",
                 column: "AdditionalServicesId",
-                principalTable: "AdditionalServices",
+                principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
