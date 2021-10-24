@@ -11,6 +11,6 @@ namespace HotelReservationSystemAPI.Data.Models
         public int RoleId { get; set; }
 
         [ForeignKey("RoleId")]
-        public RoleEntity Role { get; set; }
+        public virtual RoleEntity Role { get; set; }
     }
 }

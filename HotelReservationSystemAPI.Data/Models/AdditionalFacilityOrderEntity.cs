@@ -7,11 +7,11 @@ namespace HotelReservationSystemAPI.Data.Models
         public int OrderId { get; set; }
 
         [ForeignKey("OrderId")]
-        public OrderEntity Order { get; set; }
+        public virtual OrderEntity Order { get; set; }
 
         public int AdditionServiceId { get; set; }
 
         [ForeignKey("AdditionServiceId")]
-        public AdditionalFacilityEntity AdditionalFacility { get; set; }
+        public virtual AdditionalFacilityEntity AdditionalFacility { get; set; }
     }
 }

@@ -15,10 +15,13 @@ namespace HotelReservationSystemAPI.Data
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<RoomEntity> Rooms { get; set; }
         public DbSet<RoomTypeEntity> RoomTypes { get; set; }
+        public DbSet<CityEntity> Cities { get; set; }
+        public DbSet<CountryEntity> Countries { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=HotelReservationSystemAPI_DB;Username=postgres;Password=PostgreSQL");
+            optionsBuilder.UseLazyLoadingProxies()
+                .UseNpgsql("Host=localhost;Port=5432;Database=HotelReservationSystemAPI_DB;Username=postgres;Password=PostgreSQL");
         }
     }
 }

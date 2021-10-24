@@ -6,7 +6,7 @@ using AutoMapper;
 
 namespace HotelReservationSystemAPI.MappingProfiles
 {
-    public class AdditionalFacilitiesProfile : Profile
+    public class AdditionalFacilitiesMapProfile : Profile
     {
     }
 }
