@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
+using HotelReservationSystemAPI.Data.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data.Repositories
@@ -67,6 +69,29 @@ namespace HotelReservationSystemAPI.Data.Repositories
             await _context.SaveChangesAsync();
 
             return updatedEntity.Entity;
+        }
+
+        public async Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters = null)
+        {
+            return await Query(parameters).ToListAsync();
+        }
+
+        protected IQueryable<TEntity> Query(QueryParameters<TEntity> queryParameters)
+        {
+            var query = _set.AsQueryable();
+
+            if (queryParameters == null)
+                return query;
+
+            if (queryParameters.FilterRule != null && queryParameters.FilterRule.IsValid)
+            {
+                query = query.Where(queryParameters.FilterRule.FilterExpression);
+            }
+
+            if (queryParameters.PaginationRule != null && queryParameters.PaginationRule.IsValid)
+                query = query.Skip(queryParameters.PaginationRule.Size * queryParameters.PaginationRule.Index).Take(queryParameters.PaginationRule.Size);
+
+            return query;
         }
     }
 }

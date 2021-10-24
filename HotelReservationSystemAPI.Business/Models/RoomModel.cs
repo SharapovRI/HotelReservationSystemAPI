@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
@@ -20,12 +16,5 @@ namespace HotelReservationSystemAPI.Business.Models
 
         private ICollection<OrderModel> Orders { get; set; }
 
-        public bool IsFree(DateTimeOffset checkInTime, DateTimeOffset checkOutTime)
-        {
-            var a = Orders.FirstOrDefault(time => time.CheckInTime > checkInTime && time.CheckInTime >= checkOutTime ||
-                                                  time.CheckOutTime <= checkInTime && time.CheckOutTime < checkOutTime);
-
-            return a is {};
-        }
     }
 }

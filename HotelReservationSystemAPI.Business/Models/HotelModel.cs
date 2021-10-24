@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
     public class HotelModel
     {
@@ -15,11 +11,5 @@ namespace HotelReservationSystemAPI.Business.Models
         public string Address { get; set; }
 
         public string Name { get; set; }
-
-        public ICollection<ServiceCostModel> ServiceCosts { get; set; }
-
-        public ICollection<RoomModel> Rooms { get; set; }
-
-        public ICollection<RoomsCostModel> RoomsCosts { get; set; }
     }
 }
