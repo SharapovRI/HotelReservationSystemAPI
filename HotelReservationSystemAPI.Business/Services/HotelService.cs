@@ -57,7 +57,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
             await _hotelRepository.Update(hotel);
         }
-
+        
         public async Task<IList<HotelModel>> GetListAsync(HotelFreeSeatsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);

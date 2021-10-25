@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HotelReservationSystemAPI.Models
+﻿namespace HotelReservationSystemAPI.Models
 {
     public class RoomViewModel
     {
@@ -12,5 +7,7 @@ namespace HotelReservationSystemAPI.Models
         public string HotelName { get; set; }
         
         public string Type { get; set; }
+
+        public int SeatsCount { get; set; }
     }
 }

@@ -36,6 +36,7 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<ILocateService, LocateService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IRoomTypeService, RoomTypeService>();
+            services.AddScoped<IRoomService, RoomService>();
 
             return services;
         }
