@@ -83,13 +83,13 @@ namespace HotelReservationSystemAPI.Business.Services
 
         private FilterRule<HotelEntity> GetFilterRule(HotelFreeSeatsQueryModel model)
         {
-
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
-                    (hotel.CityId == model.Id) && 
-                    (hotel.Rooms.Where(room => room.Orders.Exists(time => time.CheckInTime > model.CheckIn && 
-                    time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut)))
+                    (hotel.CityId == model.Id) &&
+                    (hotel.Rooms != null) &&
+                    (hotel.Rooms.Where(room => room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && 
+                    time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null))
                     .Sum(room => room.RoomType.SeatsCount) >= model.FreeSeatsCount
             };
 
