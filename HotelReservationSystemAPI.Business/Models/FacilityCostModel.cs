@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
-    public class ServiceCostModel
+    public class FacilityCostModel
     {
         public int Id { get; set; }
 
@@ -12,7 +8,7 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public HotelModel Hotel { get; set; }
 
-        public int AdditionalServicesId { get; set; }
+        public int AdditionalFacilityId { get; set; }
 
         public AdditionalFacilityModel AdditionalFacility { get; set; }
 

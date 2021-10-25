@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
     public class AdditionalFacilityOrderModel 
     {
@@ -11,7 +7,7 @@ namespace HotelReservationSystemAPI.Business.Models
         public int OrderId { get; set; }
         public OrderModel Order { get; set; }
 
-        public int AdditionServiceId { get; set; }
+        public int AdditionFacilityId { get; set; }
 
         public AdditionalFacilityModel AdditionalFacility { get; set; }
     }

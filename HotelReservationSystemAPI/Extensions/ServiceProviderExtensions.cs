@@ -23,7 +23,7 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRoomsCostRepository, RoomsCostRepository>();
             services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
-            services.AddScoped<IServiceCostRepository, ServiceCostRepository>();
+            services.AddScoped<IFacilityCostRepository, FacilityCostRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
 
             return services;
@@ -37,6 +37,7 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IRoomTypeService, RoomTypeService>();
             services.AddScoped<IRoomService, RoomService>();
+            services.AddScoped<IFacilityCostService, FacilityCostService>();
 
             return services;
         }

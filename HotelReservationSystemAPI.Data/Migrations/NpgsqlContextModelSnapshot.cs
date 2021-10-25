@@ -41,7 +41,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AdditionServiceId")
+                    b.Property<int>("AdditionFacilityId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OrderId")
@@ -49,7 +49,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdditionServiceId");
+                    b.HasIndex("AdditionFacilityId");
 
                     b.HasIndex("OrderId");
 
@@ -89,6 +89,31 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Countries");
+                });
+
+            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.FacilityCostEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<int>("AdditionalFacilitiesId")
+                        .HasColumnType("integer");
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AdditionalFacilitiesId");
+
+                    b.HasIndex("HotelId");
+
+                    b.ToTable("FacilityCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.HotelEntity", b =>
@@ -256,36 +281,11 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.ToTable("RoomsCosts");
                 });
 
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.ServiceCostEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<int>("AdditionalServicesId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("HotelId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AdditionalServicesId");
-
-                    b.HasIndex("HotelId");
-
-                    b.ToTable("ServiceCosts");
-                });
-
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityOrderEntity", b =>
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
                         .WithMany()
-                        .HasForeignKey("AdditionServiceId")
+                        .HasForeignKey("AdditionFacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -309,6 +309,25 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.FacilityCostEntity", b =>
+                {
+                    b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
+                        .WithMany("FacilityCosts")
+                        .HasForeignKey("AdditionalFacilitiesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelReservationSystemAPI.Data.Models.HotelEntity", "Hotel")
+                        .WithMany("FacilitiesCosts")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdditionalFacility");
+
+                    b.Navigation("Hotel");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.HotelEntity", b =>
@@ -398,28 +417,9 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.Navigation("RoomTypes");
                 });
 
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.ServiceCostEntity", b =>
-                {
-                    b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
-                        .WithMany("ServiceCosts")
-                        .HasForeignKey("AdditionalServicesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("HotelReservationSystemAPI.Data.Models.HotelEntity", "Hotel")
-                        .WithMany("ServiceCosts")
-                        .HasForeignKey("HotelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AdditionalFacility");
-
-                    b.Navigation("Hotel");
-                });
-
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", b =>
                 {
-                    b.Navigation("ServiceCosts");
+                    b.Navigation("FacilityCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.CityEntity", b =>
@@ -436,11 +436,11 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.HotelEntity", b =>
                 {
+                    b.Navigation("FacilitiesCosts");
+
                     b.Navigation("Rooms");
 
                     b.Navigation("RoomsCosts");
-
-                    b.Navigation("ServiceCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>

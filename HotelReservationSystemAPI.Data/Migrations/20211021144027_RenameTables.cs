@@ -60,7 +60,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "CostsOfServices",
-                newName: "ServiceCosts");
+                newName: "FacilityCosts");
 
             migrationBuilder.RenameTable(
                 name: "CostOfRoomsfRooms",
@@ -76,12 +76,12 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.RenameIndex(
                 name: "IX_CostsOfServices_HotelId",
-                table: "ServiceCosts",
+                table: "FacilityCosts",
                 newName: "IX_ServiceCosts_HotelId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_CostsOfServices_AdditionalServicesId",
-                table: "ServiceCosts",
+                table: "FacilityCosts",
                 newName: "IX_ServiceCosts_AdditionalServicesId");
 
             migrationBuilder.RenameIndex(
@@ -111,7 +111,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_ServiceCosts",
-                table: "ServiceCosts",
+                table: "FacilityCosts",
                 column: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -132,7 +132,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_AdditionalFacilitiesInOrders_AdditionalFacilities_AdditionS~",
                 table: "AdditionalFacilitiesInOrders",
-                column: "AdditionServiceId",
+                column: "AdditionFacilityId",
                 principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
@@ -171,7 +171,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ServiceCosts_AdditionalFacilities_AdditionalServicesId",
-                table: "ServiceCosts",
+                table: "FacilityCosts",
                 column: "AdditionalServicesId",
                 principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
@@ -179,7 +179,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ServiceCosts_Hotel_HotelId",
-                table: "ServiceCosts",
+                table: "FacilityCosts",
                 column: "HotelId",
                 principalTable: "Hotel",
                 principalColumn: "Id",
@@ -210,15 +210,15 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ServiceCosts_AdditionalFacilities_AdditionalServicesId",
-                table: "ServiceCosts");
+                table: "FacilityCosts");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ServiceCosts_Hotel_HotelId",
-                table: "ServiceCosts");
+                table: "FacilityCosts");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_ServiceCosts",
-                table: "ServiceCosts");
+                table: "FacilityCosts");
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_RoomTypes",
@@ -237,7 +237,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 table: "AdditionalFacilities");
 
             migrationBuilder.RenameTable(
-                name: "ServiceCosts",
+                name: "FacilityCosts",
                 newName: "CostsOfServices");
 
             migrationBuilder.RenameTable(
@@ -314,7 +314,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
             migrationBuilder.AddForeignKey(
                 name: "FK_AdditionalServicesInOrders_AdditionalServices_AdditionServi~",
                 table: "AdditionalServicesInOrders",
-                column: "AdditionServiceId",
+                column: "AdditionFacilityId",
                 principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);

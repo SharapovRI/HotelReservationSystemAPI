@@ -43,7 +43,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AdditionServiceId")
+                    b.Property<int>("AdditionFacilityId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OrderId")
@@ -51,7 +51,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdditionServiceId");
+                    b.HasIndex("AdditionFacilityId");
 
                     b.HasIndex("OrderId");
 
@@ -280,14 +280,14 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasIndex("HotelId");
 
-                    b.ToTable("ServiceCosts");
+                    b.ToTable("FacilityCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityOrderEntity", b =>
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
                         .WithMany()
-                        .HasForeignKey("AdditionServiceId")
+                        .HasForeignKey("AdditionFacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -403,13 +403,13 @@ namespace HotelReservationSystemAPI.Data.Migrations
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.ServiceCostEntity", b =>
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
-                        .WithMany("ServiceCosts")
+                        .WithMany("FacilityCosts")
                         .HasForeignKey("AdditionalServicesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HotelReservationSystemAPI.Data.Models.HotelEntity", "Hotel")
-                        .WithMany("ServiceCosts")
+                        .WithMany("FacilityCosts")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -421,7 +421,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", b =>
                 {
-                    b.Navigation("ServiceCosts");
+                    b.Navigation("FacilityCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.CityEntity", b =>
@@ -442,7 +442,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.Navigation("RoomsCosts");
 
-                    b.Navigation("ServiceCosts");
+                    b.Navigation("FacilityCosts");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>
