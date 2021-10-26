@@ -9,5 +9,7 @@
         public string Type { get; set; }
 
         public int SeatsCount { get; set; }
+
+        public decimal Cost { get; set; }
     }
 }

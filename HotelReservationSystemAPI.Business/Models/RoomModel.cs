@@ -10,5 +10,6 @@
 
         public int SeatsCount { get; set; }
 
+        public decimal Cost { get; set; }
     }
 }
