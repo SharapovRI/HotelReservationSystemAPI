@@ -14,14 +14,16 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class FacilityCostService : IFacilityCostService
     {
-        public FacilityCostService(IMapper mapper, IFacilityCostRepository facilityCostRepository)
+        public FacilityCostService(IMapper mapper, IFacilityCostRepository facilityCostRepository, IRoomRepository roomRepository)
         {
             _mapper = mapper;
             _facilityCostRepository = facilityCostRepository;
+            _roomRepository = roomRepository;
         }
 
         private readonly IMapper _mapper;
         private readonly IFacilityCostRepository _facilityCostRepository;
+        private readonly IRoomRepository _roomRepository;
 
         public async Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel)
         {
@@ -69,6 +71,24 @@ namespace HotelReservationSystemAPI.Business.Services
             pageRule.Size = model.Size;
 
             return pageRule;
+        }
+
+        public async Task<bool> IsFacilitiesValid(OrderModel orderModel)
+        {
+            if (orderModel.AdditionalFacilitices == null) return true;
+
+            var room = await _roomRepository.GetAsync(orderModel.RoomId);
+            if (room == null) return false;
+
+            var facilitiesCosts = await GetListAsync(new AdditionalFacilityQueryModel()
+            {
+                HotelId = room.HotelId
+            });
+
+            var difference = facilitiesCosts.Select(facil => facil.Id).ToArray()
+                .Except(orderModel.AdditionalFacilitices).Any();
+            
+            return !difference;
         }
     }
 }

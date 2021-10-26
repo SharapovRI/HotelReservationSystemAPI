@@ -71,5 +71,16 @@ namespace HotelReservationSystemAPI.Business.Services
 
             return pageRule;
         }
+
+        public async Task<bool> IsDateValid(OrderModel orderModel)
+        {
+            var room = await _roomRepository.GetAsync(orderModel.RoomId);
+            var isValid = room != null && room.Orders.AsQueryable().FirstOrDefault(time =>
+                time.CheckInTime > orderModel.CheckInTime &&
+                time.CheckInTime >= orderModel.CheckOutTime || time.CheckOutTime <= orderModel.CheckInTime &&
+                time.CheckOutTime < orderModel.CheckOutTime) != null;
+
+            return isValid;
+        }
     }
 }

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Validation;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 
@@ -12,20 +12,48 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class OrderService : IOrderService
     {
-        public OrderService(IMapper mapper, IOrderRepository orderRepository)
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService, IFacilityCostService facilityCostService)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
+            _roomService = roomService;
+            _facilityCostService = facilityCostService;
         }
 
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IRoomService _roomService;
+        private readonly IFacilityCostService _facilityCostService;
 
-        public async Task CreateAsync(OrderModel orderModel)
+        public async Task<OrderModel> CreateAsync(OrderModel orderModel)
         {
+            var validationParameters = await IsOrderValid(orderModel);
+
+            if (!validationParameters)
+            {
+                throw new Exception(); //TODO complete exception
+            }
+
+
             var order = _mapper.Map<OrderModel, OrderEntity>(orderModel);
 
             await _orderRepository.CreateAsync(order);
+
+            return orderModel;
+        }
+
+        private async Task<bool> IsOrderValid(OrderModel orderModel)
+        {
+            if (orderModel == null)
+                throw new ArgumentNullException($"{nameof(orderModel)}");
+
+            var validationParameters = new OrderValidationParameters()
+            {
+                IsDateValid = await _roomService.IsDateValid(orderModel),
+                IsFacilitiesValid = await  _facilityCostService.IsFacilitiesValid(orderModel)
+            };
+
+            return validationParameters.IsValid;
         }
 
         public async Task<OrderModel> DeleteAsync(int id)
