@@ -8,5 +8,6 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     public interface IRoomService
     {
         Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel);
+        Task<bool> IsDateValid(OrderModel orderModel);
     }
 }

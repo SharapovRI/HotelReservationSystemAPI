@@ -8,5 +8,6 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     public interface IFacilityCostService
     {
         Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel);
+        Task<bool> IsFacilitiesValid(OrderModel orderModel);
     }
 }

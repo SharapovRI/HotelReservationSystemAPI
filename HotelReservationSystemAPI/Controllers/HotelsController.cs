@@ -13,14 +13,16 @@ namespace HotelReservationSystemAPI.Controllers
     [ApiController]
     public class HotelsController : ControllerBase
     {
-        public HotelsController(IMapper mapper, IHotelService hotelService, IRoomService roomService, IFacilityCostService facilityCostService)
+        public HotelsController(IMapper mapper, IHotelService hotelService, IRoomService roomService, IFacilityCostService facilityCostService, IOrderService orderService)
         {
+            _orderService = orderService;
             _hotelService = hotelService;
             _roomService = roomService;
             _facilityCostService = facilityCostService;
             _mapper = mapper;
         }
 
+        private readonly IOrderService _orderService;
         private readonly IHotelService _hotelService;
         private readonly IRoomService _roomService;
         private readonly IFacilityCostService _facilityCostService;
@@ -48,6 +50,16 @@ namespace HotelReservationSystemAPI.Controllers
             var models = await _facilityCostService.GetListAsync(queryModel);
 
             return _mapper.Map<IList<AdditionalFacilityModel>, IList<AdditionalFacilityViewModel>>(models);
+        }
+
+        [HttpPost("/Hotels/Create")]
+        public async Task<OrderViewModel> CreateOrder([FromQuery] OrderViewModel orderViewModel)
+        {
+            var model = _mapper.Map<OrderViewModel, OrderModel>(orderViewModel);
+
+            await _orderService.CreateAsync(model);
+
+            return orderViewModel;
         }
     }
 }
