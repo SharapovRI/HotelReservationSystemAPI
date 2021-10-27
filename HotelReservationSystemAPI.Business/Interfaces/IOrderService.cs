@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.QueryModels;
 
 namespace HotelReservationSystemAPI.Business.Interfaces
 {
@@ -11,5 +12,6 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<IEnumerable<OrderModel>> GetListAsync();
         Task Update(OrderModel orderModel);
         Task<OrderModel> DeleteAsync(int id);
+        Task<IList<OrderModel>> GetListAsync(OrderQueryModel queryModel);
     }
 }

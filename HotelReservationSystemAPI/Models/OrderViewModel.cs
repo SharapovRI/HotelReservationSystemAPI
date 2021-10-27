@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace HotelReservationSystemAPI.Models
 {
@@ -14,6 +13,6 @@ namespace HotelReservationSystemAPI.Models
 
         public decimal Cost { get; set; }
 
-        public ICollection<AdditionalFacilityViewModel> AdditionalFacilities { get; set; }
+        public int[] AdditionalFacilities { get; set; }
     }
 }

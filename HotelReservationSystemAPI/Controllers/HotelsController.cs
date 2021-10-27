@@ -61,5 +61,15 @@ namespace HotelReservationSystemAPI.Controllers
 
             return orderViewModel;
         }
+
+        [HttpGet("/Hotels/GetMyOrders")]
+        public async Task<IEnumerable<OrderViewModel>> GetMyOrders([FromQuery] OrderQueryModel queryModel)
+        {
+            var models = await _orderService.GetListAsync(queryModel);
+
+            return _mapper.Map<IList<OrderModel>, IList<OrderViewModel>>(models);
+        }
+
+        //TODO Create updating room state
     }
 }

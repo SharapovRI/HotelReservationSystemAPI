@@ -52,8 +52,8 @@ namespace HotelReservationSystemAPI.Business.Services
             {
                 FilterExpression = room =>
                     room.HotelId == model.HotelId &&
-                    room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn &&
-                        time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null
+                    room.Orders != null && !room.Orders.AsQueryable().Any(time => IsIntersection(time.CheckInTime, time.CheckOutTime, model.CheckIn,
+                        model.CheckOut))
             };
 
             return filterRule;
@@ -75,12 +75,19 @@ namespace HotelReservationSystemAPI.Business.Services
         public async Task<bool> IsDateValid(OrderModel orderModel)
         {
             var room = await _roomRepository.GetAsync(orderModel.RoomId);
-            var isValid = room != null && room.Orders.AsQueryable().FirstOrDefault(time =>
-                time.CheckInTime > orderModel.CheckInTime &&
-                time.CheckInTime >= orderModel.CheckOutTime || time.CheckOutTime <= orderModel.CheckInTime &&
-                time.CheckOutTime < orderModel.CheckOutTime) != null;
+
+            var isValid = room != null && !room.Orders.AsQueryable().Any(time => IsIntersection(time.CheckInTime, time.CheckOutTime, orderModel.CheckInTime,
+                orderModel.CheckOutTime));
 
             return isValid;
+        }
+
+        private bool IsIntersection(DateTimeOffset range1From, DateTimeOffset range1To, DateTimeOffset range2From, DateTimeOffset range2To)
+        {
+            var from = range1From < range2From ? range2From : range1From;
+            var to = range1To < range2To ? range1To : range2To;
+
+            return from < to;
         }
     }
 }

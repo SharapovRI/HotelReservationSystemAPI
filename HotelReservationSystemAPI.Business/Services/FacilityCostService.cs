@@ -75,7 +75,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<bool> IsFacilitiesValid(OrderModel orderModel)
         {
-            if (orderModel.AdditionalFacilitices == null) return true;
+            if (orderModel.AdditionalFacilities == null) return true;
 
             var room = await _roomRepository.GetAsync(orderModel.RoomId);
             if (room == null) return false;
@@ -84,11 +84,36 @@ namespace HotelReservationSystemAPI.Business.Services
             {
                 HotelId = room.HotelId
             });
-
-            var difference = facilitiesCosts.Select(facil => facil.Id).ToArray()
-                .Except(orderModel.AdditionalFacilitices).Any();
             
+            var difference = orderModel.AdditionalFacilities.Except(facilitiesCosts.Select(facil => facil.Id).ToArray())
+                .Any();
+
             return !difference;
+        }
+
+        public async Task<bool> IsCostValid(OrderModel orderModel)
+        {
+            var room = await _roomRepository.GetAsync(orderModel.RoomId);
+            if (room == null) return false;
+
+            decimal cost = 0;
+            var type = room.RoomType.RoomsCosts.FirstOrDefault(type => type.HotelId == room.HotelId);
+
+            if (type == null) throw new Exception(); //TODO write exception
+
+            cost += type.Cost;
+
+            if (orderModel.AdditionalFacilities == null)
+                return orderModel.Cost == cost;
+
+            var facilitiesCosts = await GetListAsync(new AdditionalFacilityQueryModel()
+            {
+                HotelId = room.HotelId
+            });
+
+            cost += facilitiesCosts.Where(facil => orderModel.AdditionalFacilities.Contains(facil.Id)).Sum(facil => facil.Cost);
+
+            return orderModel.Cost == cost;
         }
     }
 }
