@@ -1,14 +1,14 @@
-﻿using HotelReservationSystemAPI.Business.Interfaces;
+﻿using AutoMapper;
+using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using AutoMapper;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.Query;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
@@ -28,6 +28,14 @@ namespace HotelReservationSystemAPI.Business.Services
             var room = _mapper.Map<RoomRequestModel, RoomEntity>(roomModel);
 
             await _roomRepository.CreateAsync(room);
+        }
+
+        public async Task UpdateAsync(RoomModel roomModel)
+        {
+            var room = await _roomRepository.GetAsync(roomModel.Id);
+            room.TypeId = room.TypeId;
+
+            await _roomRepository.Update(room);
         }
 
         public async Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel)

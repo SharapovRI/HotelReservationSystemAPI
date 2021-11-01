@@ -1,14 +1,12 @@
 ﻿namespace HotelReservationSystemAPI.Business.Models
 {
-    public class RoomTypeModel
+    public class FacilityPatchRequestCostModel
     {
         public int Id { get; set; }
 
-        public string Name { get; set; }
-
-        public int SeatsCount { get; set; }
-
         public int HotelId { get; set; }
+
+        public int AdditionalFacilityId { get; set; }
 
         public decimal Cost { get; set; }
     }

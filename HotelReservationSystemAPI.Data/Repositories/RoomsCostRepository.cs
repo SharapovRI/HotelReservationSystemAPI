@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data.Repositories
 {
-    public class RoomsCostRepository: Repository<RoomsCostEntity>, IRoomsCostRepository
+    public class RoomsCostRepository : Repository<RoomsCostEntity>, IRoomsCostRepository
     {
         public RoomsCostRepository(NpgsqlContext npgsqlContext)
             : base(npgsqlContext)

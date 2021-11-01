@@ -1,4 +1,4 @@
-﻿namespace HotelReservationSystemAPI.Models
+﻿namespace HotelReservationSystemAPI.Models.ResponseModels
 {
     public class HotelViewModel
     {

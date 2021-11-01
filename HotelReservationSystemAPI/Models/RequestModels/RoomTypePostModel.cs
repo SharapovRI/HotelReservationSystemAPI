@@ -1,6 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Models.RequestModels
 {
-    public class RoomTypeModel
+    public class RoomTypePostModel
     {
         public int Id { get; set; }
 

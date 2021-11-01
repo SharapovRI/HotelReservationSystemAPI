@@ -32,6 +32,13 @@ namespace HotelReservationSystemAPI.Business.Services
             await _facilityCostRepository.CreateAsync(facilityCost);
         }
 
+        public async Task UpdateAsync(FacilityPatchRequestCostModel facilityPatchRequestCostModel)
+        {
+            var facilityCost = _mapper.Map<FacilityPatchRequestCostModel, FacilityCostEntity>(facilityPatchRequestCostModel);
+
+            await _facilityCostRepository.Update(facilityCost);
+        }
+
         public async Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);

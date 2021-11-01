@@ -63,7 +63,7 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(await hotels);
         }
 
-        public async Task Update(HotelModel hotelModel)
+        public async Task UpdateAsync(HotelModel hotelModel)
         {
             var hotel = _mapper.Map<HotelModel, HotelEntity>(hotelModel);
 

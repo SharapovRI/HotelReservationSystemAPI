@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
-using HotelReservationSystemAPI.Data.Models;
+using HotelReservationSystemAPI.Data.Interfaces;
 
 namespace HotelReservationSystemAPI.Data.Query
 {

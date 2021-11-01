@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Models;
 

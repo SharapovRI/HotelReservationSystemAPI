@@ -2,7 +2,7 @@
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class RoomTypeEntity:Entity
+    public class RoomTypeEntity : Entity
     {
         public string Name { get; set; }
 

@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using HotelReservationSystemAPI.Business.Interfaces;
-using HotelReservationSystemAPI.Business.Services;
-using HotelReservationSystemAPI.Data.Interfaces;
+﻿using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace HotelReservationSystemAPI.Extensions
 {
-    public static class ServiceProviderExtensions
+    public static class RepositoriesProvider
     {
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
@@ -25,19 +19,6 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
             services.AddScoped<IFacilityCostRepository, FacilityCostRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
-
-            return services;
-        }
-
-        public static IServiceCollection AddServices(this IServiceCollection services)
-        {
-            services.AddScoped<IAdditionalFacilityService, AdditionalFacilityService>();
-            services.AddScoped<IHotelService, HotelService>();
-            services.AddScoped<ILocateService, LocateService>();
-            services.AddScoped<IOrderService, OrderService>();
-            services.AddScoped<IRoomTypeService, RoomTypeService>();
-            services.AddScoped<IRoomService, RoomService>();
-            services.AddScoped<IFacilityCostService, FacilityCostService>();
 
             return services;
         }

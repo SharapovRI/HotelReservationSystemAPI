@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
 {
-    public class RoomTypeProfile: Profile
+    public class RoomTypeProfile : Profile
     {
         public RoomTypeProfile()
         {

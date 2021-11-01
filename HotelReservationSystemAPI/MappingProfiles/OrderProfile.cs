@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
-using HotelReservationSystemAPI.Models;
+using HotelReservationSystemAPI.Models.RequestModels;
 
 namespace HotelReservationSystemAPI.MappingProfiles
 {
@@ -8,7 +8,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
     {
         public OrderProfile()
         {
-            CreateMap<OrderModel, OrderViewModel>().ReverseMap();
+            CreateMap<OrderModel, OrderPostModel>().ReverseMap();
         }
     }
 }

@@ -5,7 +5,7 @@ using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
 {
-    public class OrderProfile: Profile
+    public class OrderProfile : Profile
     {
         public OrderProfile()
         {
@@ -13,7 +13,7 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.AdditionalFacilities, act => act.Ignore());
             CreateMap<OrderEntity, OrderModel>()
                 .ForMember(dest => dest.AdditionalFacilities, act => act.MapFrom(src
-                => src.AdditionalFacilities.Select(facil => facil.AdditionFacilityId)));
+                => src.AdditionalFacilities.Select(facility => facility.AdditionFacilityId)));
         }
     }
 }

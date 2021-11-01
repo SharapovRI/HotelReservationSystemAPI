@@ -2,7 +2,7 @@
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class PersonEntity:Entity
+    public class PersonEntity : Entity
     {
         public string Login { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace HotelReservationSystemAPI.Models
+namespace HotelReservationSystemAPI.Models.RequestModels
 {
-    public class HotelRequestViewModel
+    public class HotelPostModel
     {
         public int CountryId { get; set; }
 
@@ -12,6 +12,6 @@ namespace HotelReservationSystemAPI.Models
 
         public string Name { get; set; }
 
-        public IEnumerable<RoomRequestViewModel> Rooms { get; set; }
+        public IEnumerable<RoomPostModel> Rooms { get; set; }
     }
 }
