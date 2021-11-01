@@ -9,9 +9,9 @@ namespace HotelReservationSystemAPI.Data.Models
         [ForeignKey("HotelId")]
         public virtual HotelEntity Hotel { get; set; }
 
-        public int AdditionalFacilitiesId { get; set; }
+        public int AdditionalFacilityId { get; set; }
 
-        [ForeignKey("AdditionalFacilitiesId")]
+        [ForeignKey("AdditionalFacilityId")]
         public virtual AdditionalFacilityEntity AdditionalFacility { get; set; }
 
         public decimal Cost { get; set; }

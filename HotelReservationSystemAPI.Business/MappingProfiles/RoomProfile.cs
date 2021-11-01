@@ -15,6 +15,11 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomType.SeatsCount))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(src =>
                     src.RoomType.RoomsCosts.FirstOrDefault(cost => cost.HotelId == src.HotelId).Cost));
+
+            CreateMap<RoomRequestModel, RoomEntity>()
+                .ForMember(dest => dest.Hotel, act => act.Ignore())
+                .ForMember(dest => dest.LastView, act => act.Ignore())
+                .ForMember(dest => dest.Orders, act => act.Ignore());
         }
     }
 }

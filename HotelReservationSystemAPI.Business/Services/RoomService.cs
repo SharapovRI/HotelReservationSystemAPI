@@ -23,6 +23,13 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
 
+        public async Task CreateAsync(RoomRequestModel roomModel)
+        {
+            var room = _mapper.Map<RoomRequestModel, RoomEntity>(roomModel);
+
+            await _roomRepository.CreateAsync(room);
+        }
+
         public async Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);

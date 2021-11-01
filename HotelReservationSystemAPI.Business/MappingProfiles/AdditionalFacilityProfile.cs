@@ -1,11 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
+using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
 {
-    public class AdditionalFacilityProfile :Profile
+    public class AdditionalFacilityProfile : Profile
     {
+        public AdditionalFacilityProfile()
+        {
+            CreateMap<FacilityRequestModel, AdditionalFacilityEntity>();
+        }
     }
 }

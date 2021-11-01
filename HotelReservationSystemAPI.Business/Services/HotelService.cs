@@ -14,20 +14,32 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class HotelService : IHotelService
     {
-        public HotelService(IMapper mapper, IHotelRepository hotelRepository)
+        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
+            _roomService = roomService;
         }
 
         private readonly IMapper _mapper;
         private readonly IHotelRepository _hotelRepository;
+        private readonly IRoomService _roomService;
 
-        public async Task CreateAsync(HotelModel hotelModel)
+        public async Task CreateAsync(HotelRequestModel hotelModel)
         {
-            var hotel = _mapper.Map<HotelModel, HotelEntity>(hotelModel);
+            var rooms = hotelModel.Rooms;
+            var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
 
-            await _hotelRepository.CreateAsync(hotel);
+            hotel = await _hotelRepository.CreateAsync(hotel);
+
+            foreach (var room in rooms)
+            {
+                room.HotelId = hotel.Id;
+                for (int i = 0; i < room.RoomCount; i++)
+                {
+                    await _roomService.CreateAsync(room);
+                }
+            }
         }
 
         public async Task<HotelModel> DeleteAsync(int id)

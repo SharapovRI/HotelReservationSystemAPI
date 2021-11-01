@@ -13,6 +13,8 @@ namespace HotelReservationSystemAPI.MappingProfiles
         public AdditionalFacilitiesMapProfile()
         {
             CreateMap<AdditionalFacilityModel, AdditionalFacilityViewModel>();
+            CreateMap<FacilityRequestViewModel, FacilityRequestModel>();
+            CreateMap<FacilityCostRequestViewModel, FacilityRequestCostModel>();
         }
     }
 }
