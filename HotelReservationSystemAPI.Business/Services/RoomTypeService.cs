@@ -21,14 +21,16 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IRoomTypeRepository _roomTypeRepository;
         private readonly IRoomsCostRepository _roomsCostRepository;
 
-        public async Task CreateAsync(RoomTypeModel roomTypeModel)
+        public async Task<RoomTypeModel> CreateAsync(RoomTypeModel roomTypeModel)
         {
             var roomType = _mapper.Map<RoomTypeModel, RoomTypeEntity>(roomTypeModel);
             roomType = await _roomTypeRepository.CreateAsync(roomType);
             roomTypeModel.Id = roomType.Id;
             var typeCost = _mapper.Map<RoomTypeModel, RoomsCostEntity>(roomTypeModel);
             
-            await _roomsCostRepository.CreateAsync(typeCost);
+            var entity = await _roomsCostRepository.CreateAsync(typeCost);
+
+            return _mapper.Map<RoomsCostEntity, RoomTypeModel>(entity);
         }
 
         public async Task<RoomTypeModel> DeleteAsync(int id)

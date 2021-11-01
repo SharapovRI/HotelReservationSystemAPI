@@ -27,9 +27,11 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var model = _mapper.Map<RoomTypePostModel, RoomTypeModel>(roomTypeViewModel);
 
-            await _roomTypeService.CreateAsync(model);
+            var createdRoomType = await _roomTypeService.CreateAsync(model);
 
-            return Ok();
+            var result = _mapper.Map<RoomTypeModel, RoomTypeViewModel>(createdRoomType);
+
+            return Ok(result);
         }
 
         [HttpGet("/Admin/{hotelId}")]

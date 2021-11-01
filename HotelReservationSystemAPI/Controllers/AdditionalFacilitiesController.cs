@@ -28,11 +28,13 @@ namespace HotelReservationSystemAPI.Controllers
         [HttpPost("/Facility/Create")]
         public async Task<IActionResult> CreateFacility([FromBody] FacilityPostModel facilityRequestViewModel)
         {
-            var facility = _mapper.Map<FacilityPostModel, FacilityRequestModel>(facilityRequestViewModel);
+            var facilityRequestModel = _mapper.Map<FacilityPostModel, FacilityRequestModel>(facilityRequestViewModel);
 
-            await _additionalFacilityService.CreateAsync(facility);
+            var createdEntity = await _additionalFacilityService.CreateAsync(facilityRequestModel);
 
-            return Ok();
+            var facility = _mapper.Map<AdditionalFacilityModel, AdditionalFacilityViewModel>(createdEntity);
+
+            return Ok(facility);
         }
 
         [HttpPost("/Facility/Add")]
@@ -40,9 +42,11 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var facilityCost = _mapper.Map<FacilityCostPostModel, FacilityRequestCostModel>(facilityCostRequestViewModel);
 
-            await _facilityCostService.CreateAsync(facilityCost);
+            var createdEntity = await _facilityCostService.CreateAsync(facilityCost);
 
-            return Ok();
+            var facility = _mapper.Map<AdditionalFacilityModel, AdditionalFacilityViewModel>(createdEntity);
+
+            return Ok(facility);
         }
 
         [HttpPut("/Facility/Edit/{Id}")]

@@ -9,6 +9,8 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
         public AdditionalFacilityProfile()
         {
             CreateMap<FacilityRequestModel, AdditionalFacilityEntity>();
+            CreateMap<AdditionalFacilityEntity, AdditionalFacilityModel>()
+                .ForMember(dest => dest.Cost, act => act.Ignore());
         }
     }
 }

@@ -6,7 +6,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IRoomTypeService
     {
-        Task CreateAsync(RoomTypeModel roomTypeModel);
+        Task<RoomTypeModel> CreateAsync(RoomTypeModel roomTypeModel);
 
         Task<RoomTypeModel> GetAsync(int id);
 

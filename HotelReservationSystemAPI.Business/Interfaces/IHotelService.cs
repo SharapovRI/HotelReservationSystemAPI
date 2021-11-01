@@ -7,7 +7,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IHotelService
     {
-        Task CreateAsync(HotelRequestModel hotelModel);
+        Task<HotelModel> CreateAsync(HotelRequestModel hotelModel);
 
         Task<HotelModel> GetAsync(int id);
 

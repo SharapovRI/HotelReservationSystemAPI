@@ -19,11 +19,13 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IAdditionalFacilityRepository _additionalFacilityRepository;
 
-        public async Task CreateAsync(FacilityRequestModel additionalFacilityModel)
+        public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel)
         {
             var additionalFacility = _mapper.Map<FacilityRequestModel, AdditionalFacilityEntity>(additionalFacilityModel);
 
-            await _additionalFacilityRepository.CreateAsync(additionalFacility);
+            var entity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
+
+            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(entity);
         }
 
         public async Task<AdditionalFacilityModel> DeleteAsync(int id)

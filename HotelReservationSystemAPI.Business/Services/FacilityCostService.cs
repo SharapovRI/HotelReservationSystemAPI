@@ -25,11 +25,13 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IFacilityCostRepository _facilityCostRepository;
         private readonly IRoomRepository _roomRepository;
 
-        public async Task CreateAsync(FacilityRequestCostModel facilityRequestModel)
+        public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestCostModel facilityRequestModel)
         {
             var facilityCost = _mapper.Map<FacilityRequestCostModel, FacilityCostEntity>(facilityRequestModel);
 
-            await _facilityCostRepository.CreateAsync(facilityCost);
+            var entity = await _facilityCostRepository.CreateAsync(facilityCost);
+
+            return _mapper.Map<FacilityCostEntity, AdditionalFacilityModel>(entity);
         }
 
         public async Task UpdateAsync(FacilityPatchRequestCostModel facilityPatchRequestCostModel)

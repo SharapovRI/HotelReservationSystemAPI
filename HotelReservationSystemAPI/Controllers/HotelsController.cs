@@ -38,9 +38,11 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var hotel = _mapper.Map<HotelPostModel, HotelRequestModel>(hotelRequestModel);
 
-            await _hotelService.CreateAsync(hotel);
+            var createdHotel = await _hotelService.CreateAsync(hotel);
 
-            return Ok();
+            var hotelViewModel = _mapper.Map<HotelModel, HotelViewModel>(createdHotel);
+
+            return Ok(hotelViewModel);
         }
 
         [HttpPut("/Hotel/Edit/{Id}")]
