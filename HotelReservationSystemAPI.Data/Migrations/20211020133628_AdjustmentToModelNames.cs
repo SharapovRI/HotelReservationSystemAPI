@@ -128,7 +128,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.RenameTable(
                 name: "additional_services",
-                newName: "AdditionalServices");
+                newName: "AdditionalFacilities");
 
             migrationBuilder.RenameColumn(
                 name: "id",
@@ -343,7 +343,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
             migrationBuilder.RenameColumn(
                 name: "addition_service_id",
                 table: "AdditionalServicesInOrders",
-                newName: "AdditionServiceId");
+                newName: "AdditionFacilityId");
 
             migrationBuilder.RenameIndex(
                 name: "IX_additional_services_in_orders_order_id",
@@ -357,12 +357,12 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "name",
-                table: "AdditionalServices",
+                table: "AdditionalFacilities",
                 newName: "Name");
 
             migrationBuilder.RenameColumn(
                 name: "id",
-                table: "AdditionalServices",
+                table: "AdditionalFacilities",
                 newName: "Id");
 
             migrationBuilder.AddPrimaryKey(
@@ -412,14 +412,14 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.AddPrimaryKey(
                 name: "PK_AdditionalServices",
-                table: "AdditionalServices",
+                table: "AdditionalFacilities",
                 column: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AdditionalServicesInOrders_AdditionalServices_AdditionServi~",
                 table: "AdditionalServicesInOrders",
-                column: "AdditionServiceId",
-                principalTable: "AdditionalServices",
+                column: "AdditionFacilityId",
+                principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -451,7 +451,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 name: "FK_CostsOfServices_AdditionalServices_AdditionalServicesId",
                 table: "CostsOfServices",
                 column: "AdditionalServicesId",
-                principalTable: "AdditionalServices",
+                principalTable: "AdditionalFacilities",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
@@ -588,7 +588,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             migrationBuilder.DropPrimaryKey(
                 name: "PK_AdditionalServices",
-                table: "AdditionalServices");
+                table: "AdditionalFacilities");
 
             migrationBuilder.RenameTable(
                 name: "Rooms",
@@ -627,7 +627,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 newName: "additional_services_in_orders");
 
             migrationBuilder.RenameTable(
-                name: "AdditionalServices",
+                name: "AdditionalFacilities",
                 newName: "additional_services");
 
             migrationBuilder.RenameColumn(
@@ -841,7 +841,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 newName: "order_id");
 
             migrationBuilder.RenameColumn(
-                name: "AdditionServiceId",
+                name: "AdditionFacilityId",
                 table: "additional_services_in_orders",
                 newName: "addition_service_id");
 

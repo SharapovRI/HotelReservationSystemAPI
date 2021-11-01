@@ -33,7 +33,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AdditionalServices");
+                    b.ToTable("AdditionalFacilities");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalServicesInOrderEntity", b =>
@@ -43,7 +43,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AdditionServiceId")
+                    b.Property<int>("AdditionFacilityId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OrderId")
@@ -51,7 +51,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdditionServiceId");
+                    b.HasIndex("AdditionFacilityId");
 
                     b.HasIndex("OrderId");
 
@@ -245,12 +245,12 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
                         .WithMany()
-                        .HasForeignKey("AdditionServiceId")
+                        .HasForeignKey("AdditionFacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HotelReservationSystemAPI.Data.Models.OrderEntity", "Order")
-                        .WithMany("AdditionalServices")
+                        .WithMany("AdditionalFacilities")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -363,7 +363,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>
                 {
-                    b.Navigation("AdditionalServices");
+                    b.Navigation("AdditionalFacilities");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.TypesOfRoomsEntity", b =>

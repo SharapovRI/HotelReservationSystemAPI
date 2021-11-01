@@ -7,12 +7,12 @@ namespace HotelReservationSystemAPI.Data.Models
         public int HotelId { get; set; }
 
         [ForeignKey("HotelId")]
-        public HotelEntity Hotel { get; set; }
+        public virtual HotelEntity Hotel { get; set; }
 
         public int TypeId { get; set; }
 
         [ForeignKey("TypeId")]
-        public RoomTypeEntity RoomTypes { get; set; }
+        public virtual RoomTypeEntity RoomTypes { get; set; }
 
         public decimal Cost { get; set; }
     }

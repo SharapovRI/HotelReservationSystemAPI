@@ -2,8 +2,7 @@
 
 namespace HotelReservationSystemAPI.Data.Interfaces
 {
-    public interface IServiceCostRepository : IRepository<ServiceCostEntity>
+    public interface ICityRepository : IRepository<CityEntity>
     {
-        
     }
 }

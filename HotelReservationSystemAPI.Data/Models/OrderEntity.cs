@@ -9,18 +9,18 @@ namespace HotelReservationSystemAPI.Data.Models
         public int RoomId { get; set; }
 
         [ForeignKey("RoomId")]
-        public RoomEntity Room { get; set; }
+        public virtual RoomEntity Room { get; set; }
 
         public int PersonId { get; set; }
 
         [ForeignKey("PersonId")]
-        public PersonEntity Person { get; set; }
+        public virtual PersonEntity Person { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }
         public DateTimeOffset CheckOutTime { get; set; }
 
         public decimal Cost { get; set; }
 
-        public List<AdditionalFacilityOrderEntity> AdditionalServices { get; set; }
+        public virtual List<AdditionalFacilityOrderEntity> AdditionalFacilities { get; set; }
     }
 }

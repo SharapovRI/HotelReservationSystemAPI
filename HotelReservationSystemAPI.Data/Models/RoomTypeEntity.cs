@@ -8,8 +8,8 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public int SeatsCount { get; set; }
 
-        public List<RoomsCostEntity> RoomsCosts { get; set; }
+        public virtual List<RoomsCostEntity> RoomsCosts { get; set; }
 
-        public List<RoomEntity> Rooms { get; set; }
+        public virtual List<RoomEntity> Rooms { get; set; }
     }
 }

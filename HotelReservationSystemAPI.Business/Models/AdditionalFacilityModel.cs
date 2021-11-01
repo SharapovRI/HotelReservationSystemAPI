@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Http.Headers;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
     public class AdditionalFacilityModel
     {
@@ -11,6 +6,6 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Name { get; set; }
 
-        public ICollection<ServiceCostModel> ServiceCosts { get; set; }
+        public decimal Cost { get; set; }
     }
 }
