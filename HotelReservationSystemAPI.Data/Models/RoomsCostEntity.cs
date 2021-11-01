@@ -2,7 +2,7 @@
 
 namespace HotelReservationSystemAPI.Data.Models
 {
-    public class RoomsCostEntity:Entity
+    public class RoomsCostEntity : Entity
     {
         public int HotelId { get; set; }
 

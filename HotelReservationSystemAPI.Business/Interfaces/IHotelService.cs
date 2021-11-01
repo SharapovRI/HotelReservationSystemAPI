@@ -7,11 +7,16 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IHotelService
     {
-        Task CreateAsync(HotelModel hotelModel);
+        Task<HotelModel> CreateAsync(HotelRequestModel hotelModel);
+
         Task<HotelModel> GetAsync(int id);
+
         Task<IEnumerable<HotelModel>> GetListAsync();
+
         Task<IList<HotelModel>> GetListAsync(HotelFreeSeatsQueryModel queryModel);
-        Task Update(HotelModel hotelModel);
+
+        Task UpdateAsync(HotelModel hotelModel);
+
         Task<HotelModel> DeleteAsync(int id);
     }
 }

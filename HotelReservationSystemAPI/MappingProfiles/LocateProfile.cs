@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
-using HotelReservationSystemAPI.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using HotelReservationSystemAPI.Models.ResponseModels;
 
 namespace HotelReservationSystemAPI.MappingProfiles
 {

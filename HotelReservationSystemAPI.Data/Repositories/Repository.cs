@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Data.Interfaces;
-using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.Query;
 using Microsoft.EntityFrameworkCore;
 
@@ -57,11 +56,6 @@ namespace HotelReservationSystemAPI.Data.Repositories
             return await entity;
         }
 
-        public async Task<IEnumerable<TEntity>> GetListAsync()
-        {
-            return await _set.ToListAsync();
-        }
-
         public async Task<TEntity> Update(TEntity entity)
         {
             var updatedEntity = _set.Update(entity);
@@ -71,7 +65,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
             return updatedEntity.Entity;
         }
 
-        public async Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters = null)
+        public async Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters)
         {
             return await Query(parameters).ToListAsync();
         }

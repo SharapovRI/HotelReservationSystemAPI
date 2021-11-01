@@ -98,7 +98,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("AdditionalFacilitiesId")
+                    b.Property<int>("AdditionalFacilityId")
                         .HasColumnType("integer");
 
                     b.Property<decimal>("Cost")
@@ -109,7 +109,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdditionalFacilitiesId");
+                    b.HasIndex("AdditionalFacilityId");
 
                     b.HasIndex("HotelId");
 
@@ -141,7 +141,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Hotel");
+                    b.ToTable("Hotels");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>
@@ -315,7 +315,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", "AdditionalFacility")
                         .WithMany("FacilityCosts")
-                        .HasForeignKey("AdditionalFacilitiesId")
+                        .HasForeignKey("AdditionalFacilityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

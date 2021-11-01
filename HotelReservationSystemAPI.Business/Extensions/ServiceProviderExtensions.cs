@@ -1,6 +1,4 @@
-﻿using HotelReservationSystemAPI.Business.Interfaces;
-using HotelReservationSystemAPI.Business.MappingProfiles;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 
 namespace HotelReservationSystemAPI.Business.Extensions
 {

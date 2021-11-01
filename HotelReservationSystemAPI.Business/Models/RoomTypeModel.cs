@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
     public class RoomTypeModel
     {
@@ -10,10 +6,10 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Name { get; set; }
 
-        public int AmountOfSeats { get; set; }
+        public int SeatsCount { get; set; }
 
-        public ICollection<RoomsCostModel> RoomsCosts { get; set; }
+        public int HotelId { get; set; }
 
-        public ICollection<RoomModel> Rooms { get; set; }
+        public decimal Cost { get; set; }
     }
 }

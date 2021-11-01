@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
-using HotelReservationSystemAPI.Models;
+using HotelReservationSystemAPI.Models.RequestModels;
+using HotelReservationSystemAPI.Models.ResponseModels;
 
 namespace HotelReservationSystemAPI.MappingProfiles
 {
@@ -13,6 +10,9 @@ namespace HotelReservationSystemAPI.MappingProfiles
         public AdditionalFacilitiesMapProfile()
         {
             CreateMap<AdditionalFacilityModel, AdditionalFacilityViewModel>();
+            CreateMap<FacilityPostModel, FacilityRequestModel>();
+            CreateMap<FacilityCostPostModel, FacilityRequestCostModel>();
+            CreateMap<FacilityCostPutModel, FacilityPatchRequestCostModel>();
         }
     }
 }

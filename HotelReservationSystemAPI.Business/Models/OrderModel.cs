@@ -9,6 +9,7 @@ namespace HotelReservationSystemAPI.Business.Models
         public int PersonId { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }
+
         public DateTimeOffset CheckOutTime { get; set; }
 
         public decimal Cost { get; set; }

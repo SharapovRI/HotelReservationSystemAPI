@@ -6,7 +6,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IAdditionalFacilityService
     {
-        Task CreateAsync(AdditionalFacilityModel additionalFacilityModel);
+        Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel);
         Task<AdditionalFacilityModel> GetAsync(int id);
         Task<IEnumerable<AdditionalFacilityModel>> GetListAsync();
         Task Update(AdditionalFacilityModel additionalFacilityModel);

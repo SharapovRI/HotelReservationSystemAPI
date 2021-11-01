@@ -1,5 +1,4 @@
-﻿
-namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models
 {
     public class LocateModel
     {

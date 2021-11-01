@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace HotelReservationSystemAPI.Business.QueryModels
+﻿namespace HotelReservationSystemAPI.Business.QueryModels
 {
     public class OrderQueryModel : QueryModel
     {
@@ -12,9 +8,9 @@ namespace HotelReservationSystemAPI.Business.QueryModels
 
         public int? CityId { get; set; }
 
-        //null == все
-        //false == прошлые
-        //true == будущие
+        //null == all
+        //false == past
+        //true == future
         public bool? WhichTime { get; set; } 
     }
 }

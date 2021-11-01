@@ -9,7 +9,7 @@ namespace HotelReservationSystemAPI.Data
         public DbSet<AdditionalFacilityOrderEntity> AdditionalFacilitiesInOrders { get; set; }
         public DbSet<RoomsCostEntity> RoomsCosts { get; set; }
         public DbSet<FacilityCostEntity> FacilityCosts { get; set; }
-        public DbSet<HotelEntity> Hotel { get; set; }
+        public DbSet<HotelEntity> Hotels { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<PersonEntity> Persons { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }

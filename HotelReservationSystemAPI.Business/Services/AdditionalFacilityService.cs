@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
@@ -21,11 +19,13 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IAdditionalFacilityRepository _additionalFacilityRepository;
 
-        public async Task CreateAsync(AdditionalFacilityModel additionalFacilityModel)
+        public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel)
         {
-            var additionalFacility = _mapper.Map<AdditionalFacilityModel, AdditionalFacilityEntity>(additionalFacilityModel);
+            var additionalFacility = _mapper.Map<FacilityRequestModel, AdditionalFacilityEntity>(additionalFacilityModel);
 
-            await _additionalFacilityRepository.CreateAsync(additionalFacility);
+            var entity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
+
+            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(entity);
         }
 
         public async Task<AdditionalFacilityModel> DeleteAsync(int id)

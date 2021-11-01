@@ -1,4 +1,4 @@
-﻿using HotelReservationSystemAPI.Data.Models;
+﻿using HotelReservationSystemAPI.Data.Interfaces;
 
 namespace HotelReservationSystemAPI.Data.Query
 {

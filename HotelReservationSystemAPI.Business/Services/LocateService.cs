@@ -3,9 +3,7 @@ using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HotelReservationSystemAPI.Business.Services

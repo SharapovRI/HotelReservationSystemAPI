@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
@@ -12,20 +10,27 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class RoomTypeService : IRoomTypeService
     {
-        public RoomTypeService(IMapper mapper, IRoomTypeRepository roomTypeRepository)
+        public RoomTypeService(IMapper mapper, IRoomTypeRepository roomTypeRepository, IRoomsCostRepository roomsCostRepository)
         {
             _mapper = mapper;
             _roomTypeRepository = roomTypeRepository;
+            _roomsCostRepository = roomsCostRepository;
         }
 
         private readonly IMapper _mapper;
         private readonly IRoomTypeRepository _roomTypeRepository;
+        private readonly IRoomsCostRepository _roomsCostRepository;
 
-        public async Task CreateAsync(RoomTypeModel roomTypeModel)
+        public async Task<RoomTypeModel> CreateAsync(RoomTypeModel roomTypeModel)
         {
             var roomType = _mapper.Map<RoomTypeModel, RoomTypeEntity>(roomTypeModel);
+            roomType = await _roomTypeRepository.CreateAsync(roomType);
+            roomTypeModel.Id = roomType.Id;
+            var typeCost = _mapper.Map<RoomTypeModel, RoomsCostEntity>(roomTypeModel);
+            
+            var entity = await _roomsCostRepository.CreateAsync(typeCost);
 
-            await _roomTypeRepository.CreateAsync(roomType);
+            return _mapper.Map<RoomsCostEntity, RoomTypeModel>(entity);
         }
 
         public async Task<RoomTypeModel> DeleteAsync(int id)
@@ -47,6 +52,13 @@ namespace HotelReservationSystemAPI.Business.Services
             var roomTypes = _roomTypeRepository.GetListAsync();
 
             return _mapper.Map<IEnumerable<RoomTypeEntity>, IEnumerable<RoomTypeModel>>(await roomTypes);
+        }
+
+        public async Task<IEnumerable<RoomTypeModel>> GetListAsync(int hotelId)
+        {
+            var roomCosts = await _roomsCostRepository.GetListAsync(hotelId);
+
+            return _mapper.Map<IEnumerable<RoomsCostEntity>, IEnumerable<RoomTypeModel>>(roomCosts);
         }
 
         public async Task Update(RoomTypeModel roomTypeModel)
