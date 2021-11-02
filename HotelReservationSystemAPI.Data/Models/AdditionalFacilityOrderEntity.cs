@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace HotelReservationSystemAPI.Data.Models
+﻿namespace HotelReservationSystemAPI.Data.Models
 {
     public class AdditionalFacilityOrderEntity : Entity
     {

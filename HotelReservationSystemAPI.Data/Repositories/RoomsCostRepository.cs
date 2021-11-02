@@ -12,14 +12,16 @@ namespace HotelReservationSystemAPI.Data.Repositories
         public RoomsCostRepository(NpgsqlContext npgsqlContext)
             : base(npgsqlContext)
         {
-            _context = npgsqlContext;
-        }
 
-        private readonly NpgsqlContext _context;
+        }
 
         public async Task<IEnumerable<RoomsCostEntity>> GetListAsync(int hotelId)
         {
-            return await _context.RoomsCosts.Where(roomCost => roomCost.HotelId == hotelId).ToListAsync();
+            return await SetWithIncludes.Where(roomCost => roomCost.HotelId == hotelId).ToListAsync();
         }
+
+        protected override IQueryable<RoomsCostEntity> SetWithIncludes => _set
+            .Include(p => p.Hotel)
+            .Include(p => p.RoomType);
     }
 }

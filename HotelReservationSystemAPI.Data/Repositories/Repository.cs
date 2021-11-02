@@ -8,16 +8,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
+        protected readonly DbSet<TEntity> _set;
+        protected readonly NpgsqlContext _context;
+        protected abstract IQueryable<TEntity> SetWithIncludes { get; }
+
         public Repository(NpgsqlContext npgsqlContext)
         {
             _context = npgsqlContext;
             _set = _context.Set<TEntity>();
         }
-
-        private readonly DbSet<TEntity> _set;
-        private readonly NpgsqlContext _context;
 
         public async Task<TEntity> CreateAsync(TEntity entity)
         {
@@ -72,7 +73,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
 
         protected IQueryable<TEntity> Query(QueryParameters<TEntity> queryParameters)
         {
-            var query = _set.AsQueryable();
+            var query = SetWithIncludes.AsQueryable();
 
             if (queryParameters == null)
                 return query;
