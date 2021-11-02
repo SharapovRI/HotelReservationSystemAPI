@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.Collections.Generic;
 
 namespace HotelReservationSystemAPI.Data.Models
 {
@@ -9,8 +9,9 @@ namespace HotelReservationSystemAPI.Data.Models
         public string Password { get; set; }
 
         public int RoleId { get; set; }
-
-        [ForeignKey("RoleId")]
+        
         public virtual RoleEntity Role { get; set; }
+
+        public virtual List<OrderEntity> Orders { get; set; }
     }
 }

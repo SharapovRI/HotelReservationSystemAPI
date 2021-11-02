@@ -7,5 +7,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public string Name { get; set; }
 
         public virtual List<FacilityCostEntity> FacilityCosts { get; set; }
+
+        public virtual List<AdditionalFacilityOrderEntity> FacilityOrders { get; set; }
     }
 }
