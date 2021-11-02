@@ -12,14 +12,14 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.HotelId, act => act.MapFrom(scr => scr.HotelId))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(scr => scr.Cost))
                 .ForMember(dest => dest.TypeId, act => act.MapFrom(scr => scr.Id))
-                .ForMember(dest => dest.RoomTypes, act => act.Ignore())
+                .ForMember(dest => dest.RoomType, act => act.Ignore())
                 .ForMember(dest => dest.Hotel, act => act.Ignore());
 
             CreateMap<RoomsCostEntity, RoomTypeModel>()
                 .ForMember(dest => dest.HotelId, act => act.MapFrom(scr => scr.HotelId))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(scr => scr.Cost))
-                .ForMember(dest => dest.Name, act => act.MapFrom(scr => scr.RoomTypes.Name))
-                .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomTypes.SeatsCount));
+                .ForMember(dest => dest.Name, act => act.MapFrom(scr => scr.RoomType.Name))
+                .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomType.SeatsCount));
         }
     }
 }

@@ -7,13 +7,11 @@ namespace HotelReservationSystemAPI.Data.Models
     public class OrderEntity : Entity
     {
         public int RoomId { get; set; }
-
-        [ForeignKey("RoomId")]
+        
         public virtual RoomEntity Room { get; set; }
 
         public int PersonId { get; set; }
-
-        [ForeignKey("PersonId")]
+        
         public virtual PersonEntity Person { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }

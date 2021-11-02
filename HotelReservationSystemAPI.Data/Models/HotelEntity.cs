@@ -6,13 +6,11 @@ namespace HotelReservationSystemAPI.Data.Models
     public class HotelEntity : Entity
     {
         public int CountryId { get; set; }
-
-        [ForeignKey("CountryId")]
+        
         public virtual CountryEntity Country { get; set; }
 
         public int CityId { get; set; }
-
-        [ForeignKey("CityId")]
+        
         public virtual CityEntity City { get; set; }
 
         public string Address { get; set; }
