@@ -46,5 +46,18 @@ namespace HotelReservationSystemAPI.Controllers
             
             return Ok(response);
         }
+
+        [AllowAnonymous]
+        [HttpPost("registrate")]
+        public IActionResult Registration([FromBody] RegistrationRequestModel registrationRequestModel)
+        {
+            if (!registrationRequestModel.IsPasswordsMatch())
+                return ValidationProblem("Passwords doesn't match");
+
+            var model = _mapper.Map<RegistrationRequestModel, RegistrationModel>(registrationRequestModel);
+
+            var response = _userService.RegistrateAsync(model).Result;
+            return response == null ? ValidationProblem("This login already exists") : Ok(response);
+        }
     }
 }

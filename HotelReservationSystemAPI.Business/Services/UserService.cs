@@ -29,7 +29,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<AuthResponseModel> AuthenticateAsync(AuthRequestModel model)
         {
-            var user = await _userRepository.GetAsync(model.Username, ToSha256(model.Password));
+            var user = await _userRepository.GetUserAsync(model.Username, ToSha256(model.Password));
 
             // return null if user not found
             if (user == null) return null; //TODO Exception
@@ -45,9 +45,23 @@ namespace HotelReservationSystemAPI.Business.Services
             return new AuthResponseModel(user, jwtToken, refreshToken.Token);
         }
 
+        public async Task<AuthResponseModel> RegistrateAsync(RegistrationModel registrationModelodel)
+        {
+            var isLoginMatch = await _userRepository.GetUserAsync(registrationModelodel.Username);
+            if (isLoginMatch)
+                return null;
+
+            var model = _mapper.Map<RegistrationModel, PersonEntity>(registrationModelodel);
+            var userPassword = model.Password;
+            model.Password = ToSha256(userPassword);
+            var user = await _userRepository.CreateAsync(model);
+
+            return await AuthenticateAsync(new AuthRequestModel() {Username = user.Login, Password = userPassword});
+        }
+
         public async Task<AuthResponseModel> RefreshTokenAsync(string token)
         {
-            var user = await _userRepository.GetAsync(token);
+            var user = await _userRepository.GetTokenAsync(token);
 
             // return null if no user found with token
             if (user == null) return null; //TODO Exception
