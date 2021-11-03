@@ -1,6 +1,6 @@
 ﻿namespace HotelReservationSystemAPI.Business.Models
 {
-    public class PersonModel
+    public class UserModel
     {
         public int Id { get; set; }
 

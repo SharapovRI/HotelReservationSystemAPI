@@ -13,5 +13,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public virtual RoleEntity Role { get; set; }
 
         public virtual List<OrderEntity> Orders { get; set; }
+        
+        public RefreshTokenEntity RefreshToken { get; set; }
     }
 }

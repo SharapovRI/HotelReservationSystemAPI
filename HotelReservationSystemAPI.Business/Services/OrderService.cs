@@ -14,6 +14,11 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class OrderService : IOrderService
     {
+        private readonly IMapper _mapper;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IAdditionalFacilityOrderRepository _additionalFacilityOrderRepository;
+        private readonly IRoomService _roomService;
+        private readonly IFacilityCostService _facilityCostService;
         public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService, IFacilityCostService facilityCostService, IAdditionalFacilityOrderRepository additionalFacilityOrderRepository)
         {
             _mapper = mapper;
@@ -22,12 +27,6 @@ namespace HotelReservationSystemAPI.Business.Services
             _roomService = roomService;
             _facilityCostService = facilityCostService;
         }
-
-        private readonly IMapper _mapper;
-        private readonly IOrderRepository _orderRepository;
-        private readonly IAdditionalFacilityOrderRepository _additionalFacilityOrderRepository;
-        private readonly IRoomService _roomService;
-        private readonly IFacilityCostService _facilityCostService;
 
         public async Task<OrderModel> CreateAsync(OrderModel orderModel)
         {

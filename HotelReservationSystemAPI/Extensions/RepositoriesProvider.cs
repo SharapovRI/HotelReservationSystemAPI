@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IAdditionalFacilityRepository, AdditionalFacilityRepository>();
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IOrderRepository, OrderRepository>();
-            services.AddScoped<IPersonRepository, PersonRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRoomsCostRepository, RoomsCostRepository>();

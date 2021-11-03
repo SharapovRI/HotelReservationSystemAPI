@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.Data
         public DbSet<FacilityCostEntity> FacilityCosts { get; set; }
         public DbSet<HotelEntity> Hotels { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
-        public DbSet<PersonEntity> Persons { get; set; }
+        public DbSet<PersonEntity> Users { get; set; }
         public DbSet<RoleEntity> Roles { get; set; }
         public DbSet<RoomEntity> Rooms { get; set; }
         public DbSet<RoomTypeEntity> RoomTypes { get; set; }
@@ -21,8 +21,7 @@ namespace HotelReservationSystemAPI.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies()
-                .UseNpgsql("Host=localhost;Port=5432;Database=HotelReservationSystemAPI_DB;Username=postgres;Password=PostgreSQL");
+            optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=HotelReservationSystemAPI_DB;Username=postgres;Password=PostgreSQL");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
