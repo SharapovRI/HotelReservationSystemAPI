@@ -18,6 +18,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.Password)
                 .IsRequired();
+            builder.OwnsOne(p => p.RefreshToken);
 
             builder.HasOne(p => p.Role)
                 .WithMany(p => p.Persons)
