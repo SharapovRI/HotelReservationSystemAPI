@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Interfaces;
@@ -25,35 +26,47 @@ namespace HotelReservationSystemAPI.Business.Services
 
             var entity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
 
+            if (entity == null)
+                throw new SomethingWrong("Something went wrong!\nAdditional facility is not created.");
+
             return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(entity);
         }
 
         public async Task<AdditionalFacilityModel> DeleteAsync(int id)
         {
-            var additionalFacility = _additionalFacilityRepository.DeleteAsync(id);
+            var additionalFacility = await _additionalFacilityRepository.DeleteAsync(id);
 
-            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(await additionalFacility);
+            if (additionalFacility == null)
+                throw new BadRequest("Additional facility with this id doesn't exists.");
+
+            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(additionalFacility);
         }
 
         public async Task<AdditionalFacilityModel> GetAsync(int id)
         {
-            var additionalFacility = _additionalFacilityRepository.GetAsync(id);
+            var additionalFacility = await _additionalFacilityRepository.GetAsync(id);
 
-            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(await additionalFacility);
+            if (additionalFacility == null)
+                throw new BadRequest("Additional facility with this id doesn't exists.");
+
+            return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(additionalFacility);
         }
 
         public async Task<IEnumerable<AdditionalFacilityModel>> GetListAsync()
         {
-            var additionalFacilities = _additionalFacilityRepository.GetListAsync();
+            var additionalFacilities = await _additionalFacilityRepository.GetListAsync();
 
-            return _mapper.Map<IEnumerable<AdditionalFacilityEntity>, IEnumerable<AdditionalFacilityModel>>(await additionalFacilities);
+            return _mapper.Map<IEnumerable<AdditionalFacilityEntity>, IEnumerable<AdditionalFacilityModel>>(additionalFacilities);
         }
 
-        public async Task Update(AdditionalFacilityModel additionalFacilityModel)
+        public async Task UpdateAsync(AdditionalFacilityModel additionalFacilityModel)
         {
             var additionalFacility = _mapper.Map<AdditionalFacilityModel, AdditionalFacilityEntity>(additionalFacilityModel);
 
-            await _additionalFacilityRepository.Update(additionalFacility);
+            var entity = await _additionalFacilityRepository.UpdateAsync(additionalFacility);
+
+            if (entity == null)
+                throw new BadRequest("Additional facility with this id doesn't exists.");
         }
     }
 }

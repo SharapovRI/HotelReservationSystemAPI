@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.Data.Interfaces
         
         Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters = null);
 
-        Task<TEntity> Update(TEntity entity);
+        Task<TEntity> UpdateAsync(TEntity entity);
 
         Task<TEntity> DeleteAsync(int id);
     }

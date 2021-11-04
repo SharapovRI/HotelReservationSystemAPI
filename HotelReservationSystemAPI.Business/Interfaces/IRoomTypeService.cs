@@ -14,7 +14,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<IEnumerable<RoomTypeModel>> GetListAsync(int hotelId);
 
-        Task Update(RoomTypeModel roomTypeModel);
+        Task UpdateAsync(RoomTypeModel roomTypeModel);
 
         Task<RoomTypeModel> DeleteAsync(int id);
     }

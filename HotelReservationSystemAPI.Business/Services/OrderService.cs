@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
@@ -33,13 +34,15 @@ namespace HotelReservationSystemAPI.Business.Services
             var validationParameters = await IsOrderValid(orderModel);
 
             if (!validationParameters)
-            {
-                throw new Exception(); //TODO complete exception
-            }
+                throw new BadRequest("Order is not valid.");
+            
 
             var order = _mapper.Map<OrderModel, OrderEntity>(orderModel);
 
             var createdOrder = await _orderRepository.CreateAsync(order);
+
+            if (createdOrder == null)
+                throw new SomethingWrong("Something went wrong!\nOrder is not created.");
 
             foreach (var orderModelAdditionalFacility in orderModel.AdditionalFacilities)
             {
@@ -74,12 +77,18 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var order = _orderRepository.DeleteAsync(id);
 
+            if (order == null)
+                throw new BadRequest("Order with this id doesn't exists.");
+
             return _mapper.Map<OrderEntity, OrderModel>(await order);
         }
 
         public async Task<OrderModel> GetAsync(int id)
         {
             var order = _orderRepository.GetAsync(id);
+
+            if (order == null)
+                throw new BadRequest("Order with this id doesn't exists.");
 
             return _mapper.Map<OrderEntity, OrderModel>(await order);
         }
@@ -95,7 +104,10 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var order = _mapper.Map<OrderModel, OrderEntity>(orderModel);
 
-            await _orderRepository.Update(order);
+            var entity = await _orderRepository.UpdateAsync(order);
+
+            if (order == null)
+                throw new BadRequest("Order with this id doesn't exists.");
         }
 
         public async Task<IList<OrderModel>> GetListAsync(OrderQueryModel queryModel)
