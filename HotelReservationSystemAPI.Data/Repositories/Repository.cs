@@ -14,7 +14,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
         protected readonly NpgsqlContext _context;
         protected abstract IQueryable<TEntity> SetWithIncludes { get; }
 
-        public Repository(NpgsqlContext npgsqlContext)
+        protected Repository(NpgsqlContext npgsqlContext)
         {
             _context = npgsqlContext;
             _set = _context.Set<TEntity>();
@@ -31,33 +31,33 @@ namespace HotelReservationSystemAPI.Data.Repositories
 
         public async Task<TEntity> DeleteAsync(int id)
         {
-            var entity = _set.FindAsync(id);
+            var entity = await _set.FindAsync(id);
 
-            if (await entity is null)
-            {
-                throw new Exception(); // TODO: Write the exception
-            }
+            //if (entity is null)
+            //{
+            //    throw new ArgumentNullException(); // TODO: Write the exception
+            //}
 
-            _set.Remove(await entity);
+            _set.Remove(entity);
 
             await _context.SaveChangesAsync();
 
-            return await entity;          // TODO: Check when everything is done, maybe a return is not needed
+            return entity;         
         }
 
         public async Task<TEntity> GetAsync(int id)
         {
-            var entity = _set.FindAsync(id);
+            var entity = await _set.FindAsync(id);
 
-            if (await entity is null)
-            {
-                throw new Exception(); // TODO: Write the exception
-            }
+            //if (entity is null)
+            //{
+            //    throw new ArgumentNullException(); // TODO: Write the exception
+            //}
 
-            return await entity;
+            return entity;
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public async Task<TEntity> UpdateAsync(TEntity entity)
         {
             var updatedEntity = _set.Update(entity);
 

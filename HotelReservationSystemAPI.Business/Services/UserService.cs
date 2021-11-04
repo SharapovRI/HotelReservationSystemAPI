@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Interfaces;
@@ -31,16 +32,13 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var user = await _userRepository.GetUserAsync(model.Username, ToSha256(model.Password));
 
-            // return null if user not found
-            if (user == null) return null; //TODO Exception
+            if (user == null) return null;
 
-            // authentication successful so generate jwt and refresh tokens
             var jwtToken = GenerateJwtToken(user);
             var refreshToken = GenerateRefreshToken(user.Id.ToString());
-
-            // save refresh token
+            
             user.RefreshToken = refreshToken;
-            await _userRepository.Update(user);
+            await _userRepository.UpdateAsync(user);
 
             return new AuthResponseModel(user, jwtToken, refreshToken.Token);
         }
@@ -56,6 +54,9 @@ namespace HotelReservationSystemAPI.Business.Services
             model.Password = ToSha256(userPassword);
             var user = await _userRepository.CreateAsync(model);
 
+            if (user == null)
+                throw new SomethingWrong("Something went wrong!\nUser is not created.");
+
             return await AuthenticateAsync(new AuthRequestModel() {Username = user.Login, Password = userPassword});
         }
 
@@ -63,20 +64,16 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var user = await _userRepository.GetTokenAsync(token);
 
-            // return null if no user found with token
-            if (user == null) return null; //TODO Exception
+            if (user == null) return null;
 
             var refreshToken = user.RefreshToken;
 
-            // return null if token is no longer active
             if (refreshToken.IsExpired) return null;
 
-            // replace old refresh token with a new one and save
             var newRefreshToken = GenerateRefreshToken(user.Id.ToString());
             user.RefreshToken = newRefreshToken;
-            await _userRepository.Update(user);
+            await _userRepository.UpdateAsync(user);
 
-            // generate new jwt
             var jwtToken = GenerateJwtToken(user);
 
             return new AuthResponseModel(user, jwtToken, newRefreshToken.Token);

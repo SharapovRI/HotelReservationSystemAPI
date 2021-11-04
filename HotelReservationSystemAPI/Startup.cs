@@ -57,6 +57,10 @@ namespace HotelReservationSystemAPI
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseErrorHandler();
+            }
 
             app.UseHttpsRedirection();
 

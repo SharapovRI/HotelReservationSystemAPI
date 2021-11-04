@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
@@ -23,10 +24,10 @@ namespace HotelReservationSystemAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] AuthenticateRequestModel model)
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestModel model)
         {
             var authModel = _mapper.Map<AuthenticateRequestModel, AuthRequestModel>(model);
-            var response = _userService.AuthenticateAsync(authModel).Result;
+            var response = await _userService.AuthenticateAsync(authModel);
 
             if (response == null)
                 return BadRequest(new { message = "Username or password is incorrect" });
@@ -36,10 +37,10 @@ namespace HotelReservationSystemAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("refresh-token")]
-        public IActionResult RefreshToken([FromBody] RefreshRequestModel refreshRequestModel)
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestModel refreshRequestModel)
         {
             var refreshToken = refreshRequestModel.RefreshToken;
-            var response = _userService.RefreshTokenAsync(refreshToken).Result;
+            var response = await _userService.RefreshTokenAsync(refreshToken);
 
             if (response == null)
                 return Unauthorized(new { message = "Invalid token" });
@@ -49,14 +50,14 @@ namespace HotelReservationSystemAPI.Controllers
 
         [AllowAnonymous]
         [HttpPost("registrate")]
-        public IActionResult Registration([FromBody] RegistrationRequestModel registrationRequestModel)
+        public async Task<IActionResult> Registration([FromBody] RegistrationRequestModel registrationRequestModel)
         {
             if (!registrationRequestModel.IsPasswordsMatch())
                 return ValidationProblem("Passwords doesn't match");
 
             var model = _mapper.Map<RegistrationRequestModel, RegistrationModel>(registrationRequestModel);
 
-            var response = _userService.RegistrateAsync(model).Result;
+            var response = await _userService.RegistrateAsync(model);
             return response == null ? ValidationProblem("This login already exists") : Ok(response);
         }
     }

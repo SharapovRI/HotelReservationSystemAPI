@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
@@ -31,6 +32,9 @@ namespace HotelReservationSystemAPI.Business.Services
 
             var entity = await _facilityCostRepository.CreateAsync(facilityCost);
 
+            if (entity == null)
+                throw new SomethingWrong("Something went wrong!\nAdditional facility is not created.");
+
             return _mapper.Map<FacilityCostEntity, AdditionalFacilityModel>(entity);
         }
 
@@ -38,7 +42,10 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var facilityCost = _mapper.Map<FacilityPatchRequestCostModel, FacilityCostEntity>(facilityPatchRequestCostModel);
 
-            await _facilityCostRepository.Update(facilityCost);
+            var entity = await _facilityCostRepository.UpdateAsync(facilityCost);
+
+            if (entity == null)
+                throw new BadRequest("Additional facility with this id doesn't exists.");
         }
 
         public async Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel)
@@ -115,7 +122,8 @@ namespace HotelReservationSystemAPI.Business.Services
             decimal cost = 0;
             var type = room.RoomType.RoomsCosts.FirstOrDefault(type => type.HotelId == room.HotelId);
 
-            if (type == null) throw new Exception(); //TODO write exception
+            if (type == null)
+                throw new SomethingWrong("This room doesn't exists.");
 
             cost += type.Cost;
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -40,6 +41,12 @@ namespace HotelReservationSystemAPI.Controllers
             var result = _mapper.Map<IList<OrderModel>, IList<OrderPostModel>>(models);
 
             return Ok(result);
+        }
+
+        [AcceptVerbs("Post")]
+        public bool CheckTime(DateTimeOffset dateTime)
+        {
+            return dateTime >= DateTimeOffset.Now;
         }
     }
 }

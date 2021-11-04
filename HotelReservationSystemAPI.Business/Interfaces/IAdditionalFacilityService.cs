@@ -9,7 +9,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel);
         Task<AdditionalFacilityModel> GetAsync(int id);
         Task<IEnumerable<AdditionalFacilityModel>> GetListAsync();
-        Task Update(AdditionalFacilityModel additionalFacilityModel);
+        Task UpdateAsync(AdditionalFacilityModel additionalFacilityModel);
         Task<AdditionalFacilityModel> DeleteAsync(int id);
     }
 }

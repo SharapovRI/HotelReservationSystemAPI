@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
@@ -32,12 +33,15 @@ namespace HotelReservationSystemAPI.Business.Services
 
             hotel = await _hotelRepository.CreateAsync(hotel);
 
+            if (hotel == null)
+                throw new SomethingWrong("Something went wrong!\nHotel is not created.");
+
             foreach (var room in rooms)
             {
                 room.HotelId = hotel.Id;
                 for (int i = 0; i < room.RoomCount; i++)
                 {
-                    await _roomService.CreateAsync(room);
+                    var entity = await _roomService.CreateAsync(room);
                 }
             }
 
@@ -50,12 +54,18 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var hotel = _hotelRepository.DeleteAsync(id);
 
+            if (hotel == null)
+                throw new BadRequest("Hotel with this id doesn't exists.");
+
             return _mapper.Map<HotelEntity, HotelModel>(await hotel);
         }
 
         public async Task<HotelModel> GetAsync(int id)
         {
             var hotel = _hotelRepository.GetAsync(id);
+
+            if (hotel == null)
+                throw new BadRequest("Hotel with this id doesn't exists.");
 
             return _mapper.Map<HotelEntity, HotelModel>(await hotel);
         }
@@ -71,7 +81,10 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var hotel = _mapper.Map<HotelModel, HotelEntity>(hotelModel);
 
-            await _hotelRepository.Update(hotel);
+            var entity = await _hotelRepository.UpdateAsync(hotel);
+
+            if (entity == null)
+                throw new BadRequest("Hotel with this id doesn't exists.");
         }
         
         public async Task<IList<HotelModel>> GetListAsync(HotelFreeSeatsQueryModel queryModel)

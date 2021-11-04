@@ -9,25 +9,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelReservationSystemAPI.Business.Exceptions;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
     public class RoomService : IRoomService
     {
+        private readonly IMapper _mapper;
+        private readonly IRoomRepository _roomRepository;
+
         public RoomService(IMapper mapper, IRoomRepository roomRepository)
         {
             _mapper = mapper;
             _roomRepository = roomRepository;
         }
 
-        private readonly IMapper _mapper;
-        private readonly IRoomRepository _roomRepository;
-
-        public async Task CreateAsync(RoomRequestModel roomModel)
+        public async Task<RoomEntity> CreateAsync(RoomRequestModel roomModel)
         {
             var room = _mapper.Map<RoomRequestModel, RoomEntity>(roomModel);
 
-            await _roomRepository.CreateAsync(room);
+            var entity = await _roomRepository.CreateAsync(room);
+
+            if (entity == null)
+                throw new SomethingWrong("Something went wrong!\nRoom is not created.");
+
+            return entity;
         }
 
         public async Task UpdateAsync(RoomModel roomModel)
@@ -35,7 +41,10 @@ namespace HotelReservationSystemAPI.Business.Services
             var room = await _roomRepository.GetAsync(roomModel.Id);
             room.TypeId = room.TypeId;
 
-            await _roomRepository.Update(room);
+            var entity = await _roomRepository.UpdateAsync(room);
+
+            if (entity == null)
+                throw new BadRequest("This room doesn't exists.");
         }
 
         public async Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel)
