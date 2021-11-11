@@ -52,7 +52,7 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var entities = await _facilityCostRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _facilityCostRepository.GetListAsync(queryParameters);
 
             return _mapper.Map<IList<FacilityCostEntity>, IList<AdditionalFacilityModel>>(entities);
         }

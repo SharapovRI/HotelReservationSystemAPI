@@ -25,15 +25,11 @@ namespace HotelReservationSystemAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper(typeof(Startup))
-                .AddBusinessMapper();
-
-            services.AddSingleton<NpgsqlContext>();
-            
-            services.AddControllers();
-            
-            services.AddRepositories();
-            services.AddServices();
+            services.AddCors(options => options.AddPolicy("123123", builder => builder
+                .WithOrigins("https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod())
+            );
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -48,6 +44,16 @@ namespace HotelReservationSystemAPI
                     };
                 });
 
+            services.AddAutoMapper(typeof(Startup))
+                .AddBusinessMapper();
+
+            services.AddSingleton<NpgsqlContext>();
+            
+            services.AddControllers();
+            
+            services.AddRepositories();
+            services.AddServices();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,14 +63,15 @@ namespace HotelReservationSystemAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseErrorHandler();
-            }
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
 
             app.UseAuthentication();
 

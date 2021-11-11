@@ -20,7 +20,7 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly ICityRepository _cityRepository;
         public async Task<IEnumerable<LocateModel>> GetListAsync()
         {
-            var cities = await _cityRepository.GetListAsync();
+            var (cities, pageCount) = await _cityRepository.GetListAsync();
 
             return _mapper.Map<IEnumerable<CityEntity>, IEnumerable<LocateModel>>(cities);
         }

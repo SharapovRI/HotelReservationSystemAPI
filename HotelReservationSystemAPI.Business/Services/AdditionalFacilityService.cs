@@ -54,7 +54,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<IEnumerable<AdditionalFacilityModel>> GetListAsync()
         {
-            var additionalFacilities = await _additionalFacilityRepository.GetListAsync();
+            var (additionalFacilities, pageCount) = await _additionalFacilityRepository.GetListAsync();
 
             return _mapper.Map<IEnumerable<AdditionalFacilityEntity>, IEnumerable<AdditionalFacilityModel>>(additionalFacilities);
         }

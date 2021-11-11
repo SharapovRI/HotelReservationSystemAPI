@@ -51,7 +51,7 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var entities = await _roomRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _roomRepository.GetListAsync(queryParameters);
 
             return _mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities);
         }

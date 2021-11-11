@@ -4,7 +4,7 @@ namespace HotelReservationSystemAPI.Business.QueryModels
 {
     public class HotelFreeSeatsQueryModel : QueryModel
     {
-        public int Id { get; set; }
+        public int Id { get; set; }//TODO validation
 
         public DateTimeOffset CheckIn { get; set; }
 
