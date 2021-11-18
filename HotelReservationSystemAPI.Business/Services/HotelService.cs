@@ -62,12 +62,12 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<HotelModel> GetAsync(int id)
         {
-            var hotel = _hotelRepository.GetAsync(id);
+            var hotel = await _hotelRepository.GetAsync(id);
 
             if (hotel == null)
                 throw new BadRequest("Hotel with this id doesn't exists.");
 
-            return _mapper.Map<HotelEntity, HotelModel>(await hotel);
+            return _mapper.Map<HotelEntity, HotelModel>(hotel);
         }
 
         public async Task<IEnumerable<HotelModel>> GetListAsync()

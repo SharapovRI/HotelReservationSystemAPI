@@ -15,22 +15,26 @@ namespace HotelReservationSystemAPI.Controllers
     public class RoomsController : ControllerBase
     {
         private readonly IRoomService _roomService;
+        private readonly IHotelService _hotelService;
         private readonly IMapper _mapper;
 
-        public RoomsController(IMapper mapper, IRoomService roomService)
+        public RoomsController(IMapper mapper, IRoomService roomService, IHotelService hotelService)
         {
             _roomService = roomService;
+            _hotelService = hotelService;
             _mapper = mapper;
         }
 
         [HttpGet("/Hotels/{hotelId}")]
         public async Task<IActionResult> GetHotelRooms([FromQuery] FreeRoomsQueryModel queryModel)
         {
-            var models = await _roomService.GetListAsync(queryModel);
+            var (rooms, pageCount) = await _roomService.GetListAsync(queryModel);
 
-            var result = _mapper.Map<IList<RoomModel>, IList<RoomViewModel>>(models);
+            var hotel = await _hotelService.GetAsync(queryModel.HotelId); //TODO view model
 
-            return Ok(result);
+            var result = _mapper.Map<IList<RoomModel>, IList<RoomViewModel>>(rooms);
+
+            return Ok(new {result, hotel, pageCount});
         }
 
         [HttpPut("/Hotel/Edit/{Id}")]
@@ -41,6 +45,15 @@ namespace HotelReservationSystemAPI.Controllers
             await _roomService.UpdateAsync(roomModel);
 
             return NoContent();
+        }
+
+        [HttpGet("/Hotels/{hotelId}/Rooms/{roomId}")]
+        public async Task<IActionResult> GetRoom(int roomId)
+        {
+            var room = await _roomService.GetRoom(roomId); 
+            var result = _mapper.Map<RoomModel, RoomViewModel>(room);
+
+            return Ok(result);
         }
 
         //TODO Create updating room state
