@@ -26,11 +26,11 @@ namespace HotelReservationSystemAPI.Controllers
         [HttpGet("/Hotels")]
         public async Task<IActionResult> Get([FromQuery] HotelFreeSeatsQueryModel queryModel)
         {
-            var models = await _hotelService.GetListAsync(queryModel);
+            var (models, pageCount) = await _hotelService.GetListAsync(queryModel);
 
             var result = _mapper.Map<IList<HotelModel>, IList<HotelViewModel>>(models);
 
-            return Ok(result);
+            return Ok(new { result, pageCount });
         }
 
         [HttpPost("/Hotel/Create")]

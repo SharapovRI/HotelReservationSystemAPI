@@ -62,19 +62,19 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<HotelModel> GetAsync(int id)
         {
-            var hotel = _hotelRepository.GetAsync(id);
+            var hotel = await _hotelRepository.GetAsync(id);
 
             if (hotel == null)
                 throw new BadRequest("Hotel with this id doesn't exists.");
 
-            return _mapper.Map<HotelEntity, HotelModel>(await hotel);
+            return _mapper.Map<HotelEntity, HotelModel>(hotel);
         }
 
         public async Task<IEnumerable<HotelModel>> GetListAsync()
         {
-            var hotels = _hotelRepository.GetListAsync();
+            var (hotels, pageCount) = await _hotelRepository.GetListAsync();
 
-            return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(await hotels);
+            return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(hotels);
         }
 
         public async Task UpdateAsync(HotelModel hotelModel)
@@ -87,13 +87,13 @@ namespace HotelReservationSystemAPI.Business.Services
                 throw new BadRequest("Hotel with this id doesn't exists.");
         }
         
-        public async Task<IList<HotelModel>> GetListAsync(HotelFreeSeatsQueryModel queryModel)
+        public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var entities = await _hotelRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _hotelRepository.GetListAsync(queryParameters);
 
-            return _mapper.Map<IList<HotelEntity>, IList<HotelModel>>(entities);
+            return (_mapper.Map<IList<HotelEntity>, IList<HotelModel>>(entities), pageCount);
         }
 
         private QueryParameters<HotelEntity> GetQueryParameters(HotelFreeSeatsQueryModel model)

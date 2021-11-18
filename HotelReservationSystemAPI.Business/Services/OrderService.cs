@@ -95,9 +95,9 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<IEnumerable<OrderModel>> GetListAsync()
         {
-            var orders = _orderRepository.GetListAsync();
+            var (orders, pageCount) = await _orderRepository.GetListAsync();
 
-            return _mapper.Map<IEnumerable<OrderEntity>, IEnumerable<OrderModel>>(await orders);
+            return _mapper.Map<IEnumerable<OrderEntity>, IEnumerable<OrderModel>>(orders);
         }
 
         public async Task Update(OrderModel orderModel)
@@ -114,7 +114,7 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var entities = await _orderRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _orderRepository.GetListAsync(queryParameters);
 
             return _mapper.Map<IList<OrderEntity>, IList<OrderModel>>(entities);
         }

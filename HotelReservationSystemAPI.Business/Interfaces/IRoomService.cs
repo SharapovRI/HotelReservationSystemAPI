@@ -10,9 +10,11 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     {
         Task<RoomEntity> CreateAsync(RoomRequestModel roomModel);
 
+        Task<RoomModel> GetRoom(int id);
+
         Task UpdateAsync(RoomModel roomModel);
 
-        Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel);
+        Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel);
 
         Task<bool> IsDateValid(OrderModel orderModel);
     }

@@ -2,7 +2,7 @@
 
 namespace HotelReservationSystemAPI.Models.RequestModels
 {
-    public class RegistrationRequestModel
+    public class RegistrationRequestModel//TODO validation
     {
         [Required]
         public string Username { get; set; }

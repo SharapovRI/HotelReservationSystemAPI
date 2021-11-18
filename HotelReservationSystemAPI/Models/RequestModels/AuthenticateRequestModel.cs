@@ -9,7 +9,7 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         public string Username { get; set; }
 
         [Required(ErrorMessage = "Enter your password")]
-        [StringLength(50, MinimumLength = 8, ErrorMessage = "Password length must be between 8 and 50 characters")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Password length must be between 3 and 50 characters")] //TODO change length
         public string Password { get; set; }
     }
 }

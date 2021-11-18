@@ -36,6 +36,16 @@ namespace HotelReservationSystemAPI.Business.Services
             return entity;
         }
 
+        public async Task<RoomModel> GetRoom(int id)
+        {
+            var room = await _roomRepository.GetAsync(id);
+
+            if (room == null)
+                throw new BadRequest("Room with this id doesn't exists.");
+
+            return _mapper.Map<RoomEntity, RoomModel>(room);
+        }
+
         public async Task UpdateAsync(RoomModel roomModel)
         {
             var room = await _roomRepository.GetAsync(roomModel.Id);
@@ -47,13 +57,13 @@ namespace HotelReservationSystemAPI.Business.Services
                 throw new BadRequest("This room doesn't exists.");
         }
 
-        public async Task<IList<RoomModel>> GetListAsync(FreeRoomsQueryModel queryModel)
+        public async Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var entities = await _roomRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _roomRepository.GetListAsync(queryParameters);
 
-            return _mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities);
+            return (_mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities), pageCount);
         }
 
         private QueryParameters<RoomEntity> GetQueryParameters(FreeRoomsQueryModel model)
@@ -75,9 +85,10 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<RoomEntity>
             {
                 FilterExpression = room =>
-                    room.HotelId == model.HotelId &&
-                    room.Orders != null && !room.Orders.AsQueryable().Any(time => IsIntersection(time.CheckInTime, time.CheckOutTime, model.CheckIn,
-                        model.CheckOut))
+                    room.HotelId == model.HotelId && 
+                    (room.Orders == null || room.Orders != null 
+                        && !room.Orders.AsQueryable().Any(time => 
+                            (time.CheckInTime < model.CheckIn ? model.CheckIn : time.CheckInTime) < (time.CheckOutTime < model.CheckOut ? time.CheckOutTime : model.CheckOut)))
             };
 
             return filterRule;
@@ -100,18 +111,19 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var room = await _roomRepository.GetAsync(orderModel.RoomId);
 
-            var isValid = room != null && !room.Orders.AsQueryable().Any(time => IsIntersection(time.CheckInTime, time.CheckOutTime, orderModel.CheckInTime,
-                orderModel.CheckOutTime));
+            var isValid = room != null && !room.Orders.AsQueryable().Any(time => 
+                (time.CheckInTime < orderModel.CheckInTime ? orderModel.CheckInTime : time.CheckInTime) < 
+                (time.CheckOutTime < orderModel.CheckOutTime ? time.CheckOutTime : orderModel.CheckOutTime));
 
             return isValid;
         }
 
-        private bool IsIntersection(DateTimeOffset range1From, DateTimeOffset range1To, DateTimeOffset range2From, DateTimeOffset range2To)
+        /*private bool IsIntersection(DateTimeOffset range1From, DateTimeOffset range1To, DateTimeOffset range2From, DateTimeOffset range2To)
         {
             var from = range1From < range2From ? range2From : range1From;
             var to = range1To < range2To ? range1To : range2To;
 
             return from < to;
-        }
+        }*/
     }
 }

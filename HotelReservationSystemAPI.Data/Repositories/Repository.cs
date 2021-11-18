@@ -66,12 +66,13 @@ namespace HotelReservationSystemAPI.Data.Repositories
             return updatedEntity.Entity;
         }
 
-        public async Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters)
+        public async Task<(IList<TEntity>, int)> GetListAsync(QueryParameters<TEntity> parameters)
         {
-            return await Query(parameters).ToListAsync();
+            int count = 0;
+            return (await Query(parameters, ref count).ToListAsync(), count);
         }
 
-        protected IQueryable<TEntity> Query(QueryParameters<TEntity> queryParameters)
+        protected IQueryable<TEntity> Query(QueryParameters<TEntity> queryParameters, ref int count)
         {
             var query = SetWithIncludes.AsQueryable();
 
@@ -82,6 +83,8 @@ namespace HotelReservationSystemAPI.Data.Repositories
             {
                 query = query.Where(queryParameters.FilterRule.FilterExpression);
             }
+            
+            count = Decimal.ToInt32(Math.Ceiling((decimal)query.Count() / (decimal)queryParameters.PaginationRule.Size));
 
             if (queryParameters.PaginationRule != null && queryParameters.PaginationRule.IsValid)
                 query = query.Skip(queryParameters.PaginationRule.Size * queryParameters.PaginationRule.Index).Take(queryParameters.PaginationRule.Size);

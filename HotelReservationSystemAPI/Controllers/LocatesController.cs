@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -20,7 +21,7 @@ namespace HotelReservationSystemAPI.Controllers
             _locateService = locateService;
             _mapper = mapper;
         }
-
+        
         [HttpGet]
         public async Task<IActionResult> GetLocates()
         {

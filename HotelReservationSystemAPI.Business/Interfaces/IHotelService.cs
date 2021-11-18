@@ -13,7 +13,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<IEnumerable<HotelModel>> GetListAsync();
 
-        Task<IList<HotelModel>> GetListAsync(HotelFreeSeatsQueryModel queryModel);
+        Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel);
 
         Task UpdateAsync(HotelModel hotelModel);
 

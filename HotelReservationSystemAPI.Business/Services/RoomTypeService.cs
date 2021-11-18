@@ -63,9 +63,9 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<IEnumerable<RoomTypeModel>> GetListAsync()
         {
-            var roomTypes = _roomTypeRepository.GetListAsync();
+            var (roomTypes, pageCount) = await _roomTypeRepository.GetListAsync();
 
-            return _mapper.Map<IEnumerable<RoomTypeEntity>, IEnumerable<RoomTypeModel>>(await roomTypes);
+            return _mapper.Map<IEnumerable<RoomTypeEntity>, IEnumerable<RoomTypeModel>>(roomTypes);
         }
 
         public async Task<IEnumerable<RoomTypeModel>> GetListAsync(int hotelId)

@@ -9,8 +9,8 @@ namespace HotelReservationSystemAPI.Data.Interfaces
         Task<TEntity> CreateAsync(TEntity entity);
 
         Task<TEntity> GetAsync(int id);
-        
-        Task<IList<TEntity>> GetListAsync(QueryParameters<TEntity> parameters = null);
+
+        Task<(IList<TEntity>, int)> GetListAsync(QueryParameters<TEntity> parameters = null);
 
         Task<TEntity> UpdateAsync(TEntity entity);
 
