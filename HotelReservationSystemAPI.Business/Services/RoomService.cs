@@ -36,12 +36,15 @@ namespace HotelReservationSystemAPI.Business.Services
             return entity;
         }
 
-        public async Task<RoomModel> GetRoom(int id)
+        public async Task<RoomModel> GetRoom(int id, int hotelId)
         {
             var room = await _roomRepository.GetAsync(id);
 
             if (room == null)
                 throw new BadRequest("Room with this id doesn't exists.");
+
+            if (room.HotelId != hotelId)
+                throw new BadRequest("Room with this id doesn't exists in this hotel.");
 
             return _mapper.Map<RoomEntity, RoomModel>(room);
         }

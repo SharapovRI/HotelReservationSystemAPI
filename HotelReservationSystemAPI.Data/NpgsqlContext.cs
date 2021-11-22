@@ -18,6 +18,7 @@ namespace HotelReservationSystemAPI.Data
         public DbSet<RoomTypeEntity> RoomTypes { get; set; }
         public DbSet<CityEntity> Cities { get; set; }
         public DbSet<CountryEntity> Countries { get; set; }
+        public DbSet<PhotoEntity> Photos { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -37,7 +38,8 @@ namespace HotelReservationSystemAPI.Data
                 .ApplyConfiguration(new RoleEntityConfiguration())
                 .ApplyConfiguration(new RoomEntityConfiguration())
                 .ApplyConfiguration(new RoomsCostEntityConfiguration())
-                .ApplyConfiguration(new RoomTypeEntityConfiguration());
+                .ApplyConfiguration(new RoomTypeEntityConfiguration())
+                .ApplyConfiguration(new PhotoEntityConfiguration());
         }
     }
 }

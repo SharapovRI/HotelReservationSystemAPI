@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -84,14 +85,15 @@ namespace HotelReservationSystemAPI.Business.Services
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
-            var claims = new[] {
-                new Claim(ClaimTypes.Name, user.Id.ToString()),
-                new Claim(ClaimTypes.Role, user.Role.Name)
+            var claims = new List<Claim> {
+                new Claim("Name", user.Id.ToString()),
+                new Claim("Role", user.Role.Name)
             };
 
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
+            var token = new JwtSecurityToken(
                 _config["Jwt:Issuer"],
-                claims,
+                _config["Jwt:Issuer"],
+                claims: claims,
                 expires: DateTime.Now.AddMinutes(0.5),
                 signingCredentials: credentials);
 

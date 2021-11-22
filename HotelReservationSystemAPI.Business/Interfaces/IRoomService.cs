@@ -10,7 +10,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     {
         Task<RoomEntity> CreateAsync(RoomRequestModel roomModel);
 
-        Task<RoomModel> GetRoom(int id);
+        Task<RoomModel> GetRoom(int id, int hotelId);
 
         Task UpdateAsync(RoomModel roomModel);
 

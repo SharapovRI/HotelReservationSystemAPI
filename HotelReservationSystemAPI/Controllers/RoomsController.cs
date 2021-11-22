@@ -48,9 +48,9 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpGet("/Hotels/{hotelId}/Rooms/{roomId}")]
-        public async Task<IActionResult> GetRoom(int roomId)
+        public async Task<IActionResult> GetRoom(int hotelId, int roomId)
         {
-            var room = await _roomService.GetRoom(roomId); 
+            var room = await _roomService.GetRoom(roomId, hotelId); 
             var result = _mapper.Map<RoomModel, RoomViewModel>(room);
 
             return Ok(result);

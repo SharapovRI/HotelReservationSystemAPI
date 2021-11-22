@@ -115,7 +115,8 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
-                    (hotel.CityId == model.Id) &&
+                    ((model.Id == null) ||
+                    (hotel.CityId == model.Id)) &&
                     (hotel.Rooms != null) &&
                     (hotel.Rooms.Where(room => room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && 
                     time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null))
