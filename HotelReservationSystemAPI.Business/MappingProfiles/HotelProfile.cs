@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Models;
 
@@ -18,6 +19,14 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.Country, act => act.Ignore())
                 .ForMember(dest => dest.FacilitiesCosts, act => act.Ignore())
                 .ForMember(dest => dest.Rooms, act => act.Ignore());
+
+            CreateMap<PhotoModel, HotelPhotoEntity>()
+                .ForMember(dest => dest.Data, 
+                    act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
+
+            CreateMap<HotelPhotoEntity, PhotoModel>()
+                .ForMember(dest => dest.Data,
+                    act => act.MapFrom(scr => Convert.ToBase64String(scr.Data)));
         }
     }
 }

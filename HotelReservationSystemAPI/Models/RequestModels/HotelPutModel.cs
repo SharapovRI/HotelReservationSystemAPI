@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelReservationSystemAPI.Models.RequestModels
 {
@@ -20,5 +21,7 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         [Required]
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Hotel name length must be between 2 and 20 characters")]
         public string Name { get; set; }
+
+        public List<PhotoViewModel> HotelPhotos { get; set; }
     }
 }

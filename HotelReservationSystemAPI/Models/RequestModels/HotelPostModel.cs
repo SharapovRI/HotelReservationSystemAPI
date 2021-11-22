@@ -16,6 +16,8 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         [StringLength(20, MinimumLength = 2, ErrorMessage = "Hotel name length must be between 2 and 20 characters")]
         public string Name { get; set; }
 
+        public List<PhotoViewModel> HotelPhotos { get; set; }
+
         public IEnumerable<RoomPostModel> Rooms { get; set; }
     }
 }

@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace HotelReservationSystemAPI.Data.ModelsConfigurations
 {
-    public class PhotoEntityConfiguration : IEntityTypeConfiguration<PhotoEntity>
+    public class HotelPhotoEntityConfiguration : IEntityTypeConfiguration<HotelPhotoEntity>
     {
-        public void Configure(EntityTypeBuilder<PhotoEntity> builder)
+        public void Configure(EntityTypeBuilder<HotelPhotoEntity> builder)
         {
             builder.HasKey(key => key.Id);
 
@@ -16,6 +16,10 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.Data)
                 .IsRequired();
+
+            builder.HasOne(p => p.Hotel)
+                .WithMany(p => p.Photos)
+                .HasForeignKey(p => p.HotelId);
         }
     }
 }
