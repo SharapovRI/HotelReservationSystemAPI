@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AutoMapper.Configuration.Conventions;
+using HotelReservationSystemAPI.Business.Models.Request;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
@@ -16,6 +16,6 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public List<PhotoModel> HotelPhotos { get; set; }
 
-        public IEnumerable<RoomRequestModel> Rooms { get; set; }
+        public IEnumerable<RoomCreationRangeModel> Rooms { get; set; }
     }
 }

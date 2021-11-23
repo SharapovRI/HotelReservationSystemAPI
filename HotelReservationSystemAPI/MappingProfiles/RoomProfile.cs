@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
 
@@ -10,7 +11,10 @@ namespace HotelReservationSystemAPI.MappingProfiles
         public RoomProfile()
         {
             CreateMap<RoomModel, RoomViewModel>();
-            CreateMap<RoomPutModel, RoomModel>();
+            CreateMap<RoomPhotoCreationModel, RoomPhotoPostModel>();
+            CreateMap<RoomPhotosCreationListModel, RoomPhotoListPostModel>();
+            CreateMap<RoomPutModel, RoomUpdateModel>();
+            CreateMap<RoomPhotoPutModel, RoomPhotoUpdateModel>();
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Models
+﻿namespace HotelReservationSystemAPI.Business.Models.Response
 {
-    public class PhotoViewModel
+    public class RoomPhotoModel
     {
         public int Id { get; set; }
 

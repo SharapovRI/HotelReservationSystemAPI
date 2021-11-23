@@ -1,9 +1,7 @@
-﻿namespace HotelReservationSystemAPI.Models
+﻿namespace HotelReservationSystemAPI.Business.Models.Request
 {
-    public class PhotoViewModel
+    public class RoomPhotoCreationModel
     {
-        public int Id { get; set; }
-
         public string Title { get; set; }
 
         public string Data { get; set; }

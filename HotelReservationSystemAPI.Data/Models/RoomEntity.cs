@@ -15,6 +15,8 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public DateTimeOffset? LastView { get; set; }
 
+        public virtual IList<RoomPhotoLinksEntity> PhotoLinks { get; set; }
+
         public virtual IEnumerable<OrderEntity> Orders { get; set; }
     }
 }

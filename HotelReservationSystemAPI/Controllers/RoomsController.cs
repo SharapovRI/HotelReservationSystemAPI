@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
-using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -16,10 +17,12 @@ namespace HotelReservationSystemAPI.Controllers
     {
         private readonly IRoomService _roomService;
         private readonly IHotelService _hotelService;
+        private readonly IRoomPhotoService _roomPhotoService;
         private readonly IMapper _mapper;
 
-        public RoomsController(IMapper mapper, IRoomService roomService, IHotelService hotelService)
+        public RoomsController(IMapper mapper, IRoomService roomService, IHotelService hotelService, IRoomPhotoService roomPhotoService)
         {
+            _roomPhotoService = roomPhotoService;
             _roomService = roomService;
             _hotelService = hotelService;
             _mapper = mapper;
@@ -40,7 +43,7 @@ namespace HotelReservationSystemAPI.Controllers
         [HttpPut("/Hotel/Room/Edit/{Id}")]
         public async Task<IActionResult> UpdateRoom([FromBody] RoomPutModel roomPutModel)
         {
-            var roomModel = _mapper.Map<RoomPutModel, RoomModel>(roomPutModel);
+            var roomModel = _mapper.Map<RoomPutModel, RoomUpdateModel>(roomPutModel);
 
             await _roomService.UpdateAsync(roomModel);
 
@@ -53,6 +56,14 @@ namespace HotelReservationSystemAPI.Controllers
             var room = await _roomService.GetRoom(roomId, hotelId); 
             var result = _mapper.Map<RoomModel, RoomViewModel>(room);
 
+            return Ok(result);
+        }
+
+        [HttpPost("/Rooms/UploadPhoto")]
+        public async Task<IActionResult> UploadPhotos([FromBody]RoomPhotoListPostModel photos)
+        {
+            var photoList = _mapper.Map<RoomPhotoListPostModel, RoomPhotosCreationListModel>(photos);
+            var result = await _roomPhotoService.CreateAsync(photoList);
             return Ok(result);
         }
 

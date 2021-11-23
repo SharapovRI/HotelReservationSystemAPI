@@ -3,15 +3,17 @@ using System;
 using HotelReservationSystemAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HotelReservationSystemAPI.Data.Migrations
 {
     [DbContext(typeof(NpgsqlContext))]
-    partial class NpgsqlContextModelSnapshot : ModelSnapshot
+    [Migration("20211123123201_AdjustmentsRoomPhotoTable1")]
+    partial class AdjustmentsRoomPhotoTable1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,9 +162,6 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<string>("Extension")
-                        .HasColumnType("text");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
@@ -284,9 +283,6 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.Property<byte[]>("Data")
                         .IsRequired()
                         .HasColumnType("bytea");
-
-                    b.Property<string>("Extension")
-                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()

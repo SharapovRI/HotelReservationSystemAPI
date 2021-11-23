@@ -3,15 +3,17 @@ using System;
 using HotelReservationSystemAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace HotelReservationSystemAPI.Data.Migrations
 {
     [DbContext(typeof(NpgsqlContext))]
-    partial class NpgsqlContextModelSnapshot : ModelSnapshot
+    [Migration("20211123121228_AddedRoomPhotoTable")]
+    partial class AddedRoomPhotoTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,9 +162,6 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<string>("Extension")
-                        .HasColumnType("text");
-
                     b.Property<int>("HotelId")
                         .HasColumnType("integer");
 
@@ -282,19 +281,14 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<byte[]>("Data")
-                        .IsRequired()
                         .HasColumnType("bytea");
 
-                    b.Property<string>("Extension")
-                        .HasColumnType("text");
-
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomPhotos");
+                    b.ToTable("RoomPhotoEntity");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomPhotoLinksEntity", b =>
@@ -310,13 +304,16 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<int?>("RoomPhotoId")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("PhotoId");
+                    b.HasKey("Id");
 
                     b.HasIndex("RoomId");
 
-                    b.ToTable("RoomPhotoLinks");
+                    b.HasIndex("RoomPhotoId");
+
+                    b.ToTable("RoomPhotoLinksEntity");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomTypeEntity", b =>
@@ -521,17 +518,15 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomPhotoLinksEntity", b =>
                 {
-                    b.HasOne("HotelReservationSystemAPI.Data.Models.RoomPhotoEntity", "RoomPhoto")
-                        .WithMany("RoomsLinks")
-                        .HasForeignKey("PhotoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("HotelReservationSystemAPI.Data.Models.RoomEntity", "Room")
                         .WithMany("PhotoLinks")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("HotelReservationSystemAPI.Data.Models.RoomPhotoEntity", "RoomPhoto")
+                        .WithMany("RoomsLinks")
+                        .HasForeignKey("RoomPhotoId");
 
                     b.Navigation("Room");
 

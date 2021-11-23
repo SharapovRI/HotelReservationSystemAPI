@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace HotelReservationSystemAPI.Models.RequestModels
 {
@@ -9,5 +10,7 @@ namespace HotelReservationSystemAPI.Models.RequestModels
 
         [Required]
         public int TypeId { get; set; }
+
+        public List<RoomPhotoPutModel> RoomPhotos { get; set; }
     }
 }

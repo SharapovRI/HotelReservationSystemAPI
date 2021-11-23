@@ -47,7 +47,9 @@ namespace HotelReservationSystemAPI.Data.Repositories
 
         public async Task<TEntity> GetAsync(int id)
         {
-            var entity = await _set.FindAsync(id);
+            //var entity = await _set.FindAsync(id);
+
+            var entity = await SetWithIncludes.FirstOrDefaultAsync(p => p.Id == id);
 
             //if (entity is null)
             //{

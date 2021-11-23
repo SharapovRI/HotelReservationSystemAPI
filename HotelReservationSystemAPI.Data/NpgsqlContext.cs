@@ -1,5 +1,6 @@
 ﻿using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.ModelsConfigurations;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data
@@ -19,6 +20,8 @@ namespace HotelReservationSystemAPI.Data
         public DbSet<CityEntity> Cities { get; set; }
         public DbSet<CountryEntity> Countries { get; set; }
         public DbSet<HotelPhotoEntity> HotelPhotos { get; set; }
+        public DbSet<RoomPhotoEntity> RoomPhotos { get; set; }
+        public DbSet<RoomPhotoLinksEntity> RoomPhotoLinks { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -39,7 +42,9 @@ namespace HotelReservationSystemAPI.Data
                 .ApplyConfiguration(new RoomEntityConfiguration())
                 .ApplyConfiguration(new RoomsCostEntityConfiguration())
                 .ApplyConfiguration(new RoomTypeEntityConfiguration())
-                .ApplyConfiguration(new HotelPhotoEntityConfiguration());
+                .ApplyConfiguration(new HotelPhotoEntityConfiguration())
+                .ApplyConfiguration(new RoomPhotoConfiguration())
+                .ApplyConfiguration(new RoomPhotoLinksConfiguration());
         }
     }
 }
