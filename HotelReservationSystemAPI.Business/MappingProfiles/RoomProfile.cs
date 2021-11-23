@@ -1,6 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using AutoMapper;
-using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
@@ -14,12 +16,22 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.Type, act => act.MapFrom(src => src.RoomType.Name))
                 .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomType.SeatsCount))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(src =>
-                    src.RoomType.RoomsCosts.FirstOrDefault(cost => cost.HotelId == src.HotelId).Cost));
+                    src.RoomType.RoomsCosts.FirstOrDefault(cost => cost.HotelId == src.HotelId).Cost))
+                .ForMember(dest => dest.RoomPhotos,
+                    act => act.MapFrom(src => src.PhotoLinks.Select(p => p.RoomPhoto)));
 
-            CreateMap<RoomRequestModel, RoomEntity>()
+            CreateMap<RoomCreationRangeModel, RoomEntity>()
                 .ForMember(dest => dest.Hotel, act => act.Ignore())
                 .ForMember(dest => dest.LastView, act => act.Ignore())
                 .ForMember(dest => dest.Orders, act => act.Ignore());
+
+            CreateMap<RoomPhotoCreationModel, RoomPhotoEntity>()
+                .ForMember(dest => dest.Data,
+                    act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
+
+            CreateMap<RoomPhotoEntity, RoomPhotoModel>()
+                .ForMember(dest => dest.Data,
+                    act => act.MapFrom(scr => Convert.ToBase64String(scr.Data)));
         }
     }
 }

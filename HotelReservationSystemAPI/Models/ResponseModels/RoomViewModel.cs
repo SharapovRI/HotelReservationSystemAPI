@@ -1,4 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Models.ResponseModels
+﻿using System.Collections.Generic;
+
+namespace HotelReservationSystemAPI.Models.ResponseModels
 {
     public class RoomViewModel
     {
@@ -11,5 +13,7 @@
         public int SeatsCount { get; set; }
 
         public decimal Cost { get; set; }
+
+        public List<PhotoViewModel> Photos { get; set; }
     }
 }

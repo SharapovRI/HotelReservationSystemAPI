@@ -18,12 +18,14 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IHotelRepository _hotelRepository;
         private readonly IRoomService _roomService;
+        private readonly IHotelPhotoService _hotelPhotoService;
 
-        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService)
+        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
+            _hotelPhotoService = hotelPhotoService;
         }
 
         public async Task<HotelModel> CreateAsync(HotelRequestModel hotelModel)
@@ -35,6 +37,12 @@ namespace HotelReservationSystemAPI.Business.Services
 
             if (hotel == null)
                 throw new SomethingWrong("Something went wrong!\nHotel is not created.");
+
+            var photos = hotel.Photos;
+            foreach (var photo in photos)
+            {
+                await _hotelPhotoService.CreateAsync(photo);
+            }
 
             foreach (var room in rooms)
             {
@@ -77,14 +85,28 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(hotels);
         }
 
-        public async Task UpdateAsync(HotelModel hotelModel)
+        public async Task UpdateAsync(HotelRequestModel hotelModel)
         {
-            var hotel = _mapper.Map<HotelModel, HotelEntity>(hotelModel);
+            var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
 
             var entity = await _hotelRepository.UpdateAsync(hotel);
 
             if (entity == null)
                 throw new BadRequest("Hotel with this id doesn't exists.");
+
+            var photos = hotel.Photos;
+
+            foreach (var photo in photos)
+            {
+                var hotelPhoto = new HotelPhotoEntity()
+                {
+                    Id = photo.Id,
+                    Title = photo.Title,
+                    HotelId = hotel.Id,
+                    Data = photo.Data
+                };
+                await _hotelPhotoService.UpdateAsync(hotelPhoto);
+            }
         }
         
         public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
@@ -115,7 +137,8 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
-                    (hotel.CityId == model.Id) &&
+                    ((model.Id == null) ||
+                    (hotel.CityId == model.Id)) &&
                     (hotel.Rooms != null) &&
                     (hotel.Rooms.Where(room => room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && 
                     time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null))

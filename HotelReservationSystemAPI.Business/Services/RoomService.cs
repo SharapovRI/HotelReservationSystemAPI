@@ -10,43 +10,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Exceptions;
+using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
     public class RoomService : IRoomService
     {
         private readonly IMapper _mapper;
+        private readonly IRoomPhotoService _roomPhotoService;
         private readonly IRoomRepository _roomRepository;
 
-        public RoomService(IMapper mapper, IRoomRepository roomRepository)
+        public RoomService(IMapper mapper, IRoomPhotoService roomPhotoService, IRoomRepository roomRepository)
         {
             _mapper = mapper;
+            _roomPhotoService = roomPhotoService;
             _roomRepository = roomRepository;
         }
 
-        public async Task<RoomEntity> CreateAsync(RoomRequestModel roomModel)
+        public async Task<RoomEntity> CreateAsync(RoomCreationRangeModel roomModel)
         {
-            var room = _mapper.Map<RoomRequestModel, RoomEntity>(roomModel);
+            var room = _mapper.Map<RoomCreationRangeModel, RoomEntity>(roomModel);
 
             var entity = await _roomRepository.CreateAsync(room);
 
             if (entity == null)
                 throw new SomethingWrong("Something went wrong!\nRoom is not created.");
 
+            await _roomPhotoService.CreateLinksAsync(entity.Id, roomModel.RoomPhotos);
+
             return entity;
         }
 
-        public async Task<RoomModel> GetRoom(int id)
+        public async Task<RoomModel> GetRoom(int id, int hotelId)
         {
             var room = await _roomRepository.GetAsync(id);
 
             if (room == null)
                 throw new BadRequest("Room with this id doesn't exists.");
 
+            if (room.HotelId != hotelId)
+                throw new BadRequest("Room with this id doesn't exists in this hotel.");
+
             return _mapper.Map<RoomEntity, RoomModel>(room);
         }
 
-        public async Task UpdateAsync(RoomModel roomModel)
+        public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
             var room = await _roomRepository.GetAsync(roomModel.Id);
             room.TypeId = room.TypeId;
@@ -55,6 +64,11 @@ namespace HotelReservationSystemAPI.Business.Services
 
             if (entity == null)
                 throw new BadRequest("This room doesn't exists.");
+
+            if (roomModel.RoomPhotos != null)
+            {
+                await _roomPhotoService.UpdatePhotos(entity.Id, roomModel.RoomPhotos);
+            }
         }
 
         public async Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
@@ -117,13 +131,6 @@ namespace HotelReservationSystemAPI.Business.Services
 
             return isValid;
         }
-
-        /*private bool IsIntersection(DateTimeOffset range1From, DateTimeOffset range1To, DateTimeOffset range2From, DateTimeOffset range2To)
-        {
-            var from = range1From < range2From ? range2From : range1From;
-            var to = range1To < range2To ? range1To : range2To;
-
-            return from < to;
-        }*/
+        
     }
 }

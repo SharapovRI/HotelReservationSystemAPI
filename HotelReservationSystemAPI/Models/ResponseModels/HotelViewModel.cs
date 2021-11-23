@@ -1,4 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Models.ResponseModels
+﻿using System.Collections.Generic;
+
+namespace HotelReservationSystemAPI.Models.ResponseModels
 {
     public class HotelViewModel
     {
@@ -11,5 +13,7 @@
         public string Address { get; set; }
 
         public string Name { get; set; }
+
+        public List<PhotoViewModel> Photos { get; set; }
     }
 }

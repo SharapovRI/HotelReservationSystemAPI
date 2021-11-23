@@ -16,6 +16,8 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IRoomService, RoomService>();
             services.AddScoped<IFacilityCostService, FacilityCostService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IHotelPhotoService, HotelPhotoService>();
+            services.AddScoped<IRoomPhotoService, RoomPhotoService>();
 
             return services;
         }

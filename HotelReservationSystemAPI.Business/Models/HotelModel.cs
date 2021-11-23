@@ -1,4 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿using System.Collections.Generic;
+
+namespace HotelReservationSystemAPI.Business.Models
 {
     public class HotelModel
     {
@@ -11,5 +13,7 @@
         public string Address { get; set; }
 
         public string Name { get; set; }
+
+        public List<PhotoModel> Photos { get; set; }
     }
 }

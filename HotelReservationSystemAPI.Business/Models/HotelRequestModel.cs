@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using HotelReservationSystemAPI.Business.Models.Request;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
     public class HotelRequestModel
     {
+        public int? Id { get; set; }
         public int CountryId { get; set; }
 
         public int CityId { get; set; }
@@ -12,6 +14,8 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Name { get; set; }
 
-        public IEnumerable<RoomRequestModel> Rooms { get; set; }
+        public List<PhotoModel> HotelPhotos { get; set; }
+
+        public IEnumerable<RoomCreationRangeModel> Rooms { get; set; }
     }
 }
