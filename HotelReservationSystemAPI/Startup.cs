@@ -47,7 +47,7 @@ namespace HotelReservationSystemAPI
             services.AddAutoMapper(typeof(Startup))
                 .AddBusinessMapper();
 
-            services.AddSingleton<NpgsqlContext>();
+            services.AddScoped<NpgsqlContext>();
             
             services.AddControllers();
             

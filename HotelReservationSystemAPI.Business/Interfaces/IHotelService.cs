@@ -15,7 +15,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel);
 
-        Task UpdateAsync(HotelModel hotelModel);
+        Task UpdateAsync(HotelRequestModel hotelModel);
 
         Task<HotelModel> DeleteAsync(int id);
     }

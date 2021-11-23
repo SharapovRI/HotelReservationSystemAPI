@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
         {
             CreateMap<HotelModel, HotelViewModel>();
 
-            CreateMap<HotelPutModel, HotelModel>();
+            CreateMap<HotelPutModel, HotelRequestModel>();
 
             CreateMap<RoomPostModel, RoomRequestModel>()
                 .ForMember(dest => dest.HotelId, act => act.Ignore())

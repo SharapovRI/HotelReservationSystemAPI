@@ -85,9 +85,9 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(hotels);
         }
 
-        public async Task UpdateAsync(HotelModel hotelModel)
+        public async Task UpdateAsync(HotelRequestModel hotelModel)
         {
-            var hotel = _mapper.Map<HotelModel, HotelEntity>(hotelModel);
+            var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
 
             var entity = await _hotelRepository.UpdateAsync(hotel);
 
@@ -98,7 +98,14 @@ namespace HotelReservationSystemAPI.Business.Services
 
             foreach (var photo in photos)
             {
-                await _hotelPhotoService.UpdateAsync(photo);
+                var hotelPhoto = new HotelPhotoEntity()
+                {
+                    Id = photo.Id,
+                    Title = photo.Title,
+                    HotelId = hotel.Id,
+                    Data = photo.Data
+                };
+                await _hotelPhotoService.UpdateAsync(hotelPhoto);
             }
         }
         

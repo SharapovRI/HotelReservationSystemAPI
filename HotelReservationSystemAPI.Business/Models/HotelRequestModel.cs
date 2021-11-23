@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using AutoMapper.Configuration.Conventions;
 
 namespace HotelReservationSystemAPI.Business.Models
 {
     public class HotelRequestModel
     {
+        public int? Id { get; set; }
         public int CountryId { get; set; }
 
         public int CityId { get; set; }
