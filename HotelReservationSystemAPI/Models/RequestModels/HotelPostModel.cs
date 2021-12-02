@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HotelReservationSystemAPI.Models.RequestModels
 {
-    public class HotelPostModel
+    public class  HotelPostModel
     {
         [Required]
         public int CountryId { get; set; }

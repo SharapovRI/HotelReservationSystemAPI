@@ -85,8 +85,12 @@ namespace HotelReservationSystemAPI.Data.Repositories
             {
                 query = query.Where(queryParameters.FilterRule.FilterExpression);
             }
-            
-            count = Decimal.ToInt32(Math.Ceiling((decimal)query.Count() / (decimal)queryParameters.PaginationRule.Size));
+
+            if (queryParameters.PaginationRule.Size > 0)
+            {
+                count = Decimal.ToInt32(Math.Ceiling((decimal) query.Count() /
+                                                     (decimal) queryParameters.PaginationRule.Size));
+            }
 
             if (queryParameters.PaginationRule != null && queryParameters.PaginationRule.IsValid)
                 query = query.Skip(queryParameters.PaginationRule.Size * queryParameters.PaginationRule.Index).Take(queryParameters.PaginationRule.Size);

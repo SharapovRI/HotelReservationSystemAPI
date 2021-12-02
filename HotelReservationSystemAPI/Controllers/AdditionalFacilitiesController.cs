@@ -49,7 +49,7 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(facility);
         }
 
-        [HttpPut("/Facility/Edit/{Id}")]
+        [HttpPut("/Facility/Edit/{CityId}")]
         public async Task<IActionResult> UpdateFacilityHotel([FromBody] FacilityCostPutModel facilityCostPutModel)
         {
             var facilityCost = _mapper.Map<FacilityCostPutModel, FacilityPatchRequestCostModel>(facilityCostPutModel);

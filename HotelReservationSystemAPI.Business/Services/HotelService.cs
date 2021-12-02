@@ -137,12 +137,14 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
-                    ((model.Id == null) ||
-                    (hotel.CityId == model.Id)) &&
-                    (hotel.Rooms != null) &&
+                    (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId) 
+                    &&
+                    ((hotel.Rooms == null) || (model.CheckIn == null) || (model.CheckOut == null) ||
                     (hotel.Rooms.Where(room => room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && 
                     time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null))
-                    .Sum(room => room.RoomType.SeatsCount) >= model.FreeSeatsCount
+                    .Sum(room => room.RoomType.SeatsCount) >= model.FreeSeatsCount)
+                    &&
+                    (string.IsNullOrWhiteSpace(model.NamePart) || hotel.Name.Contains(model.NamePart))
             };
 
             return filterRule;

@@ -135,7 +135,11 @@ namespace HotelReservationSystemAPI.Business.Services
                 HotelId = room.HotelId
             });
 
-            cost += facilitiesCosts.Where(facil => orderModel.AdditionalFacilities.Contains(facil.Id)).Sum(facil => facil.Cost);
+            //cost +=  facilitiesCosts.Where(facil => orderModel.AdditionalFacilities.Contains(facil.CityId)).Sum(facil => facil.Cost);
+            foreach (var item in orderModel.AdditionalFacilities)
+            {
+                cost += facilitiesCosts.FirstOrDefault(p => p.Id == item).Cost;
+            }
 
             return orderModel.Cost == cost;
         }

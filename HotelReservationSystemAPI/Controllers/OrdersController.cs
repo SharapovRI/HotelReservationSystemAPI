@@ -23,8 +23,8 @@ namespace HotelReservationSystemAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("/Hotels/Create")]
-        public async Task<IActionResult> CreateOrder([FromQuery] OrderPostModel orderViewModel)
+        [HttpPost("/Order/Create")] //TODO take id from token
+        public async Task<IActionResult> CreateOrder([FromBody] OrderPostModel orderViewModel)
         {
             var model = _mapper.Map<OrderPostModel, OrderModel>(orderViewModel);
 
