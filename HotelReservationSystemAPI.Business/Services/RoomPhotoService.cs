@@ -8,7 +8,6 @@ using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
-using Microsoft.AspNetCore.Mvc.TagHelpers.Cache;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
@@ -26,20 +25,35 @@ namespace HotelReservationSystemAPI.Business.Services
             _roomPhotoLinksRepository = roomPhotoLinksRepository;
         }
 
-        public async Task<RoomPhotoListModel> CreateAsync(RoomPhotosCreationListModel photos)
+        public async Task<RoomPhotoListModel> CreateAsync(List<RoomPhotoCreationModel> photos)
         {
-            var photoList = photos.RoomPhotos;
+            var photoList = photos;
 
             var responseList = new RoomPhotoListModel();
+            responseList.RoomPhotos = new List<RoomPhotoModel>();
             foreach (var photo in photoList)
             {
-                var entity = _mapper.Map<RoomPhotoCreationModel, RoomPhotoEntity>(photo);
-                var createdEntity = await _roomPhotoRepository.CreateAsync(entity);
-                var responseEntity = _mapper.Map<RoomPhotoEntity, RoomPhotoModel>(createdEntity);
+                var responseEntity = await CreateAsync(photo);
                 responseList.RoomPhotos.Add(responseEntity);
             }
 
             return responseList;
+        }
+
+        public async Task<RoomPhotoModel> CreateAsync(RoomPhotoCreationModel photo)
+        {
+            var entity = _mapper.Map<RoomPhotoCreationModel, RoomPhotoEntity>(photo);
+            var existingEntity = await _roomPhotoRepository.GetRoomPhoto(entity);
+
+            if (existingEntity != null)
+            {
+                var result = _mapper.Map<RoomPhotoEntity, RoomPhotoModel>(existingEntity);
+                return result;
+            }
+
+            var createdEntity = await _roomPhotoRepository.CreateAsync(entity);
+            var responseEntity = _mapper.Map<RoomPhotoEntity, RoomPhotoModel>(createdEntity);
+            return responseEntity;
         }
 
         public async Task CreateLinksAsync(int roomId, int[] photosId)

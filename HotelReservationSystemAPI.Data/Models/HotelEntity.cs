@@ -6,11 +6,11 @@ namespace HotelReservationSystemAPI.Data.Models
     {
         public int CountryId { get; set; }
         
-        public virtual CountryEntity Country { get; set; }
+        public virtual CountryEntity? Country { get; set; }
 
         public int CityId { get; set; }
         
-        public virtual CityEntity City { get; set; }
+        public virtual CityEntity? City { get; set; }
 
         public string Address { get; set; }
 

@@ -1,4 +1,4 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models.Response
 {
     public class LocateModel
     {
@@ -7,5 +7,7 @@
         public string Country { get; set; }
 
         public string City { get; set; }
+
+        public int CountryId { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using AutoMapper;
 using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
@@ -19,29 +20,33 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IHotelRepository _hotelRepository;
         private readonly IRoomService _roomService;
         private readonly IHotelPhotoService _hotelPhotoService;
+        private readonly IFacilityCostService _facilityCostService;
 
-        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService)
+        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService, IFacilityCostService facilityCostService)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
             _hotelPhotoService = hotelPhotoService;
+            _facilityCostService = facilityCostService;
         }
 
         public async Task<HotelModel> CreateAsync(HotelRequestModel hotelModel)
         {
             var rooms = hotelModel.Rooms;
             var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
+            hotel.Photos = null;
 
             hotel = await _hotelRepository.CreateAsync(hotel);
 
             if (hotel == null)
                 throw new SomethingWrong("Something went wrong!\nHotel is not created.");
-
-            var photos = hotel.Photos;
-            foreach (var photo in photos)
+            
+            foreach (var photo in hotelModel.HotelPhotos)
             {
-                await _hotelPhotoService.CreateAsync(photo);
+                var entity = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
+                entity.HotelId = hotel.Id;
+                _ = await _hotelPhotoService.CreateAsync(entity);
             }
 
             foreach (var room in rooms)
@@ -49,8 +54,20 @@ namespace HotelReservationSystemAPI.Business.Services
                 room.HotelId = hotel.Id;
                 for (int i = 0; i < room.RoomCount; i++)
                 {
-                    var entity = await _roomService.CreateAsync(room);
+                    _ = await _roomService.CreateAsync(room);
                 }
+            }
+
+            foreach (var facility in hotelModel.Facilities)
+            {
+                var newFacility = new FacilityRequestCostModel()
+                {
+                    HotelId = hotel.Id,
+                    FacilityName = facility.FacilityName,
+                    Cost = facility.Cost,
+                };
+
+                _ = await _facilityCostService.CreateAsync(newFacility);
             }
 
             var createdEntity = _mapper.Map<HotelEntity, HotelModel>(hotel);
@@ -94,18 +111,18 @@ namespace HotelReservationSystemAPI.Business.Services
             if (entity == null)
                 throw new BadRequest("Hotel with this id doesn't exists.");
 
-            var photos = hotel.Photos;
+            var photos = hotelModel.HotelPhotos;
 
             foreach (var photo in photos)
             {
-                var hotelPhoto = new HotelPhotoEntity()
-                {
-                    Id = photo.Id,
-                    Title = photo.Title,
-                    HotelId = hotel.Id,
-                    Data = photo.Data
-                };
+                var hotelPhoto = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
+                hotelPhoto.HotelId = hotel.Id;
                 await _hotelPhotoService.UpdateAsync(hotelPhoto);
+            }
+
+            foreach (var item in hotelModel.Facilities)
+            {
+                
             }
         }
         
@@ -137,6 +154,8 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
+                    ((model.Id == null) || (model.Id == hotel.Id))
+                    &&
                     (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId) 
                     &&
                     ((hotel.Rooms == null) || (model.CheckIn == null) || (model.CheckOut == null) ||

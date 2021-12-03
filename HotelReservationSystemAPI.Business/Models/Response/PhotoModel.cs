@@ -1,4 +1,4 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models.Response
 {
     public class PhotoModel
     {
@@ -7,5 +7,7 @@
         public string Title { get; set; }
 
         public string Data { get; set; }
+
+        public string Extension { get; set; }
     }
 }

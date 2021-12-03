@@ -7,11 +7,11 @@ namespace HotelReservationSystemAPI.Data.Models
     {
         public int HotelId { get; set; }
         
-        public virtual HotelEntity Hotel { get; set; }
+        public virtual HotelEntity? Hotel { get; set; }
 
         public int TypeId { get; set; }
         
-        public virtual RoomTypeEntity RoomType { get; set; }
+        public virtual RoomTypeEntity? RoomType { get; set; }
 
         public DateTimeOffset? LastView { get; set; }
 

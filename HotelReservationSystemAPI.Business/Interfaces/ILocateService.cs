@@ -1,6 +1,6 @@
-﻿using HotelReservationSystemAPI.Business.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Business.Interfaces
 {

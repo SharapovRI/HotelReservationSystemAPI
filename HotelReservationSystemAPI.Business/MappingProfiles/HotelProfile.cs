@@ -1,6 +1,8 @@
 ﻿using System;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
@@ -24,6 +26,11 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
             CreateMap<PhotoModel, HotelPhotoEntity>()
                 .ForMember(dest => dest.Data, 
                     act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
+
+            CreateMap<HotelPhotoCreationModel, HotelPhotoEntity>()
+                .ForMember(dest => dest.HotelId, act => act.Ignore())
+                .ForMember(dest => dest.Hotel, act => act.Ignore())
+                .ForMember(dest => dest.Id, act => act.Ignore());
 
             CreateMap<HotelPhotoEntity, PhotoModel>()
                 .ForMember(dest => dest.Data,

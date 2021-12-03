@@ -25,12 +25,21 @@ namespace HotelReservationSystemAPI.Business.Services
         public async Task<RoomTypeModel> CreateAsync(RoomTypeModel roomTypeModel)
         {
             var roomType = _mapper.Map<RoomTypeModel, RoomTypeEntity>(roomTypeModel);
-            roomType = await _roomTypeRepository.CreateAsync(roomType);
+            var existingEntity = await _roomTypeRepository.GetRoomType(roomType);
+
+            if (existingEntity != null)
+            {
+                roomType = existingEntity;
+            }
+            else
+            {
+                roomType = await _roomTypeRepository.CreateAsync(roomType);
+            }
 
             if (roomType == null)
                 throw new SomethingWrong("Something went wrong!\nType of room is not created.");
 
-            roomTypeModel.Id = roomType.Id;
+            roomTypeModel.RoomTypeId = roomType.Id;
             var typeCost = _mapper.Map<RoomTypeModel, RoomsCostEntity>(roomTypeModel);
             
             var entity = await _roomsCostRepository.CreateAsync(typeCost);
@@ -38,7 +47,9 @@ namespace HotelReservationSystemAPI.Business.Services
             if (entity == null)
                 throw new SomethingWrong("Something went wrong!\nType of room is not created.");
 
-            return _mapper.Map<RoomsCostEntity, RoomTypeModel>(entity);
+            var result = _mapper.Map<RoomsCostEntity, RoomTypeModel>(entity);
+
+            return result;
         }
 
         public async Task<RoomTypeModel> DeleteAsync(int id)

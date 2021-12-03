@@ -45,7 +45,7 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(hotelViewModel);
         }
 
-        [HttpPut("/Hotel/Edit/{CityId}")]
+        [HttpPut("/Hotel/Edit/{hotelId}")]
         public async Task<IActionResult> UpdateHotel([FromBody] HotelPutModel hotelPatchModel)
         {
             var hotel = _mapper.Map<HotelPutModel, HotelRequestModel>(hotelPatchModel);

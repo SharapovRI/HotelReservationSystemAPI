@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
-using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Business.Services
 {

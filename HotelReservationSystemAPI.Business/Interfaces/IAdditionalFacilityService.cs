@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
 
 namespace HotelReservationSystemAPI.Business.Interfaces
 {
@@ -9,7 +10,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel);
         Task<AdditionalFacilityModel> GetAsync(int id);
         Task<IEnumerable<AdditionalFacilityModel>> GetListAsync();
-        Task UpdateAsync(AdditionalFacilityModel additionalFacilityModel);
+        Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel);
         Task<AdditionalFacilityModel> DeleteAsync(int id);
     }
 }

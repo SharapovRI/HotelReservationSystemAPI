@@ -6,6 +6,7 @@ using AutoMapper;
 using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
@@ -15,20 +16,26 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class FacilityCostService : IFacilityCostService
     {
-        public FacilityCostService(IMapper mapper, IFacilityCostRepository facilityCostRepository, IRoomRepository roomRepository)
+        private readonly IMapper _mapper;
+        private readonly IFacilityCostRepository _facilityCostRepository;
+        private readonly IRoomRepository _roomRepository;
+        private readonly IAdditionalFacilityService _additionalFacilityService;
+
+        public FacilityCostService(IMapper mapper, IFacilityCostRepository facilityCostRepository, IRoomRepository roomRepository, IAdditionalFacilityService additionalFacilityService)
         {
             _mapper = mapper;
             _facilityCostRepository = facilityCostRepository;
             _roomRepository = roomRepository;
+            _additionalFacilityService = additionalFacilityService;
         }
-
-        private readonly IMapper _mapper;
-        private readonly IFacilityCostRepository _facilityCostRepository;
-        private readonly IRoomRepository _roomRepository;
 
         public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestCostModel facilityRequestModel)
         {
+            var facility = new FacilityRequestModel() {Name = facilityRequestModel.FacilityName};
+            var createdFacility = await _additionalFacilityService.CreateAsync(facility);
+
             var facilityCost = _mapper.Map<FacilityRequestCostModel, FacilityCostEntity>(facilityRequestModel);
+            facilityCost.AdditionalFacilityId = createdFacility.Id;
 
             var entity = await _facilityCostRepository.CreateAsync(facilityCost);
 

@@ -7,7 +7,8 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IRoomPhotoService
     {
-        Task<RoomPhotoListModel> CreateAsync(RoomPhotosCreationListModel photos);
+        Task<RoomPhotoListModel> CreateAsync(List<RoomPhotoCreationModel> photos);
+        Task<RoomPhotoModel> CreateAsync(RoomPhotoCreationModel photo);
         Task CreateLinksAsync(int roomId, int[] photosId);
         Task UpdatePhotos(int roomId, List<RoomPhotoUpdateModel> photos);
     }

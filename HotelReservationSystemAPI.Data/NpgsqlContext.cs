@@ -1,6 +1,5 @@
 ﻿using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.ModelsConfigurations;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data
