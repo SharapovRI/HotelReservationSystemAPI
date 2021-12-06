@@ -36,11 +36,11 @@ namespace HotelReservationSystemAPI.Controllers
         [HttpGet("/Hotels/GetMyOrders")]
         public async Task<IActionResult> GetMyOrders([FromQuery] OrderQueryModel queryModel)
         {
-            var models = await _orderService.GetListAsync(queryModel);
+            var (models, pageCount) = await _orderService.GetListAsync(queryModel);
 
             var result = _mapper.Map<IList<OrderModel>, IList<OrderPostModel>>(models);
 
-            return Ok(result);
+            return Ok(new {result, pageCount});
         }
 
         [AcceptVerbs("Post")]

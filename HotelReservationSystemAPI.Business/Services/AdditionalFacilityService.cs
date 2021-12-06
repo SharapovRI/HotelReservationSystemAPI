@@ -83,12 +83,12 @@ namespace HotelReservationSystemAPI.Business.Services
             }
             else
             {
-                existingEntity = await _additionalFacilityRepository.CreateAsync(existingEntity);
+                existingEntity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
             }
 
             var entity = await _facilityCostRepository.CreateAsync(new FacilityCostEntity()
             {
-                HotelId = additionalFacilityModel.HotelId,
+                HotelId = (int)additionalFacilityModel.HotelId,
                 Cost = additionalFacilityModel.Cost,
                 AdditionalFacilityId = existingEntity.Id,
             });

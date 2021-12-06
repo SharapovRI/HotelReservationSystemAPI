@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Exceptions;
@@ -88,12 +89,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(RoomTypeModel roomTypeModel)
         {
-            var roomType = _mapper.Map<RoomTypeModel, RoomTypeEntity>(roomTypeModel);
-
-            var entity = await _roomTypeRepository.UpdateAsync(roomType);
-
-            if (entity == null)
-                throw new BadRequest("Type of room with this id doesn't exists.");
+            
         }
     }
 }

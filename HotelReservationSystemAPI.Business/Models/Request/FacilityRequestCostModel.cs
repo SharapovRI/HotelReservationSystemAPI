@@ -2,7 +2,7 @@
 {
     public class FacilityRequestCostModel
     {
-        public int HotelId { get; set; }
+        public int? HotelId { get; set; }
         
         public string FacilityName { get; set; }
         

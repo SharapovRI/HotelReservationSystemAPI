@@ -21,14 +21,17 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IRoomService _roomService;
         private readonly IHotelPhotoService _hotelPhotoService;
         private readonly IFacilityCostService _facilityCostService;
+        private readonly IAdditionalFacilityService _additionalFacilityService;
 
-        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService, IFacilityCostService facilityCostService)
+        public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService,
+            IFacilityCostService facilityCostService, IAdditionalFacilityService additionalFacilityService)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
             _hotelPhotoService = hotelPhotoService;
             _facilityCostService = facilityCostService;
+            _additionalFacilityService = additionalFacilityService;
         }
 
         public async Task<HotelModel> CreateAsync(HotelRequestModel hotelModel)
@@ -106,23 +109,19 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
 
-            var entity = await _hotelRepository.UpdateAsync(hotel);
+            var entity = await _hotelRepository.UpdateReturnIncludesAsync(hotel);
 
             if (entity == null)
                 throw new BadRequest("Hotel with this id doesn't exists.");
 
             var photos = hotelModel.HotelPhotos;
 
-            foreach (var photo in photos)
-            {
-                var hotelPhoto = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
-                hotelPhoto.HotelId = hotel.Id;
-                await _hotelPhotoService.UpdateAsync(hotelPhoto);
-            }
+            await _hotelPhotoService.UpdateAsync(photos, entity.Photos, hotel.Id);
 
             foreach (var item in hotelModel.Facilities)
             {
-                
+                item.HotelId = hotel.Id;
+                await _additionalFacilityService.UpdateAsync(item);
             }
         }
         

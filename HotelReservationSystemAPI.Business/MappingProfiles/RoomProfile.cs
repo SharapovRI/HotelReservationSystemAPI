@@ -29,6 +29,10 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.Data,
                     act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
 
+            CreateMap<RoomPhotoUpdateModel, RoomPhotoEntity>()
+                .ForMember(dest => dest.Data,
+                    act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
+
             CreateMap<RoomPhotoEntity, RoomPhotoModel>()
                 .ForMember(dest => dest.Data,
                     act => act.MapFrom(scr => Convert.ToBase64String(scr.Data)));

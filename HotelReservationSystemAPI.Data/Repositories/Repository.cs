@@ -68,6 +68,17 @@ namespace HotelReservationSystemAPI.Data.Repositories
             return updatedEntity.Entity;
         }
 
+        public async Task<TEntity> UpdateReturnIncludesAsync(TEntity entity)
+        {
+            var updatedEntity = _set.Update(entity);
+
+            await _context.SaveChangesAsync();
+
+            var entityWithIncludes = await SetWithIncludes.FirstOrDefaultAsync(p => p.Id == updatedEntity.Entity.Id);
+
+            return entityWithIncludes;
+        }
+
         public async Task<(IList<TEntity>, int)> GetListAsync(QueryParameters<TEntity> parameters)
         {
             int count = 0;

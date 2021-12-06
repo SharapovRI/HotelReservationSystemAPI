@@ -11,12 +11,12 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<OrderModel> GetAsync(int id);
 
-        Task<IEnumerable<OrderModel>> GetListAsync();
+        Task<(IEnumerable<OrderModel>, int)> GetListAsync();
 
         Task Update(OrderModel orderModel);
 
         Task<OrderModel> DeleteAsync(int id);
 
-        Task<IList<OrderModel>> GetListAsync(OrderQueryModel queryModel);
+        Task<(IList<OrderModel>, int)> GetListAsync(OrderQueryModel queryModel);
     }
 }

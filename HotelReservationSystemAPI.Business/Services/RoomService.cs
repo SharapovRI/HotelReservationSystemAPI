@@ -73,8 +73,16 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
+            /*var roomType = await _roomTypeService.CreateAsync(new RoomTypeModel()
+            {
+                HotelId = roomModel.HotelId,
+                Cost = roomModel.Cost,
+                SeatsCount = roomModel.SeatsCount,
+                Name = roomModel.TypeName,
+            });*/
+
+            
             var room = await _roomRepository.GetAsync(roomModel.Id);
-            room.TypeId = room.TypeId;
 
             var entity = await _roomRepository.UpdateAsync(room);
 

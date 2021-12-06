@@ -24,7 +24,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
 
             CreateMap<HotelRequestModel, HotelPostModel>().ReverseMap();
 
-            CreateMap<HotelPhotoCreationModel, HotelPhotoPostModel>();
+            CreateMap<HotelPhotoPostModel, HotelPhotoCreationModel>();
         }
     }
 }

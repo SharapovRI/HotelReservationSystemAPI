@@ -21,7 +21,7 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.Country, act => act.Ignore())
                 .ForMember(dest => dest.FacilitiesCosts, act => act.Ignore())
                 .ForMember(dest => dest.Rooms, act => act.Ignore())
-                .ForMember(dest => dest.Photos, act => act.MapFrom(src => src.HotelPhotos));
+                .ForMember(dest => dest.Photos, act => act.Ignore());
 
             CreateMap<PhotoModel, HotelPhotoEntity>()
                 .ForMember(dest => dest.Data, 
@@ -30,7 +30,9 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
             CreateMap<HotelPhotoCreationModel, HotelPhotoEntity>()
                 .ForMember(dest => dest.HotelId, act => act.Ignore())
                 .ForMember(dest => dest.Hotel, act => act.Ignore())
-                .ForMember(dest => dest.Id, act => act.Ignore());
+                .ForMember(dest => dest.Id, act => act.Ignore())
+                .ForMember(dest => dest.Data,
+                    act => act.MapFrom(scr => Convert.FromBase64String(scr.Data)));
 
             CreateMap<HotelPhotoEntity, PhotoModel>()
                 .ForMember(dest => dest.Data,

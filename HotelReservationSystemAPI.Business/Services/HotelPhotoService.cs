@@ -1,7 +1,10 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
+using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 
@@ -27,12 +30,29 @@ namespace HotelReservationSystemAPI.Business.Services
             return entity;
         }
 
-        public async Task UpdateAsync(HotelPhotoEntity facilityPatchRequestCostModel)
+        /*public async Task UpdateAsync(HotelPhotoEntity photo)
         {
-            var entity = await _hotelPhotoRepository.UpdateAsync(facilityPatchRequestCostModel);
+            var entity = await _hotelPhotoRepository.UpdateAsync(photo);
 
             if (entity == null)
                 throw new BadRequest("Photo with this id doesn't exists.");
+        }*/
+
+        public async Task UpdateAsync(IEnumerable<HotelPhotoCreationModel> listPhotos, List<HotelPhotoEntity> oldHotelPhotos, int hotelId)
+        {
+            HotelPhotoEntity[] oldPhotosList = oldHotelPhotos.ToArray();
+
+            foreach (var oldPhoto in oldPhotosList)
+            {
+                _ = await _hotelPhotoRepository.DeleteAsync(oldPhoto.Id);
+            }
+
+            foreach (var photo in listPhotos)
+            {
+                var hotelPhoto = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
+                hotelPhoto.HotelId = hotelId;
+                _ = await CreateAsync(hotelPhoto);
+            }
         }
     }
 }

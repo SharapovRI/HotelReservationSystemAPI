@@ -75,21 +75,36 @@ namespace HotelReservationSystemAPI.Business.Services
             foreach (var photo in photos)
             {
                 var oldPhoto = await _roomPhotoRepository.GetAsync(photo.Id);
-                var link = oldPhoto.RoomsLinks.FirstOrDefault(p => p.RoomId == roomId);
-                if (link == null)
-                    throw new Exception("");//TODO write exception
-                var entity = _mapper.Map<RoomPhotoUpdateModel, RoomPhotoEntity>(photo);
-
-                if (oldPhoto.RoomsLinks.Count > 1)
+                if (oldPhoto == null)
                 {
-                    var createdEntity = await _roomPhotoRepository.CreateAsync(entity);
-
-                    link.PhotoId = createdEntity.Id;
-                    await _roomPhotoLinksRepository.UpdateAsync(link);
+                    var newPhoto = await CreateAsync(new RoomPhotoCreationModel()
+                    {
+                        Title = photo.Title,
+                        Data = photo.Data,
+                        Extension = photo.Extension,
+                    });
+                    await CreateLinksAsync(roomId, new[] { newPhoto.Id });
                 }
                 else
                 {
-                    await _roomPhotoRepository.UpdateAsync(entity);
+                    var link = oldPhoto.RoomsLinks.FirstOrDefault(p => p.RoomId == roomId);
+                    if (link == null) throw new Exception(); //TODO
+                    var entity = _mapper.Map<RoomPhotoUpdateModel, RoomPhotoEntity>(photo);
+
+                    if (oldPhoto.RoomsLinks.Count > 1)
+                    {
+                        var createdEntity = await _roomPhotoRepository.CreateAsync(entity);
+
+                        link.PhotoId = createdEntity.Id;
+                        await _roomPhotoLinksRepository.UpdateAsync(link);
+                    }
+                    else
+                    {
+                        oldPhoto.Title = entity.Title;
+                        oldPhoto.Data = entity.Data;
+                        oldPhoto.Extension = entity.Extension;
+                        await _roomPhotoRepository.UpdateAsync(oldPhoto);
+                    }
                 }
             }
         }

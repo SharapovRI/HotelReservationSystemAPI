@@ -93,11 +93,11 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<OrderEntity, OrderModel>(await order);
         }
 
-        public async Task<IEnumerable<OrderModel>> GetListAsync()
+        public async Task<(IEnumerable<OrderModel>, int)> GetListAsync()
         {
             var (orders, pageCount) = await _orderRepository.GetListAsync();
 
-            return _mapper.Map<IEnumerable<OrderEntity>, IEnumerable<OrderModel>>(orders);
+            return (_mapper.Map<IEnumerable<OrderEntity>, IEnumerable<OrderModel>>(orders), pageCount);
         }
 
         public async Task Update(OrderModel orderModel)
@@ -110,13 +110,13 @@ namespace HotelReservationSystemAPI.Business.Services
                 throw new BadRequest("Order with this id doesn't exists.");
         }
 
-        public async Task<IList<OrderModel>> GetListAsync(OrderQueryModel queryModel)
+        public async Task<(IList<OrderModel>, int)> GetListAsync(OrderQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
             var (entities, pageCount) = await _orderRepository.GetListAsync(queryParameters);
 
-            return _mapper.Map<IList<OrderEntity>, IList<OrderModel>>(entities);
+            return (_mapper.Map<IList<OrderEntity>, IList<OrderModel>>(entities), pageCount);
         }
 
         private QueryParameters<OrderEntity> GetQueryParameters(OrderQueryModel model)

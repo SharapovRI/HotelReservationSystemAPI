@@ -9,6 +9,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
         public PhotoProfile()
         {
             CreateMap<PhotoModel, PhotoViewModel>();
+            CreateMap<RoomPhotoModel, PhotoViewModel>();
         }
     }
 }

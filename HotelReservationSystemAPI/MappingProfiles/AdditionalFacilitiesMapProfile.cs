@@ -12,7 +12,9 @@ namespace HotelReservationSystemAPI.MappingProfiles
         {
             CreateMap<AdditionalFacilityModel, AdditionalFacilityViewModel>();
             CreateMap<FacilityPostModel, FacilityRequestModel>();
-            CreateMap<FacilityCostPostModel, FacilityRequestCostModel>();
+            CreateMap<FacilityCostPostModel, FacilityRequestCostModel>()
+                .ForMember(dest => dest.FacilityName, act => act.MapFrom(src
+                    => src.Name));
             CreateMap<FacilityCostPutModel, FacilityPatchRequestCostModel>();
         }
     }

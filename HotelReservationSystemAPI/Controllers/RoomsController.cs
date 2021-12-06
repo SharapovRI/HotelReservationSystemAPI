@@ -40,7 +40,7 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(new {result, hotel, pageCount});
         }
 
-        [HttpPut("/Hotel/Room/Edit/{CityId}")]
+        [HttpPut("/Hotel/Room/Edit/{roomId}")]
         public async Task<IActionResult> UpdateRoom([FromBody] RoomPutModel roomPutModel)
         {
             var roomModel = _mapper.Map<RoomPutModel, RoomUpdateModel>(roomPutModel);
