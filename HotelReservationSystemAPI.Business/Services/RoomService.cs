@@ -32,7 +32,7 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<RoomEntity> CreateAsync(RoomCreationRangeModel roomModel)
         {
-            var roomType = new RoomTypeModel()
+            var roomTypeRequest = new RoomTypeRequestModel()
             {
                 HotelId = (int) roomModel.HotelId,
                 Name = roomModel.TypeName,
@@ -40,8 +40,8 @@ namespace HotelReservationSystemAPI.Business.Services
                 Cost = roomModel.Cost
             };
 
-            roomType = _roomTypeService.CreateAsync(roomType).Result;
-            roomModel.TypeId = roomType.RoomTypeId;
+            var roomTypeResponse = await _roomTypeService.CreateAsync(roomTypeRequest);
+            roomModel.TypeId = roomTypeResponse.RoomTypeId;
 
             var room = _mapper.Map<RoomCreationRangeModel, RoomEntity>(roomModel);
 
@@ -73,15 +73,14 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
-            /*var roomType = await _roomTypeService.CreateAsync(new RoomTypeModel()
+            var roomTypeRequest = new RoomTypeRequestModel()
             {
-                HotelId = roomModel.HotelId,
-                Cost = roomModel.Cost,
-                SeatsCount = roomModel.SeatsCount,
+                HotelId = (int)roomModel.HotelId,
                 Name = roomModel.TypeName,
-            });*/
+                SeatsCount = roomModel.SeatsCount,
+                Cost = roomModel.Cost
+            };
 
-            
             var room = await _roomRepository.GetAsync(roomModel.Id);
 
             var entity = await _roomRepository.UpdateAsync(room);

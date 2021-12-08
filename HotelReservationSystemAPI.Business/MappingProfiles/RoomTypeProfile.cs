@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Data.Models;
 
 namespace HotelReservationSystemAPI.Business.MappingProfiles
@@ -8,9 +9,12 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
     {
         public RoomTypeProfile()
         {
-            CreateMap<RoomTypeModel, RoomTypeEntity>()
-                .ForMember(dest => dest.RoomsCosts, act => act.Ignore())
+            CreateMap<RoomTypeRequestModel, RoomTypeEntity>()
                 .ForMember(dest => dest.Rooms, act => act.Ignore());
+
+            CreateMap<RoomTypeEntity, RoomTypeResponseModel>()
+                .ForMember(dest => dest.RoomTypeId, act => act.MapFrom(src => src.Id))
+                ;
         }
     }
 }

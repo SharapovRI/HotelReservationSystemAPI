@@ -16,7 +16,7 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
                 .ForMember(dest => dest.Type, act => act.MapFrom(src => src.RoomType.Name))
                 .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomType.SeatsCount))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(src =>
-                    src.RoomType.RoomsCosts.FirstOrDefault(cost => cost.HotelId == src.HotelId).Cost))
+                    src.RoomType.Cost))
                 .ForMember(dest => dest.RoomPhotos,
                     act => act.MapFrom(src => src.PhotoLinks.Select(p => p.RoomPhoto)));
 

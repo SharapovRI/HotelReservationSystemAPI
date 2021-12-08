@@ -15,7 +15,6 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
-            services.AddScoped<IRoomsCostRepository, RoomsCostRepository>();
             services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
             services.AddScoped<IFacilityCostRepository, FacilityCostRepository>();
             services.AddScoped<ICityRepository, CityRepository>();

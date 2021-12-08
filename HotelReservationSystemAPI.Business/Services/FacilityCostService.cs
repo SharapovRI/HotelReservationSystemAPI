@@ -127,7 +127,7 @@ namespace HotelReservationSystemAPI.Business.Services
             if (room == null) return false;
 
             decimal cost = 0;
-            var type = room.RoomType.RoomsCosts.FirstOrDefault(type => type.HotelId == room.HotelId);
+            var type = room.RoomType;
 
             if (type == null)
                 throw new SomethingWrong("This room doesn't exists.");

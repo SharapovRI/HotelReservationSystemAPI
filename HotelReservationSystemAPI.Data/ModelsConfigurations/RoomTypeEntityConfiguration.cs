@@ -16,13 +16,17 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.SeatsCount)
                 .IsRequired();
-            
+            builder.Property(p => p.HotelId)
+                .IsRequired();
+            builder.Property(p => p.Cost)
+                .IsRequired();
+
             builder.HasMany(p => p.Rooms)
                 .WithOne(p => p.RoomType)
                 .HasForeignKey(p => p.TypeId);
-            builder.HasMany(p => p.RoomsCosts)
-                .WithOne(p => p.RoomType)
-                .HasForeignKey(p => p.TypeId);
+            builder.HasOne(p => p.Hotel)
+                .WithMany(p => p.RoomTypes)
+                .HasForeignKey(p => p.HotelId);
         }
     }
 }
