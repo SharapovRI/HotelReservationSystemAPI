@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using HotelReservationSystemAPI.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {

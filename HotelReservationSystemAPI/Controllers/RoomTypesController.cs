@@ -3,8 +3,10 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Constants;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HotelReservationSystemAPI.Controllers
@@ -23,6 +25,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/RoomType/Create")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateRoomType([FromQuery] RoomTypePostModel roomTypeViewModel)
         {
             var model = _mapper.Map<RoomTypePostModel, RoomTypeModel>(roomTypeViewModel);
@@ -35,6 +38,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpGet("/Admin/{hotelId}")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> GetRoomTypes(int hotelId)
         {
             var models = await _roomTypeService.GetListAsync(hotelId);

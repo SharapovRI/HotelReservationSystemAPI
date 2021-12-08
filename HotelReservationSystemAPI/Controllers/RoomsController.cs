@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.Models.Response;
+using HotelReservationSystemAPI.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -40,7 +42,8 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(new {result, hotel, pageCount});
         }
 
-        [HttpPut("/Hotel/Room/Edit/{Id}")]
+        [HttpPut("/Hotel/Room/Edit/{roomId}")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> UpdateRoom([FromBody] RoomPutModel roomPutModel)
         {
             var roomModel = _mapper.Map<RoomPutModel, RoomUpdateModel>(roomPutModel);
