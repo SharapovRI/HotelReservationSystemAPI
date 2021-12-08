@@ -7,6 +7,8 @@ using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using HotelReservationSystemAPI.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -26,6 +28,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Facility/Create")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateFacility([FromBody] FacilityPostModel facilityRequestViewModel)
         {
             var facilityRequestModel = _mapper.Map<FacilityPostModel, FacilityRequestModel>(facilityRequestViewModel);
@@ -38,6 +41,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Facility/Add")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateFacilityHotel([FromBody] FacilityCostPostModel facilityCostRequestViewModel)
         {
             var facilityCost = _mapper.Map<FacilityCostPostModel, FacilityRequestCostModel>(facilityCostRequestViewModel);
@@ -49,7 +53,8 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(facility);
         }
 
-        [HttpPut("/Facility/Edit/{Id}")]
+        [HttpPut("/Facility/Edit/{CityId}")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> UpdateFacilityHotel([FromBody] FacilityCostPutModel facilityCostPutModel)
         {
             var facilityCost = _mapper.Map<FacilityCostPutModel, FacilityPatchRequestCostModel>(facilityCostPutModel);

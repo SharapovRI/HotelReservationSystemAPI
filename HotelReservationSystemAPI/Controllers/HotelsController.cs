@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using HotelReservationSystemAPI.Constants;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -34,6 +36,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Hotel/Create")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateHotel([FromBody] HotelPostModel hotelRequestModel)
         {
             var hotel = _mapper.Map<HotelPostModel, HotelRequestModel>(hotelRequestModel);
@@ -45,7 +48,8 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(hotelViewModel);
         }
 
-        [HttpPut("/Hotel/Edit/{Id}")]
+        [HttpPut("/Hotel/Edit/{hotelId}")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> UpdateHotel([FromBody] HotelPutModel hotelPatchModel)
         {
             var hotel = _mapper.Map<HotelPutModel, HotelRequestModel>(hotelPatchModel);

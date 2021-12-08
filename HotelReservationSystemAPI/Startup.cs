@@ -44,6 +44,8 @@ namespace HotelReservationSystemAPI
                     };
                 });
 
+            services.AddPolicies();
+
             services.AddAutoMapper(typeof(Startup))
                 .AddBusinessMapper();
 
