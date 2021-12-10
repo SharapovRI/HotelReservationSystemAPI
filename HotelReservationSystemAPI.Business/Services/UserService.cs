@@ -86,7 +86,8 @@ namespace HotelReservationSystemAPI.Business.Services
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim> {
-                new Claim("Name", user.Id.ToString()),
+                new Claim("Id", user.Id.ToString()),
+                new Claim("Name", user.Login),
                 new Claim("Role", user.Role.Name)
             };
 

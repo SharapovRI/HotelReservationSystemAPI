@@ -8,6 +8,7 @@ using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -59,7 +60,7 @@ namespace HotelReservationSystemAPI.Controllers
 
             return NoContent();
         }
-
+        
         [HttpGet("/Hotels/{hotelId}/GetFacilities")]
         public async Task<IActionResult> GetFacilities([FromQuery] AdditionalFacilityQueryModel queryModel)
         {

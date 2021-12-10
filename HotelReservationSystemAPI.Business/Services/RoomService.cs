@@ -73,15 +73,27 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
-            var roomTypeRequest = new RoomTypeRequestModel()
+            var types = await _roomTypeService.GetListAsync(roomModel.HotelId);
+            var type = types.FirstOrDefault(p =>
+                p.Name == roomModel.TypeName && p.Cost == roomModel.Cost && p.SeatsCount == roomModel.SeatsCount);
+
+            RoomTypeResponseModel createdType;
+            if (type == null)
             {
-                HotelId = (int)roomModel.HotelId,
-                Name = roomModel.TypeName,
-                SeatsCount = roomModel.SeatsCount,
-                Cost = roomModel.Cost
-            };
+                var roomTypeRequest = new RoomTypeRequestModel()
+                {
+                    HotelId = (int) roomModel.HotelId,
+                    Name = roomModel.TypeName,
+                    SeatsCount = roomModel.SeatsCount,
+                    Cost = roomModel.Cost
+                };
+
+                createdType = await _roomTypeService.CreateAsync(roomTypeRequest);
+            }
+            else createdType = type;
 
             var room = await _roomRepository.GetAsync(roomModel.Id);
+            room.TypeId = createdType.RoomTypeId;
 
             var entity = await _roomRepository.UpdateAsync(room);
 
