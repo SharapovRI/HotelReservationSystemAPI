@@ -7,6 +7,9 @@ using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Models.RequestModels;
+using HotelReservationSystemAPI.Models.ResponseModels;
+using HotelReservationSystemAPI.Business.Models.Response;
+using HotelReservationSystemAPI.Business.Models.Request;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -38,9 +41,17 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var (models, pageCount) = await _orderService.GetListAsync(queryModel);
 
-            var result = _mapper.Map<IList<OrderModel>, IList<OrderPostModel>>(models);
+            var result = _mapper.Map<IList<OrderResponseModel>, IList<OrderViewModel>>(models);
 
             return Ok(new {result, pageCount});
+        }
+
+        [HttpPut("/Order/UpdateTime")]
+        public async Task<IActionResult> UpdateArrivalTime([FromBody] OrderUpdateTimeModel orderUpdateTimeModel)
+        {
+            var model = _mapper.Map<OrderUpdateTimeModel, OrderTimeUpdateModel>(orderUpdateTimeModel);
+            await _orderService.UpdateArrivalTime(model);
+            return Ok();
         }
 
         [AcceptVerbs("Post")]

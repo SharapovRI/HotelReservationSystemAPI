@@ -42,6 +42,7 @@ namespace HotelReservationSystemAPI.Controllers
 
             var hotelViewModel = _mapper.Map<HotelModel, HotelViewModel>(createdHotel);
 
+
             return Ok(hotelViewModel);
         }
 
