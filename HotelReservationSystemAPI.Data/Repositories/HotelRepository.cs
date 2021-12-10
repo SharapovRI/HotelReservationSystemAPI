@@ -15,7 +15,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
 
         protected override IQueryable<HotelEntity> SetWithIncludes => _set
             .Include(p => p.Rooms).ThenInclude(p => p.Orders)
-            .Include(p => p.RoomsCosts)
+            .Include(p => p.RoomTypes)
             .Include(p => p.City)
             .Include(p => p.Country)
             .Include(p => p.Photos);

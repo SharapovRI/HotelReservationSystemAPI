@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Business.Models
 {

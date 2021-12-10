@@ -9,7 +9,16 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         public int Id { get; set; }
 
         [Required]
-        public int TypeId { get; set; }
+        public int HotelId { get; set; }
+
+        [Required]
+        public string TypeName { get; set; }
+
+        [Required]
+        public int SeatsCount { get; set; }
+
+        [Required]
+        public int Cost { get; set; }
 
         public List<RoomPhotoPutModel> RoomPhotos { get; set; }
     }

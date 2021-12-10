@@ -14,6 +14,8 @@ namespace HotelReservationSystemAPI.Data.Interfaces
 
         Task<TEntity> UpdateAsync(TEntity entity);
 
+        Task<TEntity> UpdateReturnIncludesAsync(TEntity entity);
+
         Task<TEntity> DeleteAsync(int id);
     }
 }

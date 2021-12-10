@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
@@ -63,7 +64,7 @@ namespace HotelReservationSystemAPI.Controllers
 
             return NoContent();
         }
-
+        
         [HttpGet("/Hotels/{hotelId}/GetFacilities")]
         public async Task<IActionResult> GetFacilities([FromQuery] AdditionalFacilityQueryModel queryModel)
         {

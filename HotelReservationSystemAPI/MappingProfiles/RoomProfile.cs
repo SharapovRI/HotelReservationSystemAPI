@@ -10,11 +10,18 @@ namespace HotelReservationSystemAPI.MappingProfiles
     {
         public RoomProfile()
         {
-            CreateMap<RoomModel, RoomViewModel>();
-            CreateMap<RoomPhotoCreationModel, RoomPhotoPostModel>();
+            CreateMap<RoomPhotoPostModel, RoomPhotoCreationModel>();
             CreateMap<RoomPhotosCreationListModel, RoomPhotoListPostModel>();
             CreateMap<RoomPutModel, RoomUpdateModel>();
             CreateMap<RoomPhotoPutModel, RoomPhotoUpdateModel>();
+
+            CreateMap<RoomPostModel, RoomCreationRangeModel>()
+                .ForMember(dest => dest.HotelId, act => act.Ignore())
+                .ForMember(dest => dest.TypeId, act => act.Ignore());
+
+            CreateMap<RoomModel, RoomViewModel>()
+                .ForMember(dest => dest.Photos, act => act
+                    .MapFrom(src => src.RoomPhotos));
         }
     }
 }

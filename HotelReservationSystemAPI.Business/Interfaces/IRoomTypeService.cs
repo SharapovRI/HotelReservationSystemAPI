@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Response;
 
 namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IRoomTypeService
     {
-        Task<RoomTypeModel> CreateAsync(RoomTypeModel roomTypeModel);
+        Task<RoomTypeResponseModel> CreateAsync(RoomTypeRequestModel roomTypeModel);
 
-        Task<RoomTypeModel> GetAsync(int id);
+        Task<RoomTypeResponseModel> GetAsync(int id);
 
-        Task<IEnumerable<RoomTypeModel>> GetListAsync();
+        Task<IEnumerable<RoomTypeResponseModel>> GetListAsync();
 
-        Task<IEnumerable<RoomTypeModel>> GetListAsync(int hotelId);
+        Task<IEnumerable<RoomTypeResponseModel>> GetListAsync(int hotelId);
 
-        Task UpdateAsync(RoomTypeModel roomTypeModel);
+        Task UpdateAsync(RoomTypeRequestModel roomTypeModel);
 
-        Task<RoomTypeModel> DeleteAsync(int id);
+        Task<RoomTypeResponseModel> DeleteAsync(int id);
     }
 }

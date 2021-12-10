@@ -63,8 +63,10 @@ namespace HotelReservationSystemAPI
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                //app.UseDeveloperExceptionPage();
             }
+
+            app.UseErrorHandler();
 
             app.UseHttpsRedirection();
 

@@ -38,7 +38,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .WithOne(p => p.Hotel)
                 .HasForeignKey(p => p.HotelId);
 
-            builder.HasMany(p => p.RoomsCosts)
+            builder.HasMany(p => p.RoomTypes)
                 .WithOne(p => p.Hotel)
                 .HasForeignKey(p => p.HotelId);
 

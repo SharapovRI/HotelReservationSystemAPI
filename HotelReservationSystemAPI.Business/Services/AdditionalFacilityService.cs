@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using AutoMapper.Internal;
 using HotelReservationSystemAPI.Business.Exceptions;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 
@@ -11,18 +14,28 @@ namespace HotelReservationSystemAPI.Business.Services
 {
     public class AdditionalFacilityService : IAdditionalFacilityService
     {
-        public AdditionalFacilityService(IMapper mapper, IAdditionalFacilityRepository additionalFacilityRepository)
+        private readonly IMapper _mapper;
+        private readonly IAdditionalFacilityRepository _additionalFacilityRepository;
+        private readonly IFacilityCostRepository _facilityCostRepository;
+        public AdditionalFacilityService(IMapper mapper, IAdditionalFacilityRepository additionalFacilityRepository, IFacilityCostRepository facilityCostRepository)
         {
             _mapper = mapper;
             _additionalFacilityRepository = additionalFacilityRepository;
+            _facilityCostRepository = facilityCostRepository;
         }
 
-        private readonly IMapper _mapper;
-        private readonly IAdditionalFacilityRepository _additionalFacilityRepository;
 
         public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel)
         {
+
             var additionalFacility = _mapper.Map<FacilityRequestModel, AdditionalFacilityEntity>(additionalFacilityModel);
+            var existingEntity = await _additionalFacilityRepository.GetFacility(additionalFacility);
+
+            if (existingEntity != null)
+            {
+                var result = _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(existingEntity);
+                return result;
+            }
 
             var entity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
 
@@ -59,11 +72,26 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<IEnumerable<AdditionalFacilityEntity>, IEnumerable<AdditionalFacilityModel>>(additionalFacilities);
         }
 
-        public async Task UpdateAsync(AdditionalFacilityModel additionalFacilityModel)
+        public async Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel)
         {
-            var additionalFacility = _mapper.Map<AdditionalFacilityModel, AdditionalFacilityEntity>(additionalFacilityModel);
+            var additionalFacility = _mapper.Map<FacilityRequestCostModel, AdditionalFacilityEntity>(additionalFacilityModel);
+            var existingEntity = await _additionalFacilityRepository.GetFacility(additionalFacility);
 
-            var entity = await _additionalFacilityRepository.UpdateAsync(additionalFacility);
+            if (existingEntity != null && existingEntity.FacilityCosts != null)
+            {
+                existingEntity.FacilityCosts.Where(p => p.HotelId == additionalFacilityModel.HotelId).ForAll(p => _facilityCostRepository.DeleteAsync(p.Id));
+            }
+            else
+            {
+                existingEntity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
+            }
+
+            var entity = await _facilityCostRepository.CreateAsync(new FacilityCostEntity()
+            {
+                HotelId = (int)additionalFacilityModel.HotelId,
+                Cost = additionalFacilityModel.Cost,
+                AdditionalFacilityId = existingEntity.Id,
+            });
 
             if (entity == null)
                 throw new BadRequest("Additional facility with this id doesn't exists.");

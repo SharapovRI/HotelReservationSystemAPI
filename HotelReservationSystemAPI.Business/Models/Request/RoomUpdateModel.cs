@@ -6,9 +6,9 @@ namespace HotelReservationSystemAPI.Business.Models.Request
     {
         public int Id { get; set; }
 
-        public string HotelName { get; set; }
+        public int HotelId { get; set; }
 
-        public string Type { get; set; }
+        public string TypeName { get; set; }
 
         public int SeatsCount { get; set; }
 

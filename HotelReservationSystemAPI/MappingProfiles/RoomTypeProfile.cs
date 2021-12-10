@@ -9,8 +9,8 @@ namespace HotelReservationSystemAPI.MappingProfiles
     {
         public RoomTypeProfile()
         {
-            CreateMap<RoomTypePostModel, RoomTypeModel>();
-            CreateMap<RoomTypeViewModel, RoomTypeModel>().ReverseMap();
+            CreateMap<RoomTypePostModel, RoomTypeRequestModel>();
+            CreateMap<RoomTypeViewModel, RoomTypeRequestModel>().ReverseMap();
         }
     }
 }

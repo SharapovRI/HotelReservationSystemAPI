@@ -326,6 +326,12 @@ namespace HotelReservationSystemAPI.Data.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric");
+
+                    b.Property<int>("HotelId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -335,32 +341,9 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoomTypes");
-                });
-
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomsCostEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("HotelId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TypeId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
                     b.HasIndex("HotelId");
 
-                    b.HasIndex("TypeId");
-
-                    b.ToTable("RoomsCosts");
+                    b.ToTable("RoomTypes");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityOrderEntity", b =>
@@ -538,23 +521,15 @@ namespace HotelReservationSystemAPI.Data.Migrations
                     b.Navigation("RoomPhoto");
                 });
 
-            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomsCostEntity", b =>
+            modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomTypeEntity", b =>
                 {
                     b.HasOne("HotelReservationSystemAPI.Data.Models.HotelEntity", "Hotel")
-                        .WithMany("RoomsCosts")
+                        .WithMany("RoomTypes")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelReservationSystemAPI.Data.Models.RoomTypeEntity", "RoomType")
-                        .WithMany("RoomsCosts")
-                        .HasForeignKey("TypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Hotel");
-
-                    b.Navigation("RoomType");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.AdditionalFacilityEntity", b =>
@@ -584,7 +559,7 @@ namespace HotelReservationSystemAPI.Data.Migrations
 
                     b.Navigation("Rooms");
 
-                    b.Navigation("RoomsCosts");
+                    b.Navigation("RoomTypes");
                 });
 
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.OrderEntity", b =>
@@ -617,8 +592,6 @@ namespace HotelReservationSystemAPI.Data.Migrations
             modelBuilder.Entity("HotelReservationSystemAPI.Data.Models.RoomTypeEntity", b =>
                 {
                     b.Navigation("Rooms");
-
-                    b.Navigation("RoomsCosts");
                 });
 #pragma warning restore 612, 618
         }

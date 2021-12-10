@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
-using HotelReservationSystemAPI.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Models.ResponseModels;
 using HotelReservationSystemAPI.Constants;
 using Microsoft.AspNetCore.Authorization;

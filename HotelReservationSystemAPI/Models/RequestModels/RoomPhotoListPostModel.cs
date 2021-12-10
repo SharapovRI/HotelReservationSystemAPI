@@ -4,6 +4,6 @@ namespace HotelReservationSystemAPI.Models.RequestModels
 {
     public class RoomPhotoListPostModel
     {
-        public IList<RoomPhotoPostModel> RoomPhotos { get; set; }
+        public List<RoomPhotoPostModel> RoomPhotos { get; set; }
     }
 }

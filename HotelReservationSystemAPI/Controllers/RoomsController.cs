@@ -62,13 +62,13 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(result);
         }
 
-        [HttpPost("/Rooms/UploadPhoto")]
+        /*[HttpPost("/Rooms/UploadPhoto")]
         public async Task<IActionResult> UploadPhotos([FromBody]RoomPhotoListPostModel photos)
         {
             var photoList = _mapper.Map<RoomPhotoListPostModel, RoomPhotosCreationListModel>(photos);
             var result = await _roomPhotoService.CreateAsync(photoList);
             return Ok(result);
-        }
+        }*/
 
         //TODO Create updating room state
     }

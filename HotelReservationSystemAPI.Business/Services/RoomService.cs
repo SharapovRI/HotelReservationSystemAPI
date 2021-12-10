@@ -20,16 +20,29 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IRoomPhotoService _roomPhotoService;
         private readonly IRoomRepository _roomRepository;
+        private readonly IRoomTypeService _roomTypeService;
 
-        public RoomService(IMapper mapper, IRoomPhotoService roomPhotoService, IRoomRepository roomRepository)
+        public RoomService(IMapper mapper, IRoomPhotoService roomPhotoService, IRoomRepository roomRepository, IRoomTypeService roomTypeService)
         {
             _mapper = mapper;
             _roomPhotoService = roomPhotoService;
             _roomRepository = roomRepository;
+            _roomTypeService = roomTypeService;
         }
 
         public async Task<RoomEntity> CreateAsync(RoomCreationRangeModel roomModel)
         {
+            var roomTypeRequest = new RoomTypeRequestModel()
+            {
+                HotelId = (int) roomModel.HotelId,
+                Name = roomModel.TypeName,
+                SeatsCount = roomModel.SeatsCount,
+                Cost = roomModel.Cost
+            };
+
+            var roomTypeResponse = await _roomTypeService.CreateAsync(roomTypeRequest);
+            roomModel.TypeId = roomTypeResponse.RoomTypeId;
+
             var room = _mapper.Map<RoomCreationRangeModel, RoomEntity>(roomModel);
 
             var entity = await _roomRepository.CreateAsync(room);
@@ -37,7 +50,10 @@ namespace HotelReservationSystemAPI.Business.Services
             if (entity == null)
                 throw new SomethingWrong("Something went wrong!\nRoom is not created.");
 
-            await _roomPhotoService.CreateLinksAsync(entity.Id, roomModel.RoomPhotos);
+            var roomPhotos = await _roomPhotoService.CreateAsync(roomModel.RoomPhotos);
+            var roomPhotosIds = roomPhotos.RoomPhotos.Select(p => p.Id).ToArray();
+            
+            await _roomPhotoService.CreateLinksAsync(entity.Id, roomPhotosIds);
 
             return entity;
         }
@@ -57,8 +73,27 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
+            var types = await _roomTypeService.GetListAsync(roomModel.HotelId);
+            var type = types.FirstOrDefault(p =>
+                p.Name == roomModel.TypeName && p.Cost == roomModel.Cost && p.SeatsCount == roomModel.SeatsCount);
+
+            RoomTypeResponseModel createdType;
+            if (type == null)
+            {
+                var roomTypeRequest = new RoomTypeRequestModel()
+                {
+                    HotelId = (int) roomModel.HotelId,
+                    Name = roomModel.TypeName,
+                    SeatsCount = roomModel.SeatsCount,
+                    Cost = roomModel.Cost
+                };
+
+                createdType = await _roomTypeService.CreateAsync(roomTypeRequest);
+            }
+            else createdType = type;
+
             var room = await _roomRepository.GetAsync(roomModel.Id);
-            room.TypeId = room.TypeId;
+            room.TypeId = createdType.RoomTypeId;
 
             var entity = await _roomRepository.UpdateAsync(room);
 

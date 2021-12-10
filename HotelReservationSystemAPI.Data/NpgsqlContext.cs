@@ -1,6 +1,5 @@
 ﻿using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.ModelsConfigurations;
-using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Data
@@ -9,7 +8,6 @@ namespace HotelReservationSystemAPI.Data
     {
         public DbSet<AdditionalFacilityEntity> AdditionalFacilities { get; set; }
         public DbSet<AdditionalFacilityOrderEntity> AdditionalFacilitiesInOrders { get; set; }
-        public DbSet<RoomsCostEntity> RoomsCosts { get; set; }
         public DbSet<FacilityCostEntity> FacilityCosts { get; set; }
         public DbSet<HotelEntity> Hotels { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
@@ -40,7 +38,6 @@ namespace HotelReservationSystemAPI.Data
                 .ApplyConfiguration(new PersonEntityConfiguration())
                 .ApplyConfiguration(new RoleEntityConfiguration())
                 .ApplyConfiguration(new RoomEntityConfiguration())
-                .ApplyConfiguration(new RoomsCostEntityConfiguration())
                 .ApplyConfiguration(new RoomTypeEntityConfiguration())
                 .ApplyConfiguration(new HotelPhotoEntityConfiguration())
                 .ApplyConfiguration(new RoomPhotoConfiguration())

@@ -14,8 +14,10 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Name { get; set; }
 
-        public List<PhotoModel> HotelPhotos { get; set; }
+        public IEnumerable<HotelPhotoCreationModel> HotelPhotos { get; set; }
 
         public IEnumerable<RoomCreationRangeModel> Rooms { get; set; }
+
+        public IEnumerable<FacilityRequestCostModel> Facilities { get; set; }
     }
 }

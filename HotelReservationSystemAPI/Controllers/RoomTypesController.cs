@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
+using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Constants;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
@@ -28,11 +29,11 @@ namespace HotelReservationSystemAPI.Controllers
         [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateRoomType([FromQuery] RoomTypePostModel roomTypeViewModel)
         {
-            var model = _mapper.Map<RoomTypePostModel, RoomTypeModel>(roomTypeViewModel);
+            var model = _mapper.Map<RoomTypePostModel, RoomTypeRequestModel>(roomTypeViewModel);
 
             var createdRoomType = await _roomTypeService.CreateAsync(model);
 
-            var result = _mapper.Map<RoomTypeModel, RoomTypeViewModel>(createdRoomType);
+            var result = _mapper.Map<RoomTypeResponseModel, RoomTypeViewModel>(createdRoomType);
 
             return Ok(result);
         }
@@ -43,7 +44,7 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var models = await _roomTypeService.GetListAsync(hotelId);
 
-            var result = _mapper.Map<IEnumerable<RoomTypeModel>, IEnumerable<RoomTypeModel>>(models);
+            var result = _mapper.Map<IEnumerable<RoomTypeResponseModel>, IEnumerable<RoomViewModel>>(models);
 
             return Ok(result);
         }

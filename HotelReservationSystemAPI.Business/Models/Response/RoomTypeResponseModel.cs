@@ -1,8 +1,8 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Business.Models.Response
 {
-    public class RoomTypeModel
+    public class RoomTypeResponseModel
     {
-        public int Id { get; set; }
+        public int RoomTypeId { get; set; }
 
         public string Name { get; set; }
 
