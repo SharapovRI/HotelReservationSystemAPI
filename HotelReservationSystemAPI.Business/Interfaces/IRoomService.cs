@@ -16,7 +16,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task UpdateAsync(RoomUpdateModel roomModel);
 
-        Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel);
+        Task<(IList<RoomGroupModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel);
 
         Task<bool> IsDateValid(OrderModel orderModel);
     }

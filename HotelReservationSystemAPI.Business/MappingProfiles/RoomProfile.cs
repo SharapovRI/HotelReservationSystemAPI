@@ -36,6 +36,16 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
             CreateMap<RoomPhotoEntity, RoomPhotoModel>()
                 .ForMember(dest => dest.Data,
                     act => act.MapFrom(scr => Convert.ToBase64String(scr.Data)));
+
+            CreateMap<RoomEntity, RoomGroupModel>()
+                .ForMember(dest => dest.HotelName, act => act.MapFrom(src => src.Hotel.Name))
+                .ForMember(dest => dest.Type, act => act.MapFrom(src => src.RoomType.Name))
+                .ForMember(dest => dest.SeatsCount, act => act.MapFrom(src => src.RoomType.SeatsCount))
+                .ForMember(dest => dest.Cost, act => act.MapFrom(src =>
+                    src.RoomType.Cost))
+                .ForMember(dest => dest.RoomPhotos,
+                    act => act.MapFrom(src => src.PhotoLinks.Select(p => p.RoomPhoto)))
+                .ForMember(dest => dest.FreeRoomsId, act => act.Ignore());
         }
     }
 }
