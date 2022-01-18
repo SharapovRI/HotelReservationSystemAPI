@@ -22,6 +22,11 @@ namespace HotelReservationSystemAPI.MappingProfiles
             CreateMap<RoomModel, RoomViewModel>()
                 .ForMember(dest => dest.Photos, act => act
                     .MapFrom(src => src.RoomPhotos));
+
+            CreateMap<RoomGroupModel, RoomGroupViewModel>()
+                .ForMember(dest => dest.Photos, act => act
+                    .MapFrom(src => src.RoomPhotos))
+                .ForMember(dest => dest.FreeRoomsId, act => act.MapFrom(src => src.FreeRoomsId.ToArray()));
         }
     }
 }

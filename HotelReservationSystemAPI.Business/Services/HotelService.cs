@@ -158,8 +158,11 @@ namespace HotelReservationSystemAPI.Business.Services
                     (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId) 
                     &&
                     ((hotel.Rooms == null) || (model.CheckIn == null) || (model.CheckOut == null) ||
-                    (hotel.Rooms.Where(room => room.Orders != null && room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && 
-                    time.CheckInTime >= model.CheckOut || time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null))
+                    (hotel.Rooms.Where(room => (room.Orders.Count() == 0) || 
+                                                (room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && time.CheckInTime >= model.CheckOut || 
+                                                                                                time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null)
+                                                )
+                    )
                     .Sum(room => room.RoomType.SeatsCount) >= model.FreeSeatsCount)
                     &&
                     (string.IsNullOrWhiteSpace(model.NamePart) || hotel.Name.Contains(model.NamePart))

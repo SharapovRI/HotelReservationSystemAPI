@@ -30,7 +30,7 @@ namespace HotelReservationSystemAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("/Hotels/{hotelId}")]
+        /*[HttpGet("/Hotels/{hotelId}")]
         public async Task<IActionResult> GetHotelRooms([FromQuery] FreeRoomsQueryModel queryModel)
         {
             var (rooms, pageCount) = await _roomService.GetListAsync(queryModel);
@@ -40,6 +40,18 @@ namespace HotelReservationSystemAPI.Controllers
             var result = _mapper.Map<IList<RoomModel>, IList<RoomViewModel>>(rooms);
 
             return Ok(new {result, hotel, pageCount});
+        }*/
+
+        [HttpGet("/Hotels/{hotelId}")]
+        public async Task<IActionResult> GetHotelRooms([FromQuery] FreeRoomsQueryModel queryModel)
+        {
+            var (rooms, pageCount) = await _roomService.GetListAsync(queryModel);
+
+            var hotel = await _hotelService.GetAsync(queryModel.HotelId); //TODO view model
+
+            var result = _mapper.Map<IList<RoomGroupModel>, IList<RoomGroupViewModel>>(rooms);
+
+            return Ok(new { result, hotel, pageCount });
         }
 
         [HttpPut("/Hotel/Room/Edit/{roomId}")]

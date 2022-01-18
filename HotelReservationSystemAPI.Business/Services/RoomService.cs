@@ -106,13 +106,39 @@ namespace HotelReservationSystemAPI.Business.Services
             }
         }
 
-        public async Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
+        /*public async Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
             var (entities, pageCount) = await _roomRepository.GetListAsync(queryParameters);
 
             return (_mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities), pageCount);
+        }*/
+
+        public async Task<(IList<RoomGroupModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
+        {
+            var queryParameters = GetQueryParameters(queryModel);
+
+            var (entities, pageCount) = await _roomRepository.GetListAsync(queryParameters);
+
+            var roomModels = _mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities);
+
+            var roomsList = new List<RoomGroupModel>();
+
+            var roomGroups = entities.GroupBy(p => p.TypeId);
+
+            foreach (var group in roomGroups)
+            {
+                var prototype = _mapper.Map<RoomEntity, RoomGroupModel>(group.First());
+                prototype.FreeRoomsId = new List<int>();
+                foreach (var room in group)
+                {
+                    prototype.FreeRoomsId.Add(room.Id);
+                }
+                roomsList.Add(prototype);
+            }
+
+            return (roomsList, pageCount);
         }
 
         private QueryParameters<RoomEntity> GetQueryParameters(FreeRoomsQueryModel model)
