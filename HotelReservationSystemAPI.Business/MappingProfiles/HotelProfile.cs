@@ -13,7 +13,8 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
         {
             CreateMap<HotelEntity, HotelModel>()
                     .ForMember(dest => dest.Country, act => act.MapFrom(scr => scr.Country.Name))
-                    .ForMember(dest => dest.City, act => act.MapFrom(src => src.City.Name));
+                    .ForMember(dest => dest.City, act => act.MapFrom(src => src.City.Name))
+                    .ForMember(dest => dest.Discription, act => act.MapFrom(src => src.Discription));
 
             CreateMap<HotelRequestModel, HotelEntity>()
                 .ForMember(dest => dest.RoomTypes, act => act.Ignore())

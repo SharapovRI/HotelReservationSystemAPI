@@ -13,6 +13,8 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public string Address { get; set; }
 
+        public string Discription { get; set; }
+
         public string Name { get; set; }
 
         public List<PhotoModel> Photos { get; set; }

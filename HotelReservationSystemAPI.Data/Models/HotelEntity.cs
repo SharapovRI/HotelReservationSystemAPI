@@ -14,6 +14,8 @@ namespace HotelReservationSystemAPI.Data.Models
 
         public string Address { get; set; }
 
+        public string Discription { get; set; }
+
         public string Name { get; set; }
         
         public virtual List<HotelPhotoEntity> Photos { get; set; }
