@@ -32,16 +32,19 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<RoomEntity> CreateAsync(RoomCreationRangeModel roomModel)
         {
-            var roomTypeRequest = new RoomTypeRequestModel()
+            if (roomModel.TypeId == -1)
             {
-                HotelId = (int) roomModel.HotelId,
-                Name = roomModel.TypeName,
-                SeatsCount = roomModel.SeatsCount,
-                Cost = roomModel.Cost
-            };
+                var roomTypeRequest = new RoomTypeRequestModel()
+                {
+                    HotelId = (int)roomModel.HotelId,
+                    Name = roomModel.TypeName,
+                    SeatsCount = roomModel.SeatsCount,
+                    Cost = roomModel.Cost
+                };
 
-            var roomTypeResponse = await _roomTypeService.CreateAsync(roomTypeRequest);
-            roomModel.TypeId = roomTypeResponse.RoomTypeId;
+                var roomTypeResponse = await _roomTypeService.CreateAsync(roomTypeRequest);
+                roomModel.TypeId = roomTypeResponse.RoomTypeId;
+            }
 
             var room = _mapper.Map<RoomCreationRangeModel, RoomEntity>(roomModel);
 
