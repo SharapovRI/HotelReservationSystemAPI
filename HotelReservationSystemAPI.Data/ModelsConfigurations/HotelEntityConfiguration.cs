@@ -20,6 +20,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.Name)
                 .IsRequired();
+            builder.Property(p => p.Discription);
 
 
             builder.HasOne(p => p.Country)

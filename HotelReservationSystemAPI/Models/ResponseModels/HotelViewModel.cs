@@ -12,6 +12,8 @@ namespace HotelReservationSystemAPI.Models.ResponseModels
 
         public string Address { get; set; }
 
+        public string Discription { get; set; }
+
         public string Name { get; set; }
 
         public List<PhotoViewModel> Photos { get; set; }
