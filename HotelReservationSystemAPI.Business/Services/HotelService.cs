@@ -55,9 +55,12 @@ namespace HotelReservationSystemAPI.Business.Services
             foreach (var room in rooms)
             {
                 room.HotelId = hotel.Id;
+                int roomTypeId = -1;
                 for (int i = 0; i < room.RoomCount; i++)
                 {
-                    _ = await _roomService.CreateAsync(room);
+                    room.TypeId = roomTypeId;
+                    var createdRoom = await _roomService.CreateAsync(room);
+                    roomTypeId = createdRoom.TypeId;
                 }
             }
 
