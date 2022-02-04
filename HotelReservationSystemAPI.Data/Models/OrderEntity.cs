@@ -9,9 +9,9 @@ namespace HotelReservationSystemAPI.Data.Models
         
         public virtual RoomEntity Room { get; set; }
 
-        public int PersonId { get; set; }
+        public int OrderGroupId { get; set; }
         
-        public virtual PersonEntity Person { get; set; }
+        public virtual OrderGroupEntity OrderGroup { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }
         public DateTimeOffset CheckOutTime { get; set; }

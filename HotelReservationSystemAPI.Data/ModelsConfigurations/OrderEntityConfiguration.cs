@@ -14,7 +14,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.RoomId)
                 .IsRequired();
-            builder.Property(p => p.PersonId)
+            builder.Property(p => p.OrderGroupId)
                 .IsRequired();
             builder.Property(p => p.Cost)
                 .IsRequired();
@@ -23,9 +23,9 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
             builder.Property(p => p.CheckOutTime)
                 .IsRequired();
 
-            builder.HasOne(p => p.Person)
+            builder.HasOne(p => p.OrderGroup)
                 .WithMany(p => p.Orders)
-                .HasForeignKey(p => p.PersonId);
+                .HasForeignKey(p => p.OrderGroupId);
             builder.HasOne(p => p.Room)
                 .WithMany(p => p.Orders)
                 .HasForeignKey(p => p.RoomId);

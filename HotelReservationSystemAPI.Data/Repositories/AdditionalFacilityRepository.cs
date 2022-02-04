@@ -1,8 +1,8 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using HotelReservationSystemAPI.Data.Interfaces;
+﻿using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace HotelReservationSystemAPI.Data.Repositories
 {
@@ -15,12 +15,12 @@ namespace HotelReservationSystemAPI.Data.Repositories
         }
 
         protected override IQueryable<AdditionalFacilityEntity> SetWithIncludes => _set
-            .Include(p => p.FacilityCosts);
+            .Include(p => p.Hotel)
+            .Include(p => p.FacilityOrders);
 
-        public async Task<AdditionalFacilityEntity> GetFacility(AdditionalFacilityEntity entity)
+        public Task<AdditionalFacilityEntity> GetFacility(AdditionalFacilityEntity entity)
         {
-            var result = await SetWithIncludes.FirstOrDefaultAsync(p => p.Name == entity.Name);
-            return result;
+            throw new System.NotImplementedException();
         }
     }
 }

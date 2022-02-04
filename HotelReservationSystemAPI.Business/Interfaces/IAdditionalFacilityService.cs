@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.Models.Request;
+using HotelReservationSystemAPI.Business.QueryModels;
 
 namespace HotelReservationSystemAPI.Business.Interfaces
 {
@@ -9,8 +10,11 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     {
         Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel);
         Task<AdditionalFacilityModel> GetAsync(int id);
-        Task<IEnumerable<AdditionalFacilityModel>> GetListAsync();
-        Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel);
+        Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel);
+        //Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel);
         Task<AdditionalFacilityModel> DeleteAsync(int id);
+
+        Task<bool> IsFacilitiesValid(OrderModel orderModel);
+        Task<bool> IsCostValid(OrderModel orderModel);
     }
 }

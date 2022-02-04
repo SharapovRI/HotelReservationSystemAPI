@@ -17,7 +17,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
             builder.Property(p => p.OrderId)
                 .IsRequired();
 
-            builder.HasOne(p => p.AdditionalFacility)
+            builder.HasOne(p => p.AdditionFacility)
                 .WithMany(p => p.FacilityOrders)
                 .HasForeignKey(p => p.AdditionFacilityId);
             builder.HasOne(p => p.Order)

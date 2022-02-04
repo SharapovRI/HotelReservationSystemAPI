@@ -9,7 +9,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IOrderService
     {
-        Task<OrderResponseModel> CreateAsync(OrderModel orderModel);
+        Task<OrderResponseModel> CreateAsync(OrderModel orderModel, int groupId);
 
         Task<OrderResponseModel> GetAsync(int id);
 
@@ -22,5 +22,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<OrderModel> DeleteAsync(int id);
 
         Task<(IList<OrderResponseModel>, int)> GetListAsync(OrderQueryModel queryModel);
+
+        Task<OrderGroupResponseModel> CreateGroupOrder(OrderGroupModel orderGroupModel);
     }
 }

@@ -16,11 +16,11 @@ namespace HotelReservationSystemAPI.Extensions
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRoomTypeRepository, RoomTypeRepository>();
-            services.AddScoped<IFacilityCostRepository, FacilityCostRepository>();
             services.AddScoped<ICityRepository, CityRepository>();
             services.AddScoped<IHotelPhotoRepository, HotelPhotoRepository>();
             services.AddScoped<IRoomPhotoLinksRepository, RoomPhotoLinksRepository>();
             services.AddScoped<IRoomPhotoRepository, RoomPhotoRepository>();
+            services.AddScoped<IOrderGroupRepository, OrderGroupRepository>();
 
             return services;
         }

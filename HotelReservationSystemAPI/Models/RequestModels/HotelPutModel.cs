@@ -25,6 +25,6 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         public string Name { get; set; }
 
         public IEnumerable<HotelPhotoPostModel> HotelPhotos { get; set; }
-        public IEnumerable<FacilityCostPostModel> Facilities { get; set; }
+        public IEnumerable<FacilityPostModel> Facilities { get; set; }
     }
 }

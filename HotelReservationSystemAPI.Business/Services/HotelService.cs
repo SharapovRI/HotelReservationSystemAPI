@@ -20,17 +20,15 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IHotelRepository _hotelRepository;
         private readonly IRoomService _roomService;
         private readonly IHotelPhotoService _hotelPhotoService;
-        private readonly IFacilityCostService _facilityCostService;
         private readonly IAdditionalFacilityService _additionalFacilityService;
 
         public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService,
-            IFacilityCostService facilityCostService, IAdditionalFacilityService additionalFacilityService)
+            IAdditionalFacilityService additionalFacilityService)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
             _hotelPhotoService = hotelPhotoService;
-            _facilityCostService = facilityCostService;
             _additionalFacilityService = additionalFacilityService;
         }
 
@@ -66,14 +64,14 @@ namespace HotelReservationSystemAPI.Business.Services
 
             foreach (var facility in hotelModel.Facilities)
             {
-                var newFacility = new FacilityRequestCostModel()
+                var newFacility = new FacilityRequestModel()
                 {
                     HotelId = hotel.Id,
-                    FacilityName = facility.FacilityName,
+                    Name = facility.Name,
                     Cost = facility.Cost,
                 };
 
-                _ = await _facilityCostService.CreateAsync(newFacility);
+                _ = await _additionalFacilityService.CreateAsync(newFacility);
             }
 
             var createdEntity = _mapper.Map<HotelEntity, HotelModel>(hotel);
@@ -123,8 +121,8 @@ namespace HotelReservationSystemAPI.Business.Services
 
             foreach (var item in hotelModel.Facilities)
             {
-                item.HotelId = hotel.Id;
-                await _additionalFacilityService.UpdateAsync(item);
+                item.HotelId = hotel.Id; //TODO update facil
+                //await _additionalFacilityService.UpdateAsync(item);
             }
         }
         

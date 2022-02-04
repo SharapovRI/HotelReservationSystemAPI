@@ -9,7 +9,7 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
         public PersonProfile()
         {
             CreateMap<RegistrationModel, PersonEntity>()
-                .ForMember(dest => dest.Orders, act => act.Ignore())
+                .ForMember(dest => dest.OrderGroups, act => act.Ignore())
                 .ForMember(dest => dest.RefreshToken, act => act.Ignore())
                 .ForMember(dest => dest.Login, act => act.MapFrom(src => src.Username))
                 .ForMember(dest => dest.Password, act => act.MapFrom(src => src.Password))
