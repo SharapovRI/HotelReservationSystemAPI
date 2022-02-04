@@ -7,7 +7,7 @@
         public virtual OrderEntity Order { get; set; }
 
         public int AdditionFacilityId { get; set; }
-        
-        public virtual AdditionalFacilityEntity AdditionalFacility { get; set; }
+
+        public virtual AdditionalFacilityEntity AdditionFacility { get; set; }
     }
 }

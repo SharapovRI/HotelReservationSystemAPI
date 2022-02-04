@@ -15,7 +15,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
         }
 
         protected override IQueryable<PersonEntity> SetWithIncludes => _set
-            .Include(p => p.Orders)
+            .Include(p => p.OrderGroups)
             .Include(p => p.Role);
 
         public async Task<PersonEntity> GetUserAsync(string login, string password)

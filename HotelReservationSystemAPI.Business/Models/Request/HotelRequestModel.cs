@@ -20,6 +20,6 @@ namespace HotelReservationSystemAPI.Business.Models
 
         public IEnumerable<RoomCreationRangeModel> Rooms { get; set; }
 
-        public IEnumerable<FacilityRequestCostModel> Facilities { get; set; }
+        public IEnumerable<FacilityRequestModel> Facilities { get; set; }
     }
 }

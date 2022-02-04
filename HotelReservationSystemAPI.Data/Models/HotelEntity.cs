@@ -20,7 +20,7 @@ namespace HotelReservationSystemAPI.Data.Models
         
         public virtual List<HotelPhotoEntity> Photos { get; set; }
 
-        public virtual List<FacilityCostEntity> FacilitiesCosts { get; set; }
+        public virtual List<AdditionalFacilityEntity> FacilitiesCosts { get; set; }
 
         public virtual List<RoomEntity> Rooms { get; set; }
 

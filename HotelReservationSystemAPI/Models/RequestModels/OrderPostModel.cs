@@ -10,9 +10,6 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         public int RoomId { get; set; }
 
         [Required]
-        public int PersonId { get; set; }
-
-        [Required]
         [Remote(action: "CheckTime", controller: "Orders", ErrorMessage = "Date or time is incorrect.")]
         public DateTimeOffset CheckInTime { get; set; }
 

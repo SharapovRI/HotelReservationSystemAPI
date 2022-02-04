@@ -74,6 +74,16 @@ namespace HotelReservationSystemAPI.Controllers
             return Ok(result);
         }
 
+        [HttpGet()]
+        [Route("GetRoomsRange")]
+        public async Task<IActionResult> GetRoomsRange([FromQuery(Name = "roomsIds[]")] int[] roomsIds, [FromQuery] int hotelId)
+        {
+            var rooms = await _roomService.GetRoomsRange(roomsIds, hotelId);
+            var result = _mapper.Map<List<RoomModel>, List<RoomViewModel>>(rooms);
+
+            return Ok(result);
+        }
+
         /*[HttpPost("/Rooms/UploadPhoto")]
         public async Task<IActionResult> UploadPhotos([FromBody]RoomPhotoListPostModel photos)
         {

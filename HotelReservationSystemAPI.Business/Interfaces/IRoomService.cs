@@ -19,5 +19,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<(IList<RoomGroupModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel);
 
         Task<bool> IsDateValid(OrderModel orderModel);
+
+        Task<List<RoomModel>> GetRoomsRange(int[] ids, int hotel);
     }
 }

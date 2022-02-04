@@ -14,10 +14,17 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.Name)
                 .IsRequired();
+            builder.Property(p => p.HotelId)
+                .IsRequired();
+            builder.Property(p => p.Cost)
+                .IsRequired();
 
-            builder.HasMany(p => p.FacilityCosts)
-                .WithOne(p => p.AdditionalFacility)
-                .HasForeignKey(p => p.AdditionalFacilityId);
+            builder.HasOne(p => p.Hotel)
+                .WithMany(p => p.FacilitiesCosts)
+                .HasForeignKey(p => p.HotelId);
+            builder.HasMany(p => p.FacilityOrders)
+                .WithOne(p => p.AdditionFacility)
+                .HasForeignKey(p => p.AdditionFacilityId);
         }
     }
 }

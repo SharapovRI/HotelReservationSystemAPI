@@ -8,7 +8,6 @@ namespace HotelReservationSystemAPI.Data
     {
         public DbSet<AdditionalFacilityEntity> AdditionalFacilities { get; set; }
         public DbSet<AdditionalFacilityOrderEntity> AdditionalFacilitiesInOrders { get; set; }
-        public DbSet<FacilityCostEntity> FacilityCosts { get; set; }
         public DbSet<HotelEntity> Hotels { get; set; }
         public DbSet<OrderEntity> Orders { get; set; }
         public DbSet<PersonEntity> Users { get; set; }
@@ -32,7 +31,6 @@ namespace HotelReservationSystemAPI.Data
                 .ApplyConfiguration(new AdditionalFacilityOrderEntityConfiguration())
                 .ApplyConfiguration(new CityEntityConfiguration())
                 .ApplyConfiguration(new CountryEntityConfiguration())
-                .ApplyConfiguration(new FacilityCostEntityConfiguration())
                 .ApplyConfiguration(new HotelEntityConfiguration())
                 .ApplyConfiguration(new OrderEntityConfiguration())
                 .ApplyConfiguration(new PersonEntityConfiguration())

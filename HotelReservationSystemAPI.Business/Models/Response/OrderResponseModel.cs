@@ -8,7 +8,7 @@ namespace HotelReservationSystemAPI.Business.Models.Response
 
         public int RoomId { get; set; }
 
-        public int PersonId { get; set; }
+        public int GroupId { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }
 

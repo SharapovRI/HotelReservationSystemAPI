@@ -12,6 +12,7 @@ using HotelReservationSystemAPI.Business.Validation;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.Query;
+using HotelReservationSystemAPI.Data.Repositories;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
@@ -19,19 +20,22 @@ namespace HotelReservationSystemAPI.Business.Services
     {
         private readonly IMapper _mapper;
         private readonly IOrderRepository _orderRepository;
+        private readonly IOrderGroupRepository _orderGroupRepository;
         private readonly IAdditionalFacilityOrderRepository _additionalFacilityOrderRepository;
         private readonly IRoomService _roomService;
-        private readonly IFacilityCostService _facilityCostService;
-        public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService, IFacilityCostService facilityCostService, IAdditionalFacilityOrderRepository additionalFacilityOrderRepository)
+        private readonly IAdditionalFacilityService _additionalFacilityService;
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService, 
+            IAdditionalFacilityOrderRepository additionalFacilityOrderRepository, IOrderGroupRepository orderGroupRepository, IAdditionalFacilityService additionalFacilityService)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
             _additionalFacilityOrderRepository = additionalFacilityOrderRepository;
             _roomService = roomService;
-            _facilityCostService = facilityCostService;
+            _orderGroupRepository = orderGroupRepository;
+            _additionalFacilityService = additionalFacilityService;
         }
 
-        public async Task<OrderResponseModel> CreateAsync(OrderModel orderModel)
+        public async Task<OrderResponseModel> CreateAsync(OrderModel orderModel, int groupId)
         {
             var validationParameters = await IsOrderValid(orderModel);
 
@@ -40,6 +44,7 @@ namespace HotelReservationSystemAPI.Business.Services
             
 
             var order = _mapper.Map<OrderModel, OrderEntity>(orderModel);
+            order.OrderGroupId = groupId;
 
             var createdOrder = await _orderRepository.CreateAsync(order);
 
@@ -54,12 +59,31 @@ namespace HotelReservationSystemAPI.Business.Services
                     AdditionFacilityId = orderModelAdditionalFacility
                 };
 
-                await _additionalFacilityOrderRepository.CreateAsync(facilityOrder);
+                _ = await _additionalFacilityOrderRepository.CreateAsync(facilityOrder);
             }
 
             var result = _mapper.Map<OrderEntity, OrderResponseModel>(createdOrder);
 
             return result;
+        }
+
+        public async Task<OrderGroupResponseModel> CreateGroupOrder(OrderGroupModel orderGroupModel)
+        {
+            var orderGroup = _mapper.Map<OrderGroupModel, OrderGroupEntity>(orderGroupModel);
+            orderGroup.Orders = null;
+            var createdOrderGroup = await _orderGroupRepository.CreateAsync(orderGroup);
+
+            List<OrderResponseModel> orderList = new List<OrderResponseModel>();
+
+
+            foreach (var item in orderGroupModel.Orders)
+            {
+                orderList.Add(await CreateAsync(item, createdOrderGroup.Id));
+            }
+
+            var responseGroupModel = _mapper.Map<OrderGroupEntity, OrderGroupResponseModel>(createdOrderGroup);
+
+            return responseGroupModel;
         }
 
         private async Task<bool> IsOrderValid(OrderModel orderModel)
@@ -70,8 +94,8 @@ namespace HotelReservationSystemAPI.Business.Services
             var validationParameters = new OrderValidationParameters()
             {
                 IsDateValid = await _roomService.IsDateValid(orderModel),
-                IsFacilitiesValid = await  _facilityCostService.IsFacilitiesValid(orderModel),
-                IsCostValid = await  _facilityCostService.IsCostValid(orderModel)
+                IsFacilitiesValid = await  _additionalFacilityService.IsFacilitiesValid(orderModel),
+                IsCostValid = await  _additionalFacilityService.IsCostValid(orderModel)
             };
 
             return validationParameters.IsValid;
@@ -151,7 +175,7 @@ namespace HotelReservationSystemAPI.Business.Services
             {
                 FilterExpression = order =>
                     (
-                        (order.PersonId == model.UserId) &&
+                        (order.OrderGroup.PersonId == model.UserId) &&
                         (((model.CityId == null) && ((model.CountryId == null) || (order.Room.Hotel.CountryId == model.CountryId))) || (order.Room.Hotel.CityId == model.CityId)) &&
                         ((model.WhichTime == null) || (model.WhichTime == false && order.CheckInTime < dateNow) || 
                             (model.WhichTime == true && order.CheckInTime > dateNow))

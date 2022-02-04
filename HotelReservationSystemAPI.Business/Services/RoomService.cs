@@ -74,6 +74,17 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<RoomEntity, RoomModel>(room);
         }
 
+        public async Task<List<RoomModel>> GetRoomsRange(int[] ids, int hotel)
+        {
+            List<RoomModel> roomList = new List<RoomModel>();
+            foreach (var id in ids)
+            {
+                roomList.Add(await GetRoom(id, hotel));
+            }
+
+            return roomList;
+        }
+
         public async Task UpdateAsync(RoomUpdateModel roomModel)
         {
             var types = await _roomTypeService.GetListAsync(roomModel.HotelId);

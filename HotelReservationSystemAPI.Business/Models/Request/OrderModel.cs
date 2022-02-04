@@ -5,8 +5,7 @@ namespace HotelReservationSystemAPI.Business.Models
     public class OrderModel
     {
         public int RoomId { get; set; }
-
-        public int PersonId { get; set; }
+        public int OrderGroupId { get; set; }
 
         public DateTimeOffset CheckInTime { get; set; }
 

@@ -27,11 +27,11 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Order/Create")] //TODO take id from token
-        public async Task<IActionResult> CreateOrder([FromBody] OrderPostModel orderViewModel)
+        public async Task<IActionResult> CreateOrder([FromBody] OrderGroupPostModel orderViewModel)
         {
-            var model = _mapper.Map<OrderPostModel, OrderModel>(orderViewModel);
+            var model = _mapper.Map<OrderGroupPostModel, OrderGroupModel>(orderViewModel);
 
-            await _orderService.CreateAsync(model);
+            await _orderService.CreateGroupOrder(model);
 
             return Ok();
         }
