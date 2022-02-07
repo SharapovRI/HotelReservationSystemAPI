@@ -8,6 +8,8 @@
 
         public int? CityId { get; set; }
 
+        public string? HotelNamePart { get; set; }
+
         //null == all
         //false == past
         //true == future

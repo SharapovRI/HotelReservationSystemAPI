@@ -18,6 +18,7 @@ namespace HotelReservationSystemAPI.Data.Repositories
             .Include(p => p.RoomTypes)
             .Include(p => p.City)
             .Include(p => p.Country)
-            .Include(p => p.Photos);
+            .Include(p => p.Photos)
+            .Include(p => p.FacilitiesCosts).ThenInclude(p => p.FacilityOrders);
     }
 }

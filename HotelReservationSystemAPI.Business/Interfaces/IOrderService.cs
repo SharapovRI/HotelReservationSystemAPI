@@ -21,7 +21,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<OrderModel> DeleteAsync(int id);
 
-        Task<(IList<OrderResponseModel>, int)> GetListAsync(OrderQueryModel queryModel);
+        Task<(IList<OrderGroupResponseModel>, int)> GetListAsync(OrderQueryModel queryModel);
 
         Task<OrderGroupResponseModel> CreateGroupOrder(OrderGroupModel orderGroupModel);
     }

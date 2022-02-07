@@ -1,6 +1,6 @@
-﻿namespace HotelReservationSystemAPI.Business.Models
+﻿namespace HotelReservationSystemAPI.Models.ResponseModels
 {
-    public class AdditionalFacilityOrderModel 
+    public class AdditionFacilityOrderViewModel
     {
         public int Id { get; set; }
 

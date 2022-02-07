@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using HotelReservationSystemAPI.Business.Exceptions;
@@ -69,6 +70,22 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task<OrderGroupResponseModel> CreateGroupOrder(OrderGroupModel orderGroupModel)
         {
+            var days = 0;
+            for (var day = orderGroupModel.Orders.First().CheckInTime; day < orderGroupModel.Orders.First().CheckOutTime; day += TimeSpan.FromDays(1))
+            {
+                days++;
+            }
+
+            decimal totalCost = 0;
+
+            foreach (var item in orderGroupModel.Orders)
+            {
+                totalCost += item.Cost;
+            }
+
+            if (totalCost * days != orderGroupModel.TotalCost)
+                throw new BadRequest("Order is not valid");
+             
             var orderGroup = _mapper.Map<OrderGroupModel, OrderGroupEntity>(orderGroupModel);
             orderGroup.Orders = null;
             var createdOrderGroup = await _orderGroupRepository.CreateAsync(orderGroup);
@@ -138,13 +155,13 @@ namespace HotelReservationSystemAPI.Business.Services
                 throw new BadRequest("Order with this id doesn't exists.");
         }
 
-        public async Task<(IList<OrderResponseModel>, int)> GetListAsync(OrderQueryModel queryModel)
+        public async Task<(IList<OrderGroupResponseModel>, int)> GetListAsync(OrderQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
-            var (entities, pageCount) = await _orderRepository.GetListAsync(queryParameters);
+            var (entities, pageCount) = await _orderGroupRepository.GetListAsync(queryParameters);
 
-            return (_mapper.Map<IList<OrderEntity>, IList<OrderResponseModel>>(entities), pageCount);
+            return (_mapper.Map<IList<OrderGroupEntity>, IList<OrderGroupResponseModel>>(entities), pageCount);
         }
 
         public async Task UpdateArrivalTime(OrderTimeUpdateModel orderTimeUpdateModel)
@@ -154,12 +171,12 @@ namespace HotelReservationSystemAPI.Business.Services
             _ = await _orderRepository.UpdateAsync(entity);
         }
 
-        private QueryParameters<OrderEntity> GetQueryParameters(OrderQueryModel model)
+        private QueryParameters<OrderGroupEntity> GetQueryParameters(OrderQueryModel model)
         {
             if (model == null)
                 throw new ArgumentNullException($"{nameof(model)}");
 
-            var queryParameters = new QueryParameters<OrderEntity>
+            var queryParameters = new QueryParameters<OrderGroupEntity>
             {
                 FilterRule = GetFilterRule(model),
                 PaginationRule = GetPageRule(model)
@@ -168,17 +185,18 @@ namespace HotelReservationSystemAPI.Business.Services
             return queryParameters;
         }
 
-        private FilterRule<OrderEntity> GetFilterRule(OrderQueryModel model)
+        private FilterRule<OrderGroupEntity> GetFilterRule(OrderQueryModel model)
         {
             var dateNow = DateTimeOffset.Now;
-            var filterRule = new FilterRule<OrderEntity>
+            var filterRule = new FilterRule<OrderGroupEntity>
             {
-                FilterExpression = order =>
+                FilterExpression = orderGroup =>
                     (
-                        (order.OrderGroup.PersonId == model.UserId) &&
-                        (((model.CityId == null) && ((model.CountryId == null) || (order.Room.Hotel.CountryId == model.CountryId))) || (order.Room.Hotel.CityId == model.CityId)) &&
-                        ((model.WhichTime == null) || (model.WhichTime == false && order.CheckInTime < dateNow) || 
-                            (model.WhichTime == true && order.CheckInTime > dateNow))
+                        (orderGroup.PersonId == model.UserId) &&
+                        (((model.CityId == null) && ((model.CountryId == null) || (orderGroup.Orders.First().Room.Hotel.CountryId == model.CountryId))) || (orderGroup.Orders.First().Room.Hotel.CityId == model.CityId)) &&
+                        ((model.WhichTime == null) || (model.WhichTime == false && orderGroup.Orders.First().CheckInTime < dateNow) || 
+                            (model.WhichTime == true && orderGroup.Orders.First().CheckInTime > dateNow)) &&
+                        (string.IsNullOrWhiteSpace(model.HotelNamePart) || orderGroup.Orders.First().Room.Hotel.Name.Contains(model.HotelNamePart))
                     )
             };
 

@@ -14,7 +14,8 @@ namespace HotelReservationSystemAPI.Data.Repositories
         }
 
         protected override IQueryable<OrderGroupEntity> SetWithIncludes => _set
-            .Include(p => p.Orders)
+            .Include(p => p.Orders).ThenInclude(p => p.Room).ThenInclude(p => p.Hotel)
+            .Include(p => p.Orders).ThenInclude(p => p.AdditionalFacilities).ThenInclude(p => p.AdditionFacility)
             .Include(p => p.Person);
     }
 }

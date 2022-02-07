@@ -65,23 +65,23 @@ namespace HotelReservationSystemAPI.Controllers
             return NoContent();
         }
 
-        [HttpGet("/Hotels/{hotelId}/Rooms/{roomId}")]
-        public async Task<IActionResult> GetRoom(int hotelId, int roomId)
+        [HttpGet("Rooms/{roomId}")]
+        public async Task<IActionResult> GetRoom(int roomId)
         {
-            var room = await _roomService.GetRoom(roomId, hotelId); 
+            var (room, hotelId) = await _roomService.GetRoom(roomId); 
             var result = _mapper.Map<RoomModel, RoomViewModel>(room);
 
-            return Ok(result);
+            return Ok(new { result, hotelId });
         }
 
         [HttpGet()]
         [Route("GetRoomsRange")]
-        public async Task<IActionResult> GetRoomsRange([FromQuery(Name = "roomsIds[]")] int[] roomsIds, [FromQuery] int hotelId)
+        public async Task<IActionResult> GetRoomsRange([FromQuery(Name = "roomsIds[]")] int[] roomsIds)
         {
-            var rooms = await _roomService.GetRoomsRange(roomsIds, hotelId);
+            var (rooms, hotelId) = await _roomService.GetRoomsRange(roomsIds);
             var result = _mapper.Map<List<RoomModel>, List<RoomViewModel>>(rooms);
 
-            return Ok(result);
+            return Ok(new { result, hotelId });
         }
 
         /*[HttpPost("/Rooms/UploadPhoto")]

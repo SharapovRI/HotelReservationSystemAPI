@@ -7,5 +7,7 @@ namespace HotelReservationSystemAPI.Models.RequestModels
         public int PersonId { get; set; }
 
         public virtual List<OrderPostModel> Orders { get; set; }
+
+        public int TotalCost { get; set; }
     }
 }

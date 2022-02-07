@@ -70,5 +70,15 @@ namespace HotelReservationSystemAPI.Controllers
             var result = _mapper.Map<IList<AdditionalFacilityModel>, IList<AdditionalFacilityViewModel>>(models);
             return Ok(result);
         }
+
+        [HttpGet()]
+        [Route("GetFacilitiesRange")]
+        public async Task<IActionResult> GetFacilitiesRange([FromQuery(Name = "facilitiesIds[]")] int[] facilitiesIds)
+        {
+            var facilities = await _additionalFacilityService.GetFacilitiesOrdersRange(facilitiesIds);
+            var result = _mapper.Map<List<AdditionalFacilityOrderModel>, List<AdditionFacilityOrderViewModel>>(facilities);
+
+            return Ok(result);
+        }
     }
 }
