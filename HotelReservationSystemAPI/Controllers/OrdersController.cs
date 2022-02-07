@@ -41,7 +41,7 @@ namespace HotelReservationSystemAPI.Controllers
         {
             var (models, pageCount) = await _orderService.GetListAsync(queryModel);
 
-            var result = _mapper.Map<IList<OrderResponseModel>, IList<OrderViewModel>>(models);
+            var result = _mapper.Map<IList<OrderGroupResponseModel>, IList<OrderGroupViewModel>>(models);
 
             return Ok(new {result, pageCount});
         }

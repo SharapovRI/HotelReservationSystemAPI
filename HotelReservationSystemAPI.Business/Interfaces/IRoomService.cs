@@ -12,7 +12,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
     {
         Task<RoomEntity> CreateAsync(RoomCreationRangeModel roomModel);
 
-        Task<RoomModel> GetRoom(int id, int hotelId);
+        Task<(RoomModel, int)> GetRoom(int id);
 
         Task UpdateAsync(RoomUpdateModel roomModel);
 
@@ -20,6 +20,6 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 
         Task<bool> IsDateValid(OrderModel orderModel);
 
-        Task<List<RoomModel>> GetRoomsRange(int[] ids, int hotel);
+        Task<(List<RoomModel>, int)> GetRoomsRange(int[] ids);
     }
 }

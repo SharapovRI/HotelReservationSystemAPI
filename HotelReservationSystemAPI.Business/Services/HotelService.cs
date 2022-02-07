@@ -167,6 +167,7 @@ namespace HotelReservationSystemAPI.Business.Services
                     .Sum(room => room.RoomType.SeatsCount) >= model.FreeSeatsCount)
                     &&
                     (string.IsNullOrWhiteSpace(model.NamePart) || hotel.Name.Contains(model.NamePart))
+
             };
 
             return filterRule;

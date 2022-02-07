@@ -21,7 +21,7 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
 
             CreateMap<OrderEntity, OrderResponseModel>()
                 .ForMember(dest => dest.AdditionalFacilities, act => act.MapFrom(src
-                => src.AdditionalFacilities.Select(facility => facility.AdditionFacilityId)));
+                => src.AdditionalFacilities.Select(facility => facility.Id)));
 
             CreateMap<OrderGroupModel, OrderGroupEntity>()
                 .ForMember(dest => dest.Orders, act => act.MapFrom(src

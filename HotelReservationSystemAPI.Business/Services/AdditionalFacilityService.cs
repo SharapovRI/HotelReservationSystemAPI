@@ -20,11 +20,13 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IMapper _mapper;
         private readonly IRoomRepository _roomRepository;
         private readonly IAdditionalFacilityRepository _additionalFacilityRepository;
-        public AdditionalFacilityService(IMapper mapper, IAdditionalFacilityRepository additionalFacilityRepository, IRoomRepository roomRepository)
+        private readonly IAdditionalFacilityOrderRepository _additionalFacilityOrderRepository;
+        public AdditionalFacilityService(IMapper mapper, IAdditionalFacilityRepository additionalFacilityRepository, IRoomRepository roomRepository, IAdditionalFacilityOrderRepository additionalFacilityOrderRepository)
         {
             _mapper = mapper;
             _additionalFacilityRepository = additionalFacilityRepository;
             _roomRepository = roomRepository;
+            _additionalFacilityOrderRepository = additionalFacilityOrderRepository;
         }
 
         public async Task<AdditionalFacilityModel> CreateAsync(FacilityRequestModel additionalFacilityModel)
@@ -60,7 +62,28 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(additionalFacility);
         }
 
-        
+        public async Task<AdditionalFacilityOrderModel> GetOrderFacilityAsync(int id)
+        {
+            var additionalOrderFacility = await _additionalFacilityOrderRepository.GetAsync(id);
+
+            if (additionalOrderFacility == null)
+                throw new BadRequest("Additional facility with this id doesn't exists.");
+
+            return _mapper.Map<AdditionalFacilityOrderEntity, AdditionalFacilityOrderModel>(additionalOrderFacility);
+        }
+
+        public async Task<List<AdditionalFacilityOrderModel>> GetFacilitiesOrdersRange(int[] ids)
+        {
+            List<AdditionalFacilityOrderModel> facilitiesList = new List<AdditionalFacilityOrderModel>();
+            foreach (var id in ids)
+            {
+                var facility = await GetOrderFacilityAsync(id);
+                facilitiesList.Add(facility);
+            }
+
+            return facilitiesList;
+        }
+
         /*public async Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel)
         {
             var additionalFacility = _mapper.Map<FacilityRequestCostModel, AdditionalFacilityEntity>(additionalFacilityModel);

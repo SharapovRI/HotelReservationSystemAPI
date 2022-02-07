@@ -9,5 +9,7 @@ namespace HotelReservationSystemAPI.Business.Models.Request
         public int PersonId { get; set; }
 
         public virtual List<OrderModel> Orders { get; set; }
+
+        public int TotalCost { get; set; }
     }
 }

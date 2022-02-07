@@ -15,6 +15,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
             CreateMap<OrderResponseModel, OrderViewModel>();
             CreateMap < OrderUpdateTimeModel, OrderTimeUpdateModel>();
             CreateMap<OrderGroupPostModel, OrderGroupModel>();
+            CreateMap<OrderGroupResponseModel, OrderGroupViewModel>();
         }
     }
 }

@@ -17,10 +17,5 @@ namespace HotelReservationSystemAPI.Data.Repositories
         protected override IQueryable<AdditionalFacilityEntity> SetWithIncludes => _set
             .Include(p => p.Hotel)
             .Include(p => p.FacilityOrders);
-
-        public Task<AdditionalFacilityEntity> GetFacility(AdditionalFacilityEntity entity)
-        {
-            throw new System.NotImplementedException();
-        }
     }
 }

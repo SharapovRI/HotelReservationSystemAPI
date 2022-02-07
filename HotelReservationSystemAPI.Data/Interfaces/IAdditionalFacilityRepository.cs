@@ -5,6 +5,5 @@ namespace HotelReservationSystemAPI.Data.Interfaces
 {
     public interface IAdditionalFacilityRepository : IRepository<AdditionalFacilityEntity>
     {
-        Task<AdditionalFacilityEntity> GetFacility(AdditionalFacilityEntity entity);
     }
 }

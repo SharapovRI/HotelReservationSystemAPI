@@ -61,28 +61,34 @@ namespace HotelReservationSystemAPI.Business.Services
             return entity;
         }
 
-        public async Task<RoomModel> GetRoom(int id, int hotelId)
+        public async Task<(RoomModel, int)> GetRoom(int id)
         {
             var room = await _roomRepository.GetAsync(id);
 
             if (room == null)
                 throw new BadRequest("Room with this id doesn't exists.");
 
-            if (room.HotelId != hotelId)
-                throw new BadRequest("Room with this id doesn't exists in this hotel.");
-
-            return _mapper.Map<RoomEntity, RoomModel>(room);
+            return (_mapper.Map<RoomEntity, RoomModel>(room), room.HotelId);
         }
 
-        public async Task<List<RoomModel>> GetRoomsRange(int[] ids, int hotel)
+        public async Task<(List<RoomModel>, int)> GetRoomsRange(int[] ids)
         {
             List<RoomModel> roomList = new List<RoomModel>();
+            int hotelId = -1;
             foreach (var id in ids)
             {
-                roomList.Add(await GetRoom(id, hotel));
+                var (room, hotel_Id) = await GetRoom(id);
+                roomList.Add(room);
+
+                if(hotelId != -1 && hotelId != hotel_Id)
+                {
+                    throw new BadRequest("Rooms from different hotels");
+                }
+
+                hotelId = hotel_Id;
             }
 
-            return roomList;
+            return (roomList, hotelId);
         }
 
         public async Task UpdateAsync(RoomUpdateModel roomModel)
