@@ -95,7 +95,7 @@ namespace HotelReservationSystemAPI.Business.Services
                 _config["Jwt:Issuer"],
                 _config["Jwt:Issuer"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(0.5),
+                expires: DateTime.Now.AddMinutes(5),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

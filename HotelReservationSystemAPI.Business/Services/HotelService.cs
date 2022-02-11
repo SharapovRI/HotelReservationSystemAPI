@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -8,9 +9,11 @@ using HotelReservationSystemAPI.Business.Interfaces;
 using HotelReservationSystemAPI.Business.Models;
 using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.QueryModels;
+using HotelReservationSystemAPI.Data;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
@@ -21,62 +24,75 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IRoomService _roomService;
         private readonly IHotelPhotoService _hotelPhotoService;
         private readonly IAdditionalFacilityService _additionalFacilityService;
+        private readonly NpgsqlContext _context;
 
         public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService,
-            IAdditionalFacilityService additionalFacilityService)
+            IAdditionalFacilityService additionalFacilityService, NpgsqlContext context)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
             _hotelPhotoService = hotelPhotoService;
             _additionalFacilityService = additionalFacilityService;
+            _context = context;
         }
 
         public async Task<HotelModel> CreateAsync(HotelRequestModel hotelModel)
         {
-            var rooms = hotelModel.Rooms;
-            var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
-            hotel.Photos = null;
-
-            hotel = await _hotelRepository.CreateAsync(hotel);
-
-            if (hotel == null)
-                throw new SomethingWrong("Something went wrong!\nHotel is not created.");
-            
-            foreach (var photo in hotelModel.HotelPhotos)
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
             {
-                var entity = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
-                entity.HotelId = hotel.Id;
-                _ = await _hotelPhotoService.CreateAsync(entity);
-            }
+                var rooms = hotelModel.Rooms;
+                var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
+                hotel.Photos = null;
 
-            foreach (var room in rooms)
-            {
-                room.HotelId = hotel.Id;
-                int roomTypeId = -1;
-                for (int i = 0; i < room.RoomCount; i++)
+                hotel = await _hotelRepository.CreateAsync(hotel);
+
+                if (hotel == null)
+                    throw new SomethingWrong("Something went wrong!\nHotel is not created.");
+
+                foreach (var photo in hotelModel.HotelPhotos)
                 {
-                    room.TypeId = roomTypeId;
-                    var createdRoom = await _roomService.CreateAsync(room);
-                    roomTypeId = createdRoom.TypeId;
+                    var entity = _mapper.Map<HotelPhotoCreationModel, HotelPhotoEntity>(photo);
+                    entity.HotelId = hotel.Id;
+                    _ = await _hotelPhotoService.CreateAsync(entity);
                 }
-            }
 
-            foreach (var facility in hotelModel.Facilities)
-            {
-                var newFacility = new FacilityRequestModel()
+                foreach (var room in rooms)
                 {
-                    HotelId = hotel.Id,
-                    Name = facility.Name,
-                    Cost = facility.Cost,
-                };
+                    room.HotelId = hotel.Id;
+                    int roomTypeId = -1;
+                    for (int i = 0; i < room.RoomCount; i++)
+                    {
+                        room.TypeId = roomTypeId;
+                        var createdRoom = await _roomService.CreateAsync(room);
+                        roomTypeId = createdRoom.TypeId;
+                    }
+                }
 
-                _ = await _additionalFacilityService.CreateAsync(newFacility);
+                foreach (var facility in hotelModel.Facilities)
+                {
+                    var newFacility = new FacilityRequestModel()
+                    {
+                        HotelId = hotel.Id,
+                        Name = facility.Name,
+                        Cost = facility.Cost,
+                    };
+
+                    _ = await _additionalFacilityService.CreateAsync(newFacility);
+                }
+
+                var createdEntity = _mapper.Map<HotelEntity, HotelModel>(hotel);
+
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return createdEntity;
             }
-
-            var createdEntity = _mapper.Map<HotelEntity, HotelModel>(hotel);
-
-            return createdEntity;
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("Transaction is canceled!");
+            }
         }
 
         public async Task<HotelModel> DeleteAsync(int id)
@@ -108,25 +124,36 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateAsync(HotelRequestModel hotelModel)
         {
-            var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
-
-            var entity = await _hotelRepository.UpdateReturnIncludesAsync(hotel);
-
-            if (entity == null)
-                throw new BadRequest("Hotel with this id doesn't exists.");
-
-            var photos = hotelModel.HotelPhotos;
-
-            await _hotelPhotoService.UpdateAsync(photos, entity.Photos, hotel.Id);
-
-            foreach (var item in hotelModel.Facilities)
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
             {
-                item.HotelId = hotel.Id; //TODO update facil
-                //await _additionalFacilityService.UpdateAsync(item);
+                var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
+
+                var entity = await _hotelRepository.UpdateReturnIncludesAsync(hotel);
+
+                if (entity == null)
+                    throw new BadRequest("Hotel with this id doesn't exists.");
+
+                var photos = hotelModel.HotelPhotos;
+
+                await _hotelPhotoService.UpdateAsync(photos, entity.Photos, hotel.Id);
+
+                foreach (var item in hotelModel.Facilities)
+                {
+                    item.HotelId = hotel.Id; //TODO update facil
+                                             //await _additionalFacilityService.UpdateAsync(item);
+                }
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("Transaction is canceled!");
             }
         }
-        
-        public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
+
+            public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
@@ -156,11 +183,11 @@ namespace HotelReservationSystemAPI.Business.Services
                 FilterExpression = hotel =>
                     ((model.Id == null) || (model.Id == hotel.Id))
                     &&
-                    (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId) 
+                    (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId)
                     &&
                     ((hotel.Rooms == null) || (model.CheckIn == null) || (model.CheckOut == null) ||
-                    (hotel.Rooms.Where(room => (room.Orders.Count() == 0) || 
-                                                (room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && time.CheckInTime >= model.CheckOut || 
+                    (hotel.Rooms.Where(room => (room.Orders.Count() == 0) ||
+                                                (room.Orders.AsQueryable().FirstOrDefault(time => time.CheckInTime > model.CheckIn && time.CheckInTime >= model.CheckOut ||
                                                                                                 time.CheckOutTime <= model.CheckIn && time.CheckOutTime < model.CheckOut) != null)
                                                 )
                     )

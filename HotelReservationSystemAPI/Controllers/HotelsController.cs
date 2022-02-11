@@ -36,7 +36,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Hotel/Create")]
-        //[Authorize(Policy = APIPolicies.AdminPolicy)]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> CreateHotel([FromBody] HotelPostModel hotelRequestModel)
         {
             var hotel = _mapper.Map<HotelPostModel, HotelRequestModel>(hotelRequestModel);
@@ -50,7 +50,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPut("/Hotel/Edit/{hotelId}")]
-        //[Authorize(Policy = APIPolicies.AdminPolicy)]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> UpdateHotel([FromBody] HotelPutModel hotelPatchModel)
         {
             var hotel = _mapper.Map<HotelPutModel, HotelRequestModel>(hotelPatchModel);

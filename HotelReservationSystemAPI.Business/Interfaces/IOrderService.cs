@@ -9,8 +9,6 @@ namespace HotelReservationSystemAPI.Business.Interfaces
 {
     public interface IOrderService
     {
-        Task<OrderResponseModel> CreateAsync(OrderModel orderModel, int groupId);
-
         Task<OrderResponseModel> GetAsync(int id);
 
         Task<(IEnumerable<OrderResponseModel>, int)> GetListAsync();

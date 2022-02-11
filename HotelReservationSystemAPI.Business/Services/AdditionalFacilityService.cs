@@ -84,30 +84,6 @@ namespace HotelReservationSystemAPI.Business.Services
             return facilitiesList;
         }
 
-        /*public async Task UpdateAsync(FacilityRequestCostModel additionalFacilityModel)
-        {
-            var additionalFacility = _mapper.Map<FacilityRequestCostModel, AdditionalFacilityEntity>(additionalFacilityModel);
-            var existingEntity = await _additionalFacilityRepository.GetFacility(additionalFacility);
-
-            if (existingEntity != null && existingEntity.FacilityCosts != null)
-            {
-                existingEntity.FacilityCosts.Where(p => p.HotelId == additionalFacilityModel.HotelId).ForAll(p => _facilityCostRepository.DeleteAsync(p.Id));
-            }
-            else
-            {
-                existingEntity = await _additionalFacilityRepository.CreateAsync(additionalFacility);
-            }
-
-            var entity = await _facilityCostRepository.CreateAsync(new AdditionalFacilityEntity()
-            {
-                HotelId = (int)additionalFacilityModel.HotelId,
-                Cost = additionalFacilityModel.Cost,
-                AdditionalFacilityId = existingEntity.Id,
-            });
-
-            if (entity == null)
-                throw new BadRequest("Additional facility with this id doesn't exists.");
-        }*/
         public async Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
@@ -195,7 +171,6 @@ namespace HotelReservationSystemAPI.Business.Services
                 HotelId = room.HotelId
             });
 
-            //cost +=  facilitiesCosts.Where(facil => orderModel.AdditionalFacilities.Contains(facil.CityId)).Sum(facil => facil.Cost);
             foreach (var item in orderModel.AdditionalFacilities)
             {
                 cost += facilitiesCosts.FirstOrDefault(p => p.Id == item).Cost;
