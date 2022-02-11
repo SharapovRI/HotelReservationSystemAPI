@@ -43,7 +43,7 @@ namespace HotelReservationSystemAPI.Controllers
             var response = await _userService.RefreshTokenAsync(refreshToken);
 
             if (response == null)
-                return Unauthorized(new { message = "Invalid token" });
+                return Forbid();
             
             return Ok(response);
         }

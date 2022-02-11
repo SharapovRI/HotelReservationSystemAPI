@@ -10,6 +10,7 @@ using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
 using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Business.Models.Request;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -27,6 +28,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPost("/Order/Create")] //TODO take id from token
+        [Authorize]
         public async Task<IActionResult> CreateOrder([FromBody] OrderGroupPostModel orderViewModel)
         {
             var model = _mapper.Map<OrderGroupPostModel, OrderGroupModel>(orderViewModel);
@@ -37,6 +39,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpGet("/Hotels/GetMyOrders")]
+        [Authorize]
         public async Task<IActionResult> GetMyOrders([FromQuery] OrderQueryModel queryModel)
         {
             var (models, pageCount) = await _orderService.GetListAsync(queryModel);
@@ -47,6 +50,7 @@ namespace HotelReservationSystemAPI.Controllers
         }
 
         [HttpPut("/Order/UpdateTime")]
+        [Authorize]
         public async Task<IActionResult> UpdateArrivalTime([FromBody] OrderUpdateTimeModel orderUpdateTimeModel)
         {
             var model = _mapper.Map<OrderUpdateTimeModel, OrderTimeUpdateModel>(orderUpdateTimeModel);

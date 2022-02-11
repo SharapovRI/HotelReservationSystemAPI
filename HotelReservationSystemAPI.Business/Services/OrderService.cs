@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -10,10 +11,12 @@ using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.Models.Response;
 using HotelReservationSystemAPI.Business.QueryModels;
 using HotelReservationSystemAPI.Business.Validation;
+using HotelReservationSystemAPI.Data;
 using HotelReservationSystemAPI.Data.Interfaces;
 using HotelReservationSystemAPI.Data.Models;
 using HotelReservationSystemAPI.Data.Query;
 using HotelReservationSystemAPI.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelReservationSystemAPI.Business.Services
 {
@@ -25,8 +28,9 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IAdditionalFacilityOrderRepository _additionalFacilityOrderRepository;
         private readonly IRoomService _roomService;
         private readonly IAdditionalFacilityService _additionalFacilityService;
-        public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService, 
-            IAdditionalFacilityOrderRepository additionalFacilityOrderRepository, IOrderGroupRepository orderGroupRepository, IAdditionalFacilityService additionalFacilityService)
+        private readonly NpgsqlContext _context;
+        public OrderService(IMapper mapper, IOrderRepository orderRepository, IRoomService roomService,
+            IAdditionalFacilityOrderRepository additionalFacilityOrderRepository, IOrderGroupRepository orderGroupRepository, IAdditionalFacilityService additionalFacilityService, NpgsqlContext context)
         {
             _mapper = mapper;
             _orderRepository = orderRepository;
@@ -34,15 +38,17 @@ namespace HotelReservationSystemAPI.Business.Services
             _roomService = roomService;
             _orderGroupRepository = orderGroupRepository;
             _additionalFacilityService = additionalFacilityService;
+            _context = context;
         }
 
-        public async Task<OrderResponseModel> CreateAsync(OrderModel orderModel, int groupId)
+        private async Task<OrderResponseModel> CreateAsync(OrderModel orderModel, int groupId)
         {
+
             var validationParameters = await IsOrderValid(orderModel);
 
             if (!validationParameters)
                 throw new BadRequest("Order is not valid.");
-            
+
 
             var order = _mapper.Map<OrderModel, OrderEntity>(orderModel);
             order.OrderGroupId = groupId;
@@ -66,53 +72,64 @@ namespace HotelReservationSystemAPI.Business.Services
             var result = _mapper.Map<OrderEntity, OrderResponseModel>(createdOrder);
 
             return result;
+
         }
 
         public async Task<OrderGroupResponseModel> CreateGroupOrder(OrderGroupModel orderGroupModel)
         {
-            var days = 0;
-            for (var day = orderGroupModel.Orders.First().CheckInTime; day < orderGroupModel.Orders.First().CheckOutTime; day += TimeSpan.FromDays(1))
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
             {
-                days++;
+                var days = 0;
+                for (var day = orderGroupModel.Orders.First().CheckInTime; day < orderGroupModel.Orders.First().CheckOutTime; day += TimeSpan.FromDays(1))
+                {
+                    days++;
+                }
+
+                decimal totalCost = 0;
+
+                foreach (var item in orderGroupModel.Orders)
+                {
+                    totalCost += item.Cost;
+                }
+
+                if (totalCost * days != orderGroupModel.TotalCost)
+                    throw new BadRequest("Order is not valid");
+
+                var orderGroup = _mapper.Map<OrderGroupModel, OrderGroupEntity>(orderGroupModel);
+                orderGroup.Orders = null;
+                var createdOrderGroup = await _orderGroupRepository.CreateAsync(orderGroup);
+
+                List<OrderResponseModel> orderList = new List<OrderResponseModel>();
+
+
+                foreach (var item in orderGroupModel.Orders)
+                {
+                    orderList.Add(await CreateAsync(item, createdOrderGroup.Id));
+                }
+
+                var responseGroupModel = _mapper.Map<OrderGroupEntity, OrderGroupResponseModel>(createdOrderGroup);
+                await _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+                return responseGroupModel;
             }
-
-            decimal totalCost = 0;
-
-            foreach (var item in orderGroupModel.Orders)
+            catch (Exception)
             {
-                totalCost += item.Cost;
+                await transaction.RollbackAsync();
+                throw new Exception("Transaction is canceled!");
             }
-
-            if (totalCost * days != orderGroupModel.TotalCost)
-                throw new BadRequest("Order is not valid");
-             
-            var orderGroup = _mapper.Map<OrderGroupModel, OrderGroupEntity>(orderGroupModel);
-            orderGroup.Orders = null;
-            var createdOrderGroup = await _orderGroupRepository.CreateAsync(orderGroup);
-
-            List<OrderResponseModel> orderList = new List<OrderResponseModel>();
-
-
-            foreach (var item in orderGroupModel.Orders)
-            {
-                orderList.Add(await CreateAsync(item, createdOrderGroup.Id));
-            }
-
-            var responseGroupModel = _mapper.Map<OrderGroupEntity, OrderGroupResponseModel>(createdOrderGroup);
-
-            return responseGroupModel;
         }
 
         private async Task<bool> IsOrderValid(OrderModel orderModel)
         {
             if (orderModel == null)
                 throw new ArgumentNullException($"{nameof(orderModel)}");
-            
+
             var validationParameters = new OrderValidationParameters()
             {
                 IsDateValid = await _roomService.IsDateValid(orderModel),
-                IsFacilitiesValid = await  _additionalFacilityService.IsFacilitiesValid(orderModel),
-                IsCostValid = await  _additionalFacilityService.IsCostValid(orderModel)
+                IsFacilitiesValid = await _additionalFacilityService.IsFacilitiesValid(orderModel),
+                IsCostValid = await _additionalFacilityService.IsCostValid(orderModel)
             };
 
             return validationParameters.IsValid;
@@ -166,9 +183,14 @@ namespace HotelReservationSystemAPI.Business.Services
 
         public async Task UpdateArrivalTime(OrderTimeUpdateModel orderTimeUpdateModel)
         {
-            var entity = await _orderRepository.GetAsync(orderTimeUpdateModel.Id);
-            entity.CheckInTime = orderTimeUpdateModel.CheckInTime;
-            _ = await _orderRepository.UpdateAsync(entity);
+            var entity = await _orderGroupRepository.GetAsync(orderTimeUpdateModel.Id);
+
+            foreach (var item in entity.Orders)
+            {
+                item.CheckInTime = orderTimeUpdateModel.CheckInTime;
+                _ = await _orderRepository.UpdateAsync(item);
+            }
+
         }
 
         private QueryParameters<OrderGroupEntity> GetQueryParameters(OrderQueryModel model)
@@ -194,7 +216,7 @@ namespace HotelReservationSystemAPI.Business.Services
                     (
                         (orderGroup.PersonId == model.UserId) &&
                         (((model.CityId == null) && ((model.CountryId == null) || (orderGroup.Orders.First().Room.Hotel.CountryId == model.CountryId))) || (orderGroup.Orders.First().Room.Hotel.CityId == model.CityId)) &&
-                        ((model.WhichTime == null) || (model.WhichTime == false && orderGroup.Orders.First().CheckInTime < dateNow) || 
+                        ((model.WhichTime == null) || (model.WhichTime == false && orderGroup.Orders.First().CheckInTime < dateNow) ||
                             (model.WhichTime == true && orderGroup.Orders.First().CheckInTime > dateNow)) &&
                         (string.IsNullOrWhiteSpace(model.HotelNamePart) || orderGroup.Orders.First().Room.Hotel.Name.Contains(model.HotelNamePart))
                     )
