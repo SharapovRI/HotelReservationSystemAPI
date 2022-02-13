@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HotelReservationSystemAPI.Business.Models.Request;
 using HotelReservationSystemAPI.Business.Models.Response;
+using HotelReservationSystemAPI.Models;
 using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
 
@@ -27,6 +28,12 @@ namespace HotelReservationSystemAPI.MappingProfiles
                 .ForMember(dest => dest.Photos, act => act
                     .MapFrom(src => src.RoomPhotos))
                 .ForMember(dest => dest.FreeRoomsId, act => act.MapFrom(src => src.FreeRoomsId.ToArray()));
+
+            CreateMap<RoomRangePostModel, RoomCreationRangeModel>()
+                .ForMember(dest => dest.TypeId, act => act.Ignore())
+                .ForMember(dest => dest.HotelId, act => act.Ignore());
+
+            CreateMap<PhotoViewModel, RoomPhotoCreationModel>();
         }
     }
 }

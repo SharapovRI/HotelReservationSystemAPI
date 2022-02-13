@@ -18,5 +18,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public virtual IList<RoomPhotoLinksEntity> PhotoLinks { get; set; }
 
         public virtual IEnumerable<OrderEntity> Orders { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

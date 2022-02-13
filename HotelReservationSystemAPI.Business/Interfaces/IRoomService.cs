@@ -21,5 +21,7 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<bool> IsDateValid(OrderModel orderModel);
 
         Task<(List<RoomModel>, int)> GetRoomsRange(int[] ids);
+
+        Task DeactivateRoom(int id);
     }
 }

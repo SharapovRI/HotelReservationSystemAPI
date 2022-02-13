@@ -13,5 +13,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public decimal Cost { get; set; }
 
         public virtual List<AdditionalFacilityOrderEntity> FacilityOrders { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

@@ -4,14 +4,13 @@ namespace HotelReservationSystemAPI.Models.RequestModels
 {
     public class FacilityPutModel
     {
-        [Required]
-        public int Id { get; set; }
+        public int Id { get; set; } = -1;
 
         [Required]
         public int HotelId { get; set; }
 
         [Required(ErrorMessage = "Enter additional facility name")]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Additional facility name length must be between 3 and 20 characters")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Additional facility name length must be between 3 and 20 characters")]
         public string Name { get; set; }
 
         [Required]

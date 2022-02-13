@@ -10,6 +10,8 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
         {
             CreateMap<FacilityRequestModel, AdditionalFacilityEntity>();
             CreateMap<AdditionalFacilityEntity, AdditionalFacilityModel>();
+            CreateMap<FacilityPatchRequestModel, AdditionalFacilityEntity>()
+                .ForMember(dest => dest.IsActive, act => act.Ignore());
             CreateMap<AdditionalFacilityOrderEntity, AdditionalFacilityOrderModel>()
                 .ForMember(dest => dest.Name, act => act.MapFrom(src => src.AdditionFacility.Name))
                 .ForMember(dest => dest.Cost, act => act.MapFrom(src => src.AdditionFacility.Cost))

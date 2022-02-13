@@ -18,6 +18,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.Cost)
                 .IsRequired();
+            builder.Property(p => p.IsActive);
 
             builder.HasOne(p => p.Hotel)
                 .WithMany(p => p.FacilitiesCosts)

@@ -20,5 +20,9 @@ namespace HotelReservationSystemAPI.Business.Interfaces
         Task<AdditionalFacilityOrderModel> GetOrderFacilityAsync(int id);
 
         Task<List<AdditionalFacilityOrderModel>> GetFacilitiesOrdersRange(int[] ids);
+
+        Task DeactivateFacility(int id);
+
+        Task UpdateAsync(FacilityPatchRequestModel facilityPatchRequestModel);
     }
 }

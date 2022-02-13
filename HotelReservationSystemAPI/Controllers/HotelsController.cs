@@ -9,6 +9,7 @@ using HotelReservationSystemAPI.Models.RequestModels;
 using HotelReservationSystemAPI.Models.ResponseModels;
 using HotelReservationSystemAPI.Constants;
 using Microsoft.AspNetCore.Authorization;
+using HotelReservationSystemAPI.Business.Models.Request;
 
 namespace HotelReservationSystemAPI.Controllers
 {
@@ -53,11 +54,20 @@ namespace HotelReservationSystemAPI.Controllers
         [Authorize(Policy = APIPolicies.AdminPolicy)]
         public async Task<IActionResult> UpdateHotel([FromBody] HotelPutModel hotelPatchModel)
         {
-            var hotel = _mapper.Map<HotelPutModel, HotelRequestModel>(hotelPatchModel);
+            var hotel = _mapper.Map<HotelPutModel, HotelPatchRequestModel>(hotelPatchModel);
 
             await _hotelService.UpdateAsync(hotel);
 
             return NoContent();
+        }
+
+        [HttpDelete("/Hotels/Delete/{hotelId}")]
+        [Authorize(Policy = APIPolicies.AdminPolicy)]
+        public async Task<IActionResult> DeleteHotel(int hotelId)
+        {
+            await _hotelService.DeactivateHotel(hotelId);
+
+            return Ok();
         }
     }
 }

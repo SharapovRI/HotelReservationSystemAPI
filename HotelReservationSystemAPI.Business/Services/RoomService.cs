@@ -65,8 +65,8 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var room = await _roomRepository.GetAsync(id);
 
-            if (room == null)
-                throw new BadRequest("Room with this id doesn't exists.");
+            if (room == null || !room.IsActive)
+                throw new NoContent("Room with this id doesn't exists.");
 
             return (_mapper.Map<RoomEntity, RoomModel>(room), room.HotelId);
         }
@@ -126,14 +126,12 @@ namespace HotelReservationSystemAPI.Business.Services
             }
         }
 
-        /*public async Task<(IList<RoomModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
+        public async Task DeactivateRoom(int id)
         {
-            var queryParameters = GetQueryParameters(queryModel);
-
-            var (entities, pageCount) = await _roomRepository.GetListAsync(queryParameters);
-
-            return (_mapper.Map<IList<RoomEntity>, IList<RoomModel>>(entities), pageCount);
-        }*/
+            var room = await _roomRepository.GetAsync(id);
+            room.IsActive = false;
+            _ = await _roomRepository.UpdateAsync(room);
+        }
 
         public async Task<(IList<RoomGroupModel>, int)> GetListAsync(FreeRoomsQueryModel queryModel)
         {
@@ -180,6 +178,7 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<RoomEntity>
             {
                 FilterExpression = room =>
+                    room.IsActive &&
                     room.HotelId == model.HotelId && 
                     (room.Orders == null || room.Orders != null 
                         && !room.Orders.AsQueryable().Any(time => 

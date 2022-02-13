@@ -14,6 +14,7 @@ namespace HotelReservationSystemAPI.MappingProfiles
             CreateMap<FacilityPostModel, FacilityRequestModel>();
             CreateMap<FacilityPutModel, FacilityPatchRequestModel>();
             CreateMap<AdditionalFacilityOrderModel, AdditionFacilityOrderViewModel>();
+            CreateMap<FacilityPutModel, FacilityPatchRequestModel>();
         }
     }
 }

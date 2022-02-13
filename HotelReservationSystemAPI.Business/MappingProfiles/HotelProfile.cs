@@ -38,6 +38,8 @@ namespace HotelReservationSystemAPI.Business.MappingProfiles
             CreateMap<HotelPhotoEntity, PhotoModel>()
                 .ForMember(dest => dest.Data,
                     act => act.MapFrom(scr => Convert.ToBase64String(scr.Data)));
+
+            CreateMap<HotelPatchRequestModel, HotelEntity>();
         }
     }
 }

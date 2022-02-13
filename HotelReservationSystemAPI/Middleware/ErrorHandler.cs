@@ -38,6 +38,9 @@ namespace HotelReservationSystemAPI.Middleware
                     case SomethingWrong _:
                         context.Response.StatusCode = (int)HttpStatusCode.Conflict;
                         break;
+                    case NoContent _:
+                        context.Response.StatusCode = (int)HttpStatusCode.NoContent;
+                        break;
                     default:
                         context.Response.StatusCode = (int) HttpStatusCode.InternalServerError;
                         break;

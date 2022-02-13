@@ -56,8 +56,8 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var additionalFacility = await _additionalFacilityRepository.GetAsync(id);
 
-            if (additionalFacility == null)
-                throw new BadRequest("Additional facility with this id doesn't exists.");
+            if (additionalFacility == null || !additionalFacility.IsActive)
+                throw new NoContent("Additional facility with this id doesn't exists.");
 
             return _mapper.Map<AdditionalFacilityEntity, AdditionalFacilityModel>(additionalFacility);
         }
@@ -82,6 +82,31 @@ namespace HotelReservationSystemAPI.Business.Services
             }
 
             return facilitiesList;
+        }
+
+        public async Task DeactivateFacility(int id)
+        {
+            var facility = await _additionalFacilityRepository.GetAsync(id);
+            facility.IsActive = false;
+            _ = await _additionalFacilityRepository.UpdateAsync(facility);
+        }
+
+        public async Task UpdateAsync(FacilityPatchRequestModel facilityPatchRequestModel)
+        {
+            var facility = _mapper.Map<FacilityPatchRequestModel, AdditionalFacilityEntity>(facilityPatchRequestModel);
+
+            if (facilityPatchRequestModel.Id != -1)
+            {
+                var entity = await _additionalFacilityRepository.GetAsync(facility.Id);
+                entity.Cost = facility.Cost;
+                entity.Name = facility.Name;
+                await _additionalFacilityRepository.UpdateAsync(entity);
+            }
+            else
+            {
+                facility.Id = 0;
+                await _additionalFacilityRepository.CreateAsync(facility);
+            }
         }
 
         public async Task<IList<AdditionalFacilityModel>> GetListAsync(AdditionalFacilityQueryModel queryModel)
@@ -112,6 +137,7 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<AdditionalFacilityEntity>
             {
                 FilterExpression = facility =>
+                    facility.IsActive &&
                     (model.HotelId == facility.HotelId) &&
                     (!model.IsCostValid() || model.IsCostValid() && facility.Cost >= model.MinCost && facility.Cost <= model.MaxCost)
             };

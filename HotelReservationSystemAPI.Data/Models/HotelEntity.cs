@@ -25,5 +25,7 @@ namespace HotelReservationSystemAPI.Data.Models
         public virtual List<RoomEntity> Rooms { get; set; }
 
         public virtual List<RoomTypeEntity> RoomTypes { get; set; }
+
+        public bool IsActive { get; set; } = true;
     }
 }

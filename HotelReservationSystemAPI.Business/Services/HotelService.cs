@@ -24,16 +24,18 @@ namespace HotelReservationSystemAPI.Business.Services
         private readonly IRoomService _roomService;
         private readonly IHotelPhotoService _hotelPhotoService;
         private readonly IAdditionalFacilityService _additionalFacilityService;
+        private readonly IRoomTypeService _roomTypeService;
         private readonly NpgsqlContext _context;
 
         public HotelService(IMapper mapper, IHotelRepository hotelRepository, IRoomService roomService, IHotelPhotoService hotelPhotoService,
-            IAdditionalFacilityService additionalFacilityService, NpgsqlContext context)
+            IAdditionalFacilityService additionalFacilityService, IRoomTypeService roomTypeService, NpgsqlContext context)
         {
             _mapper = mapper;
             _hotelRepository = hotelRepository;
             _roomService = roomService;
             _hotelPhotoService = hotelPhotoService;
             _additionalFacilityService = additionalFacilityService;
+            _roomTypeService = roomTypeService;
             _context = context;
         }
 
@@ -95,6 +97,33 @@ namespace HotelReservationSystemAPI.Business.Services
             }
         }
 
+        public async Task DeactivateHotel(int id)
+        {
+            await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
+            try
+            {
+                var hotel = await _hotelRepository.GetAsync(id);
+                hotel.IsActive = false;
+                foreach (var item in hotel.Rooms)
+                {
+                    _ = _roomService.DeactivateRoom(item.Id);
+                }
+                foreach (var item in hotel.FacilitiesCosts)
+                {
+                    _ = _additionalFacilityService.DeactivateFacility(item.Id);
+                }
+
+                _ = _hotelRepository.UpdateAsync(hotel);
+                _ = _context.SaveChangesAsync();
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw new Exception("Transaction is canceled!");
+            }
+        }
+
         public async Task<HotelModel> DeleteAsync(int id)
         {
             var hotel = _hotelRepository.DeleteAsync(id);
@@ -109,8 +138,8 @@ namespace HotelReservationSystemAPI.Business.Services
         {
             var hotel = await _hotelRepository.GetAsync(id);
 
-            if (hotel == null)
-                throw new BadRequest("Hotel with this id doesn't exists.");
+            if (hotel == null || !hotel.IsActive)
+                throw new NoContent("Hotel with this id doesn't exists.");
 
             return _mapper.Map<HotelEntity, HotelModel>(hotel);
         }
@@ -122,38 +151,77 @@ namespace HotelReservationSystemAPI.Business.Services
             return _mapper.Map<IEnumerable<HotelEntity>, IEnumerable<HotelModel>>(hotels);
         }
 
-        public async Task UpdateAsync(HotelRequestModel hotelModel)
+        public async Task UpdateAsync(HotelPatchRequestModel hotelModel)
         {
             await using var transaction = await _context.Database.BeginTransactionAsync(IsolationLevel.Serializable);
             try
             {
-                var hotel = _mapper.Map<HotelRequestModel, HotelEntity>(hotelModel);
-
+                var hotel = _mapper.Map<HotelPatchRequestModel, HotelEntity>(hotelModel);
+                hotel.Rooms = null;
                 var entity = await _hotelRepository.UpdateReturnIncludesAsync(hotel);
 
                 if (entity == null)
                     throw new BadRequest("Hotel with this id doesn't exists.");
 
                 var photos = hotelModel.HotelPhotos;
-
                 await _hotelPhotoService.UpdateAsync(photos, entity.Photos, hotel.Id);
+
+                var requestedIds = hotelModel.Facilities.Select(p => p.Id);
+                var responsedIds = entity.FacilitiesCosts.Select(p => p.Id);
+                var facilityDifference = responsedIds.Except(requestedIds);
+                foreach (var item in facilityDifference)
+                {
+                    _ = _additionalFacilityService.DeactivateFacility(item);
+                }
 
                 foreach (var item in hotelModel.Facilities)
                 {
                     item.HotelId = hotel.Id; //TODO update facil
-                                             //await _additionalFacilityService.UpdateAsync(item);
+                    await _additionalFacilityService.UpdateAsync(item);
                 }
+
+                foreach (var item in hotelModel.Rooms)
+                {
+                    item.HotelId = hotel.Id;
+                    var entityTypeRooms = entity.Rooms.Where(p => p.RoomType.Name == item.TypeName);
+                    if (entityTypeRooms.Count() == 0)
+                    {
+                        await _roomService.CreateAsync(item);
+                    }
+                    else
+                    {
+                        var room = entityTypeRooms.First();
+                        item.TypeId = room.TypeId;
+                        var entitiesToDeact = entityTypeRooms.Skip(item.RoomCount);
+
+                        foreach (var roomToDeact in entitiesToDeact)
+                        {
+                            await _roomService.DeactivateRoom(roomToDeact.Id);
+                        }
+
+                        var roomType = _mapper.Map<RoomCreationRangeModel, RoomTypeRequestModel>(item);
+                        await _roomTypeService.UpdateAsync(roomType);
+
+                        int roomToCreate = item.RoomCount - entityTypeRooms.Count();
+                        if (roomToCreate > 0)
+                        {
+                            item.RoomCount = roomToCreate;
+                            await _roomService.CreateAsync(item);
+                        }
+                    }
+                }
+
                 await _context.SaveChangesAsync();
                 await transaction.CommitAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 await transaction.RollbackAsync();
                 throw new Exception("Transaction is canceled!");
             }
         }
 
-            public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
+        public async Task<(IList<HotelModel>, int)> GetListAsync(HotelFreeSeatsQueryModel queryModel)
         {
             var queryParameters = GetQueryParameters(queryModel);
 
@@ -181,6 +249,7 @@ namespace HotelReservationSystemAPI.Business.Services
             var filterRule = new FilterRule<HotelEntity>
             {
                 FilterExpression = hotel =>
+                    hotel.IsActive &&
                     ((model.Id == null) || (model.Id == hotel.Id))
                     &&
                     (model.CityId == null && (model.CountryId == null || model.CountryId == hotel.CountryId) || model.CityId == hotel.CityId)

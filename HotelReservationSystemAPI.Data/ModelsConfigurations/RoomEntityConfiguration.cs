@@ -18,6 +18,7 @@ namespace HotelReservationSystemAPI.Data.ModelsConfigurations
                 .IsRequired();
             builder.Property(p => p.LastView)
                 .IsRequired(false);
+            builder.Property(p => p.IsActive);
 
             builder.HasOne(p => p.RoomType)
                 .WithMany(p => p.Rooms)
